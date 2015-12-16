@@ -11,19 +11,21 @@
 		1C21A9EC1C20B2EC00B4941E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C21A9EB1C20B2EC00B4941E /* ViewController.swift */; };
 		1C21A9EE1C20B2EC00B4941E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1C21A9ED1C20B2EC00B4941E /* Assets.xcassets */; };
 		1C21A9F11C20B2EC00B4941E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1C21A9EF1C20B2EC00B4941E /* Main.storyboard */; };
-		1C21A9FC1C20B74400B4941E /* AFNetworking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C21A9F81C20B5B100B4941E /* AFNetworking.framework */; };
-		1C21A9FD1C20B74400B4941E /* AFNetworking.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1C21A9F81C20B5B100B4941E /* AFNetworking.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		1C21A9FF1C20B79000B4941E /* FUT16.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C21A9FE1C20B79000B4941E /* FUT16.swift */; };
+		1C21AA031C20BC4400B4941E /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C21AA021C20BC4400B4941E /* Alamofire.framework */; };
+		1C21AA051C20BC5C00B4941E /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1C21AA021C20BC4400B4941E /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		1C21A9FB1C20B68700B4941E /* CopyFiles */ = {
+		1C21AA061C20BC5C00B4941E /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				1C21A9FD1C20B74400B4941E /* AFNetworking.framework in CopyFiles */,
+				1C21AA051C20BC5C00B4941E /* Alamofire.framework in Embed Frameworks */,
 			);
+			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -35,7 +37,8 @@
 		1C21A9ED1C20B2EC00B4941E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1C21A9F01C20B2EC00B4941E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		1C21A9F21C20B2EC00B4941E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		1C21A9F81C20B5B100B4941E /* AFNetworking.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AFNetworking.framework; path = Carthage/Build/Mac/AFNetworking.framework; sourceTree = "<group>"; };
+		1C21A9FE1C20B79000B4941E /* FUT16.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FUT16.swift; sourceTree = "<group>"; };
+		1C21AA021C20BC4400B4941E /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/Mac/Alamofire.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -43,7 +46,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1C21A9FC1C20B74400B4941E /* AFNetworking.framework in Frameworks */,
+				1C21AA031C20BC4400B4941E /* Alamofire.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -53,7 +56,7 @@
 		1C21A9DD1C20B2EB00B4941E = {
 			isa = PBXGroup;
 			children = (
-				1C21A9F81C20B5B100B4941E /* AFNetworking.framework */,
+				1C21AA021C20BC4400B4941E /* Alamofire.framework */,
 				1C21A9E81C20B2EB00B4941E /* FUT16 */,
 				1C21A9E71C20B2EB00B4941E /* Products */,
 			);
@@ -72,6 +75,7 @@
 			children = (
 				1C21A9E91C20B2EC00B4941E /* AppDelegate.swift */,
 				1C21A9EB1C20B2EC00B4941E /* ViewController.swift */,
+				1C21A9FE1C20B79000B4941E /* FUT16.swift */,
 				1C21A9ED1C20B2EC00B4941E /* Assets.xcassets */,
 				1C21A9EF1C20B2EC00B4941E /* Main.storyboard */,
 				1C21A9F21C20B2EC00B4941E /* Info.plist */,
@@ -89,7 +93,7 @@
 				1C21A9E21C20B2EB00B4941E /* Sources */,
 				1C21A9E31C20B2EB00B4941E /* Frameworks */,
 				1C21A9E41C20B2EB00B4941E /* Resources */,
-				1C21A9FB1C20B68700B4941E /* CopyFiles */,
+				1C21AA061C20BC5C00B4941E /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -150,6 +154,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1C21A9FF1C20B79000B4941E /* FUT16.swift in Sources */,
 				1C21A9EC1C20B2EC00B4941E /* ViewController.swift in Sources */,
 				1C21A9EA1C20B2EC00B4941E /* AppDelegate.swift in Sources */,
 			);
