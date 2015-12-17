@@ -27,5 +27,6 @@ DerivedData
 
 
 # Carthage
-#
-Carthage/Checkouts
+# (ignore source code but include frameworks)
+Carthage/Checkouts/
+!Carthage/Build/
