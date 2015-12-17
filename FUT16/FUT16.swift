@@ -14,21 +14,24 @@ class FUT16 {
     
     private let cfg = NSURLSessionConfiguration.defaultSessionConfiguration()
     private let cookieStoreage = NSHTTPCookieStorage.sharedHTTPCookieStorage()
-    let alamo: Manager!
     
-    var loginUrl: URLStringConvertible!
-    let webAppUrl = "https://www.easports.com/fifa/ultimate-team/web-app"
-    let baseShowoffUrl: URLStringConvertible = "https://www.easports.com/iframe/fut16/?locale=en_US&baseShowoffUrl=https%3A%2F%2Fwww.easports.com%2Ffifa%2Fultimate-team%2Fweb-app%2Fshow-off&guest_app_uri=http%3A%2F%2Fwww.easports.com%2Ffifa%2Fultimate-team%2Fweb-app"
-    let acctInfoUrl: URLStringConvertible = "https://www.easports.com/iframe/fut16/p/ut/game/fifa16/user/accountinfo?sku=FUT16WEB&returningUserGameYear=2015&_1450386498000"
-    let authUrl: URLStringConvertible = "https://www.easports.com/iframe/fut16/p/ut/auth"
+    private let alamo: Manager!
     
-    let jSessionCookieUrl = NSURL(string: "https://signin.ea.com/p/JSESSIONID")!
+    private var loginUrl: URLStringConvertible!
+    private let webAppUrl = "https://www.easports.com/fifa/ultimate-team/web-app"
+    private let baseShowoffUrl: URLStringConvertible = "https://www.easports.com/iframe/fut16/?locale=en_US&baseShowoffUrl=https%3A%2F%2Fwww.easports.com%2Ffifa%2Fultimate-team%2Fweb-app%2Fshow-off&guest_app_uri=http%3A%2F%2Fwww.easports.com%2Ffifa%2Fultimate-team%2Fweb-app"
+    private let acctInfoUrl: URLStringConvertible = "https://www.easports.com/iframe/fut16/p/ut/game/fifa16/user/accountinfo?sku=FUT16WEB&returningUserGameYear=2015&_1450386498000"
+    private let authUrl: URLStringConvertible = "https://www.easports.com/iframe/fut16/p/ut/auth"
     
     private var EASW_ID = ""
     private var personaName = ""
     private var personaId = ""
     
-    private var sessionId = ""
+    static private var sessionId = ""
+    
+    class func getSessionId() -> String {
+        return sessionId
+    }
 
     init() {
         cfg.HTTPCookieStorage = cookieStoreage
