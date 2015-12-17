@@ -744,6 +744,16 @@
                                     <action selector="loginPressed:" target="XfG-lQ-9wD" id="pra-SI-39U"/>
                                 </connections>
                             </button>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4sd-DX-RIY">
+                                <rect key="frame" x="342" y="79" width="94" height="32"/>
+                                <buttonCell key="cell" type="push" title="Acct Info" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="TCn-e6-GXF">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="acctInfoPressed:" target="XfG-lQ-9wD" id="ERN-U4-0d9"/>
+                                </connections>
+                            </button>
                         </subviews>
                     </view>
                     <connections>

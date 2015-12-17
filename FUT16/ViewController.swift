@@ -54,5 +54,9 @@ class ViewController: NSViewController {
             passwordTextField.stringValue = pass
         }
     }
+    
+    @IBAction func acctInfoPressed(sender: NSButton) {
+        fut16.getEaswId()
+    }
 }
 
