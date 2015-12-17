@@ -19,11 +19,15 @@ class FUT16 {
     var loginUrl: URLStringConvertible = "https://www.easports.com/fifa/ultimate-team/web-app"
     let baseShowoffUrl: URLStringConvertible = "https://www.easports.com/iframe/fut16/?locale=en_US&baseShowoffUrl=https%3A%2F%2Fwww.easports.com%2Ffifa%2Fultimate-team%2Fweb-app%2Fshow-off&guest_app_uri=http%3A%2F%2Fwww.easports.com%2Ffifa%2Fultimate-team%2Fweb-app"
     let acctInfoUrl: URLStringConvertible = "https://www.easports.com/iframe/fut16/p/ut/game/fifa16/user/accountinfo?sku=FUT16WEB&returningUserGameYear=2015&_1450386498000"
+    let authUrl: URLStringConvertible = "https://www.easports.com/iframe/fut16/p/ut/auth"
     
     let jSessionCookieUrl = NSURL(string: "https://signin.ea.com/p/JSESSIONID")!
     
     private var EASW_ID = ""
+    private var personaName = ""
     private var personaId = ""
+    
+    private var sessionId = ""
 
     init() {
         cfg.HTTPCookieStorage = cookieStoreage
@@ -81,7 +85,7 @@ class FUT16 {
     func getEaswId() {
         alamo.request(.GET, baseShowoffUrl).response {(request, response, data, error) -> Void in
             self.EASW_ID = self.extractEaswIdFromString(data!.string!)
-            print("EASW_ID = \(self.EASW_ID)")
+            print("EASW_ID: \(self.EASW_ID)")
             self.getAcctInfo()
         }
     }
@@ -95,13 +99,47 @@ class FUT16 {
             guard let json = response.result.value else { return }
             let infoJson = JSON(json)
 
-            
+            self.personaName = infoJson["userAccountInfo"]["personas"][0]["personaName"].stringValue
             self.personaId = infoJson["userAccountInfo"]["personas"][0]["personaId"].stringValue
-            print("Persona ID = \(self.personaId)")
+            print("Persona: \(self.personaName), ID: \(self.personaId)")
+            
+            self.getSessionId()
         }
-
     }
     
+    func getSessionId() {
+        let headers = ["X-UT-Embed-Error" : "true",
+                       "X-UT-Route" : "https://utas.s3.fut.ea.com:443" ]
+        
+        let parameters:[String : AnyObject] = ["clientVersion": "1",
+                                                "gameSku" : "FFA16XBO",
+                                                "identification" : ["authCode" : ""],
+                                                "isReadOnly" : "false",
+                                                "locale" : "en-US",
+                                                "method" : "authcode",
+                                                "nucleusPersonaDisplayName" : personaName,
+                                                "nucleusPersonaId" : personaId,
+                                                "nucleusPersonaPlatform" : "360",
+                                                "priorityLevel" : "4",
+                                                "sku" : "FUT16WEB"]
+        
+        alamo.request(.POST, authUrl, headers: headers, parameters: parameters, encoding: .JSON).responseJSON { (response) -> Void in
+            guard let json = response.result.value else { return }
+            self.sessionId = JSON(json)["sid"].stringValue
+            print("Session ID: \(self.sessionId)")
+        }
+    }
+    
+    private func extractEaswIdFromString(string: String) -> String {
+        // current format:
+        //        garbage
+        //        var EASW_ID = '2415964099';
+        //        garbage
+        
+        let components1 = string.componentsSeparatedByString("EASW_ID = '")
+        let components2 = components1[1].componentsSeparatedByString("'")
+        return components2[0]
+    }
     
     private func printCookies() {
         guard let cookies = cookieStoreage.cookies else {
@@ -112,17 +150,6 @@ class FUT16 {
         print("Cookies:")
     
         print(NSHTTPCookie.requestHeaderFieldsWithCookies(cookies))
-    }
-    
-    private func extractEaswIdFromString(string: String) -> String {
-        // current format:
-        //        garbage
-        //        var EASW_ID = '2415964099';
-        //        garbage
-
-        let components1 = string.componentsSeparatedByString("EASW_ID = '")
-        let components2 = components1[1].componentsSeparatedByString("'")
-        return components2[0]
     }
 }
 
