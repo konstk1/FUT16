@@ -56,7 +56,7 @@ class ViewController: NSViewController {
     }
     
     @IBAction func acctInfoPressed(sender: NSButton) {
-        fut16.getEaswId()
+        fut16.authenticate()
     }
 }
 

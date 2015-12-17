@@ -16,7 +16,8 @@ class FUT16 {
     private let cookieStoreage = NSHTTPCookieStorage.sharedHTTPCookieStorage()
     let alamo: Manager!
     
-    var loginUrl: URLStringConvertible = "https://www.easports.com/fifa/ultimate-team/web-app"
+    var loginUrl: URLStringConvertible!
+    let webAppUrl = "https://www.easports.com/fifa/ultimate-team/web-app"
     let baseShowoffUrl: URLStringConvertible = "https://www.easports.com/iframe/fut16/?locale=en_US&baseShowoffUrl=https%3A%2F%2Fwww.easports.com%2Ffifa%2Fultimate-team%2Fweb-app%2Fshow-off&guest_app_uri=http%3A%2F%2Fwww.easports.com%2Ffifa%2Fultimate-team%2Fweb-app"
     let acctInfoUrl: URLStringConvertible = "https://www.easports.com/iframe/fut16/p/ut/game/fifa16/user/accountinfo?sku=FUT16WEB&returningUserGameYear=2015&_1450386498000"
     let authUrl: URLStringConvertible = "https://www.easports.com/iframe/fut16/p/ut/auth"
@@ -32,19 +33,21 @@ class FUT16 {
     init() {
         cfg.HTTPCookieStorage = cookieStoreage
         cfg.HTTPCookieAcceptPolicy = NSHTTPCookieAcceptPolicy.Always
+        
+//        for cookie in cookieStoreage.cookies! {
+//            cookieStoreage.deleteCookie(cookie)
+//        }
 
         alamo = Alamofire.Manager.sharedInstance
-//        alamo.delegate.taskWillPerformHTTPRedirection = { (session: NSURLSession, task: NSURLSessionTask, response: NSHTTPURLResponse, request: NSURLRequest) in
-////            print("Redirect: \(request.URLString)")
-//            return request
-//        }
     }
     
     func login(email: String, password: String) {
+        loginUrl = webAppUrl
         alamo.request(.GET, loginUrl).response { (request, response, data, error) -> Void in
             self.loginUrl = response!.URL!
             if self.loginUrl.URLString.containsString("web-app") {
                 print("Already Logged In.")
+                self.authenticate()
             } else {
                 self.sendUsernamePassword(email, password: password)
             }
@@ -58,13 +61,12 @@ class FUT16 {
         
         alamo.request(.POST, loginUrl, parameters: parameters).response { (request, response, data, error) -> Void in
             if let responseString = String(data: data!, encoding: NSUTF8StringEncoding) {
-                print(responseString)
                 if responseString.containsString("Submit Security Code") {
                     print("Enter Security Code!")
                     // update login URL to sequence 2
                     self.loginUrl = response!.URL!
                 } else {
-                    print("Invalid login!")
+                    print("Login Failure: Invalid login")
                 }
             }
         }
@@ -77,20 +79,30 @@ class FUT16 {
                           "_eventId" : "submit"]
         
         alamo.request(.POST, loginUrl, parameters: parameters).response {(request, response, data, error) -> Void in
-            print(response)
-            print(String(data: data!, encoding: NSUTF8StringEncoding))
+            if response!.URL!.URLString.URLString.containsString(self.webAppUrl) {
+                print("Login Successfull. Authenticating Session...")
+                self.authenticate()
+            } else {
+                print(response!.URL!.URLString)
+                print(self.webAppUrl)
+                print("Login Failed: Invalid two factor code")
+            }
         }
     }
     
-    func getEaswId() {
+    func authenticate() {
         alamo.request(.GET, baseShowoffUrl).response {(request, response, data, error) -> Void in
             self.EASW_ID = self.extractEaswIdFromString(data!.string!)
+            if self.EASW_ID == "0" {
+                print("Login failure: EASW_ID")
+                return
+            }
             print("EASW_ID: \(self.EASW_ID)")
             self.getAcctInfo()
         }
     }
     
-    func getAcctInfo() {
+    private func getAcctInfo() {
         let headers = ["Easw-Session-Data-Nucleus-Id" : EASW_ID,
                        "X-UT-Embed-Error" : "true",
                        "X-UT-Route" : "https://utas.s3.fut.ea.com:443" ]
@@ -107,7 +119,7 @@ class FUT16 {
         }
     }
     
-    func getSessionId() {
+    private func getSessionId() {
         let headers = ["X-UT-Embed-Error" : "true",
                        "X-UT-Route" : "https://utas.s3.fut.ea.com:443" ]
         
@@ -129,7 +141,10 @@ class FUT16 {
             print("Session ID: \(self.sessionId)")
         }
     }
-    
+}
+
+// Helpers
+extension FUT16 {
     private func extractEaswIdFromString(string: String) -> String {
         // current format:
         //        garbage
@@ -148,7 +163,7 @@ class FUT16 {
         }
         
         print("Cookies:")
-    
+        
         print(NSHTTPCookie.requestHeaderFieldsWithCookies(cookies))
     }
 }
