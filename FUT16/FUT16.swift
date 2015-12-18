@@ -15,21 +15,22 @@ class FUT16 {
     private let cfg = NSURLSessionConfiguration.defaultSessionConfiguration()
     private let cookieStoreage = NSHTTPCookieStorage.sharedHTTPCookieStorage()
     
-    private let alamo: Manager!
+    let alamo: Manager!
     
     private var loginUrl: URLStringConvertible!
     private let webAppUrl = "https://www.easports.com/fifa/ultimate-team/web-app"
     private let baseShowoffUrl: URLStringConvertible = "https://www.easports.com/iframe/fut16/?locale=en_US&baseShowoffUrl=https%3A%2F%2Fwww.easports.com%2Ffifa%2Fultimate-team%2Fweb-app%2Fshow-off&guest_app_uri=http%3A%2F%2Fwww.easports.com%2Ffifa%2Fultimate-team%2Fweb-app"
     private let acctInfoUrl: URLStringConvertible = "https://www.easports.com/iframe/fut16/p/ut/game/fifa16/user/accountinfo?sku=FUT16WEB&returningUserGameYear=2015&_1450386498000"
     private let authUrl: URLStringConvertible = "https://www.easports.com/iframe/fut16/p/ut/auth"
+    let futUrl: URLStringConvertible = "https://utas.s3.fut.ea.com/ut/game/fifa16/"
     
     private var EASW_ID = ""
     private var personaName = ""
     private var personaId = ""
     
-    static private var sessionId = ""
+    private var sessionId = ""
     
-    class func getSessionId() -> String {
+    func getSessionId() -> String {
         return sessionId
     }
 
@@ -118,7 +119,7 @@ class FUT16 {
             self.personaId = infoJson["userAccountInfo"]["personas"][0]["personaId"].stringValue
             print("Persona: \(self.personaName), ID: \(self.personaId)")
             
-            self.getSessionId()
+//            self.getSessionId()
         }
     }
     

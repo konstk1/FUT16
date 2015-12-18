@@ -17,6 +17,8 @@
 		1CF6A73D1C2365D8009A9181 /* Cartfile in Resources */ = {isa = PBXBuildFile; fileRef = 1CF6A73C1C2365D8009A9181 /* Cartfile */; };
 		1CF6A7401C23663B009A9181 /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CF6A73E1C236633009A9181 /* SwiftyJSON.framework */; };
 		1CF6A7411C23663B009A9181 /* SwiftyJSON.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1CF6A73E1C236633009A9181 /* SwiftyJSON.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		1CF6A8101C237993009A9181 /* FUT16+Transport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CF6A80F1C237993009A9181 /* FUT16+Transport.swift */; };
+		1CF6A8121C246071009A9181 /* FUT16+Transfer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CF6A8111C246071009A9181 /* FUT16+Transfer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -45,6 +47,8 @@
 		1C21AA021C20BC4400B4941E /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/Mac/Alamofire.framework; sourceTree = "<group>"; };
 		1CF6A73C1C2365D8009A9181 /* Cartfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Cartfile; sourceTree = SOURCE_ROOT; };
 		1CF6A73E1C236633009A9181 /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = Carthage/Build/Mac/SwiftyJSON.framework; sourceTree = "<group>"; };
+		1CF6A80F1C237993009A9181 /* FUT16+Transport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FUT16+Transport.swift"; sourceTree = "<group>"; };
+		1CF6A8111C246071009A9181 /* FUT16+Transfer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FUT16+Transfer.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,6 +88,8 @@
 				1C21A9E91C20B2EC00B4941E /* AppDelegate.swift */,
 				1C21A9EB1C20B2EC00B4941E /* ViewController.swift */,
 				1C21A9FE1C20B79000B4941E /* FUT16.swift */,
+				1CF6A80F1C237993009A9181 /* FUT16+Transport.swift */,
+				1CF6A8111C246071009A9181 /* FUT16+Transfer.swift */,
 				1C21A9ED1C20B2EC00B4941E /* Assets.xcassets */,
 				1C21A9EF1C20B2EC00B4941E /* Main.storyboard */,
 				1C21A9F21C20B2EC00B4941E /* Info.plist */,
@@ -165,7 +171,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				1C21A9FF1C20B79000B4941E /* FUT16.swift in Sources */,
+				1CF6A8121C246071009A9181 /* FUT16+Transfer.swift in Sources */,
 				1C21A9EC1C20B2EC00B4941E /* ViewController.swift in Sources */,
+				1CF6A8101C237993009A9181 /* FUT16+Transport.swift in Sources */,
 				1C21A9EA1C20B2EC00B4941E /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
