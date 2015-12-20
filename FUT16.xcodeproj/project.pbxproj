@@ -18,7 +18,8 @@
 		1CF6A7401C23663B009A9181 /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CF6A73E1C236633009A9181 /* SwiftyJSON.framework */; };
 		1CF6A7411C23663B009A9181 /* SwiftyJSON.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1CF6A73E1C236633009A9181 /* SwiftyJSON.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		1CF6A8101C237993009A9181 /* FUT16+Transport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CF6A80F1C237993009A9181 /* FUT16+Transport.swift */; };
-		1CF6A8121C246071009A9181 /* FUT16+Transfer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CF6A8111C246071009A9181 /* FUT16+Transfer.swift */; };
+		1CF6A8121C246071009A9181 /* FUT16+PlayerSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CF6A8111C246071009A9181 /* FUT16+PlayerSearch.swift */; };
+		FFAC0AEC1C26656E00EE95FA /* md5_ea.c in Sources */ = {isa = PBXBuildFile; fileRef = FFAC0AEA1C26656E00EE95FA /* md5_ea.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -48,7 +49,10 @@
 		1CF6A73C1C2365D8009A9181 /* Cartfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Cartfile; sourceTree = SOURCE_ROOT; };
 		1CF6A73E1C236633009A9181 /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = Carthage/Build/Mac/SwiftyJSON.framework; sourceTree = "<group>"; };
 		1CF6A80F1C237993009A9181 /* FUT16+Transport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FUT16+Transport.swift"; sourceTree = "<group>"; };
-		1CF6A8111C246071009A9181 /* FUT16+Transfer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FUT16+Transfer.swift"; sourceTree = "<group>"; };
+		1CF6A8111C246071009A9181 /* FUT16+PlayerSearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FUT16+PlayerSearch.swift"; sourceTree = "<group>"; };
+		FFAC0AE91C26656E00EE95FA /* FUT16-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FUT16-Bridging-Header.h"; sourceTree = "<group>"; };
+		FFAC0AEA1C26656E00EE95FA /* md5_ea.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = md5_ea.c; sourceTree = "<group>"; };
+		FFAC0AEB1C26656E00EE95FA /* md5_ea.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = md5_ea.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,8 +60,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1C21AA031C20BC4400B4941E /* Alamofire.framework in Frameworks */,
 				1CF6A7401C23663B009A9181 /* SwiftyJSON.framework in Frameworks */,
+				1C21AA031C20BC4400B4941E /* Alamofire.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -89,9 +93,12 @@
 				1C21A9EB1C20B2EC00B4941E /* ViewController.swift */,
 				1C21A9FE1C20B79000B4941E /* FUT16.swift */,
 				1CF6A80F1C237993009A9181 /* FUT16+Transport.swift */,
-				1CF6A8111C246071009A9181 /* FUT16+Transfer.swift */,
+				1CF6A8111C246071009A9181 /* FUT16+PlayerSearch.swift */,
 				1C21A9ED1C20B2EC00B4941E /* Assets.xcassets */,
 				1C21A9EF1C20B2EC00B4941E /* Main.storyboard */,
+				FFAC0AEA1C26656E00EE95FA /* md5_ea.c */,
+				FFAC0AEB1C26656E00EE95FA /* md5_ea.h */,
+				FFAC0AE91C26656E00EE95FA /* FUT16-Bridging-Header.h */,
 				1C21A9F21C20B2EC00B4941E /* Info.plist */,
 				1CF6A73C1C2365D8009A9181 /* Cartfile */,
 			);
@@ -170,8 +177,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FFAC0AEC1C26656E00EE95FA /* md5_ea.c in Sources */,
 				1C21A9FF1C20B79000B4941E /* FUT16.swift in Sources */,
-				1CF6A8121C246071009A9181 /* FUT16+Transfer.swift in Sources */,
+				1CF6A8121C246071009A9181 /* FUT16+PlayerSearch.swift in Sources */,
 				1C21A9EC1C20B2EC00B4941E /* ViewController.swift in Sources */,
 				1CF6A8101C237993009A9181 /* FUT16+Transport.swift in Sources */,
 				1C21A9EA1C20B2EC00B4941E /* AppDelegate.swift in Sources */,
@@ -276,6 +284,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -286,6 +295,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = net.kon.FUT16;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "FUT16/FUT16-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
@@ -293,6 +304,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -303,6 +315,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = net.kon.FUT16;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "FUT16/FUT16-Bridging-Header.h";
 			};
 			name = Release;
 		};

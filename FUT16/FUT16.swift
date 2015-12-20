@@ -9,8 +9,9 @@
 import Foundation
 import Alamofire
 import SwiftyJSON
+//import CryptoSwift
 
-class FUT16 {
+public class FUT16 {
     
     private let cfg = NSURLSessionConfiguration.defaultSessionConfiguration()
     private let cookieStoreage = NSHTTPCookieStorage.sharedHTTPCookieStorage()
@@ -20,21 +21,30 @@ class FUT16 {
     private var loginUrl: URLStringConvertible!
     private let webAppUrl = "https://www.easports.com/fifa/ultimate-team/web-app"
     private let baseShowoffUrl: URLStringConvertible = "https://www.easports.com/iframe/fut16/?locale=en_US&baseShowoffUrl=https%3A%2F%2Fwww.easports.com%2Ffifa%2Fultimate-team%2Fweb-app%2Fshow-off&guest_app_uri=http%3A%2F%2Fwww.easports.com%2Ffifa%2Fultimate-team%2Fweb-app"
-    private let acctInfoUrl: URLStringConvertible = "https://www.easports.com/iframe/fut16/p/ut/game/fifa16/user/accountinfo?sku=FUT16WEB&returningUserGameYear=2015&_1450386498000"
+    private let acctInfoUrl: URLStringConvertible = "https://www.easports.com/iframe/fut16/p/ut/game/fifa16/user/accountinfo?sku=FUT16WEB&returningUserGameYear=2015"
     private let authUrl: URLStringConvertible = "https://www.easports.com/iframe/fut16/p/ut/auth"
+    private let validateUrl: URLStringConvertible = "https://www.easports.com/iframe/fut16/p/ut/game/fifa16/phishing/validate"
     let futUrl: URLStringConvertible = "https://utas.s3.fut.ea.com/ut/game/fifa16/"
+    
+    // supplied by user
+    private var  phishingQuestionAnswer = ""
     
     private var EASW_ID = ""
     private var personaName = ""
     private var personaId = ""
     
     private var sessionId = ""
+    private var phishingToken = ""
     
     func getSessionId() -> String {
         return sessionId
     }
+    
+    func getPhishingToken() -> String {
+        return phishingToken
+    }
 
-    init() {
+    public init() {
         cfg.HTTPCookieStorage = cookieStoreage
         cfg.HTTPCookieAcceptPolicy = NSHTTPCookieAcceptPolicy.Always
         
@@ -45,8 +55,9 @@ class FUT16 {
         alamo = Alamofire.Manager.sharedInstance
     }
     
-    func login(email: String, password: String) {
+    public func login(email: String, password: String, secretAnswer: String) {
         loginUrl = webAppUrl
+        phishingQuestionAnswer = secretAnswer
         alamo.request(.GET, loginUrl).response { (request, response, data, error) -> Void in
             self.loginUrl = response!.URL!
             if self.loginUrl.URLString.containsString("web-app") {
@@ -119,11 +130,11 @@ class FUT16 {
             self.personaId = infoJson["userAccountInfo"]["personas"][0]["personaId"].stringValue
             print("Persona: \(self.personaName), ID: \(self.personaId)")
             
-//            self.getSessionId()
+            self.retrieveSessionId()
         }
     }
     
-    private func getSessionId() {
+    private func retrieveSessionId() {
         let headers = ["X-UT-Embed-Error" : "true",
                        "X-UT-Route" : "https://utas.s3.fut.ea.com:443" ]
         
@@ -143,6 +154,30 @@ class FUT16 {
             guard let json = response.result.value else { return }
             self.sessionId = JSON(json)["sid"].stringValue
             print("Session ID: \(self.sessionId)")
+            
+            // TODO: ask for question and only retrieve token if necessary
+            self.retrievePhishingToken()
+        }
+    }
+    
+    private func retrievePhishingToken() {
+        let headers = ["Content-Type" : "application/x-www-form-urlencoded",
+                       "Easw-Session-Data-Nucleus-Id" : EASW_ID,
+                       "X-UT-SID" : sessionId,
+                       "X-UT-Embed-Error" : "true",
+                       "X-UT-Route" : "https://utas.s3.fut.ea.com:443" ]
+        
+        print(phishingQuestionAnswer)
+        print(phishingQuestionAnswer.md5())
+
+        let parameters = ["answer" : phishingQuestionAnswer.md5()]
+        
+        alamo.request(.POST, validateUrl, headers: headers, parameters: parameters).responseJSON { (response) -> Void in
+            guard let json = response.result.value else { return }
+            self.phishingToken = JSON(json)["token"].stringValue
+            // TODO: return error instead of this print if failed
+            print(json)
+            print("Phishing Token: \(self.phishingToken)")
         }
     }
 }
@@ -169,6 +204,21 @@ extension FUT16 {
         print("Cookies:")
         
         print(NSHTTPCookie.requestHeaderFieldsWithCookies(cookies))
+    }
+}
+
+extension String {
+    func md5() -> String {
+        var ctx = MD5_CTX()
+        MD5ea_Init(&ctx)
+        let data = self.dataUsingEncoding(NSUTF8StringEncoding)
+        MD5ea_Update(&ctx, data!.bytes, UInt(data!.length))
+        
+        let result = [UInt8](count: 16, repeatedValue: 0)
+        let pointer: UnsafeMutablePointer<UInt8> = UnsafeMutablePointer(result)
+        MD5ea_Final(pointer, &ctx)
+        
+        return result.reduce("") { $0 + String(format:"%02x", $1) }
     }
 }
 

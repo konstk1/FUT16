@@ -14,6 +14,7 @@ class ViewController: NSViewController {
     @IBOutlet weak var passwordTextField: NSSecureTextField!
     @IBOutlet weak var authTextField: NSTextField!
     
+    @IBOutlet weak var secretAnswerTextField: NSTextField!
     
     @IBOutlet weak var loginButton: NSButton!
     @IBOutlet weak var submitButton: NSButton!
@@ -37,12 +38,18 @@ class ViewController: NSViewController {
         let defaults = NSUserDefaults.standardUserDefaults()
         defaults.setValue(emailTextField.stringValue, forKey: "ea-email")
         defaults.setValue(passwordTextField.stringValue, forKey: "ea-password")
+        defaults.setValue(secretAnswerTextField.stringValue, forKey: "ea-secret")
         
-        fut16.login(emailTextField.stringValue, password: passwordTextField.stringValue)
+        fut16.login(emailTextField.stringValue, password: passwordTextField.stringValue, secretAnswer: secretAnswerTextField.stringValue)
     }
     
     @IBAction func submitPressed(sender: NSButton) {
         fut16.sendAuthCode(authTextField.stringValue)
+    }
+    
+    @IBAction func doStuffPressed(sender: NSButton) {
+        // Riberi 156616
+        fut16.searchForPlayer(FUT16.PlayerParams(playerId: "156616", maxPrice: 58000))
     }
     
     private func loadSavedSettings() {
@@ -52,6 +59,9 @@ class ViewController: NSViewController {
         }
         if let pass = defaults.valueForKey("ea-password") as? String {
             passwordTextField.stringValue = pass
+        }
+        if let secret = defaults.valueForKey("ea-secret") as? String {
+            secretAnswerTextField.stringValue = secret
         }
     }
 }
