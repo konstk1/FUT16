@@ -48,37 +48,43 @@ class ViewController: NSViewController {
     }
     
     @IBAction func doStuffPressed(sender: NSButton) {
+//        fut16.placeBidOnAuction("1204616556", ammount: 7000)
         findMinBin()
-        NSTimer.scheduledTimerWithTimeInterval(2.0, target: self, selector: Selector("findMinBin"), userInfo: nil, repeats: true)
+        NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("findMinBin"), userInfo: nil, repeats: true)
     }
     
     var minPrice: UInt = 150
     var minBin: UInt = 1000000
     var numSearches = 0
     
-    
-    
     func findMinBin() {
         // Ribery 156616
         // Neuer 167495
         // Götze 192318
         var curMinBin: UInt = 1000000
+        var curMinId: String = ""
         
-        fut16.findBinForPlayerId("192318", maxBin: 5500) { (auctions) -> Void in
+        fut16.findBinForPlayerId("192318", maxBin: 5700) { (auctions) -> Void in
             auctions.forEach({ (id, bin) -> () in
                 if let curBin = UInt(bin) {
                     if curBin < curMinBin {
                         curMinBin = curBin
+                        curMinId = id
                     }
                 }
             })
+            
+            if curMinBin <= 5000 {
+                print("Purchasing...")
+                self.fut16.placeBidOnAuction(curMinId, ammount: curMinBin)
+            }
             
             if curMinBin < self.minBin {
                 self.minBin = curMinBin
             }
             
             self.numSearches++
-            print("Search: \(self.numSearches) - Cur Min: \(curMinBin) (Min: \(self.minBin))")
+            print("Search: \(self.numSearches) (\(auctions.count)) - Cur Min: \(curMinBin) (Min: \(self.minBin))")
         }
     }
     

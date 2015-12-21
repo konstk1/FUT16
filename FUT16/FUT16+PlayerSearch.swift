@@ -78,7 +78,9 @@ extension FUT16 {
                 }
             } else {
                 print("Nothing found.")
-                print(json)
+                if json["auctionInfo"].error != nil {
+                    print(json)
+                }
             }
             completion(auctions: auctions)
         }
