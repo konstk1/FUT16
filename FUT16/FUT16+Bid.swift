@@ -7,7 +7,7 @@
 //
 
 import Foundation
-
+import SwiftyJSON
 
 // POST URL: https://utas.s3.fut.ea.com/ut/game/fifa16/trade/1218165632/bid
 // Params: {"bid":200}
@@ -17,16 +17,16 @@ extension FUT16 {
         let bidUrl = "trade/\(auctionId)/bid"
         let parameters = ["bid" : ammount]
         
-        self.fetchJsonFromPath(bidUrl, withParameters: parameters, encoding: .JSON, methodOverride: "PUT") { (json) -> Void in
+        self.requestForPath(bidUrl, withParameters: parameters, encoding: .JSON, methodOverride: "PUT") { (json) -> Void in
             print("Purchased \(json["auctionInfo"][0]["tradeId"]) for \(ammount) - \(json["auctionInfo"][0]["tradeState"])")
         }
     }
     
-    func searchForAuction(auctionId: String, completion: () -> Void) {
+    func searchForAuction(auctionId: String, completion: (JSON) -> Void) {
         let tradeSearchUrl = "trade/status?tradeIds=\(auctionId)"
         
-        fetchJsonFromPath(tradeSearchUrl) { (json) -> Void in
-            completion()
+        requestForPath(tradeSearchUrl) { (json) -> Void in
+            completion(json)
         }
     }
 }

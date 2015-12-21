@@ -45,19 +45,19 @@ extension FUT16 {
         var urlPath: String {
             get {
                 var url: String = "transfermarket?type=player&maskedDefId=\(playerId)"
-                url = minPrice > 0 ? url + "&micr=\(minPrice)" : url
-                url = maxPrice > 0 ? url + "&macr=\(maxPrice)" : url
-                url = minBin > 0 ? url + "&minb=\(minBin)" : url
-                url = maxBin > 0 ? url + "&maxb=\(maxBin)" : url
+                url =    minPrice > 0 ? url + "&micr=\(minPrice)" : url
+                url =    maxPrice > 0 ? url + "&macr=\(maxPrice)" : url
+                url =      minBin > 0 ? url + "&minb=\(minBin)" : url
+                url =      maxBin > 0 ? url + "&maxb=\(maxBin)" : url
                 url = startRecord > 0 ? url + "&start=\(startRecord)" : url
-                url = numRecords > 0 ? url + "&num=\(numRecords)" : url
+                url =  numRecords > 0 ? url + "&num=\(numRecords)" : url
                 return url
             }
         }
     } // end TransferPlayerSearch
     
     public func searchForPlayer(playerParams: PlayerParams) {
-        fetchJsonFromPath(playerParams.urlPath) { (json) -> Void in
+        requestForPath(playerParams.urlPath) { (json) -> Void in
 //            print(json)
             if json["auctionInfo"].count > 0 {
                 json["auctionInfo"].forEach { (key, json) in print("\(key) - \(json["buyNowPrice"])") }
@@ -67,10 +67,10 @@ extension FUT16 {
         }
     }
     
-    public func findBinForPlayerId(playerId: String, maxBin: UInt, minPrice: UInt = 0, completion: (auctions: [String : String]) -> Void) {
-        let params = PlayerParams(playerId: playerId, maxBin: maxBin, minPrice: minPrice)
+    public func findBinForPlayerId(playerId: String, maxBin: UInt, maxPrice: UInt = 0, completion: (auctions: [String : String]) -> Void) {
+        let params = PlayerParams(playerId: playerId, maxBin: maxBin, maxPrice: maxPrice)
         
-        fetchJsonFromPath(params.urlPath) { (json) -> Void in
+        requestForPath(params.urlPath) { (json) -> Void in
             var auctions = [String : String]()
             if json["auctionInfo"].count > 0 {
                 json["auctionInfo"].forEach{ (key, json) in

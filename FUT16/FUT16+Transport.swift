@@ -12,7 +12,7 @@ import SwiftyJSON
 
 // generic transport functions
 extension FUT16 {
-    func fetchJsonFromPath(urlPath: String, withParameters parameters: [String : AnyObject]? = nil, encoding: ParameterEncoding = .URL, methodOverride: String = "GET", completion: (json: JSON) -> Void) {
+    func requestForPath(urlPath: String, withParameters parameters: [String : AnyObject]? = nil, encoding: ParameterEncoding = .URL, methodOverride: String = "GET", completion: (json: JSON) -> Void) {
         let url: URLStringConvertible = futUrl.URLString + urlPath
         
         let headers = ["X-UT-SID" : getSessionId(),
@@ -21,7 +21,7 @@ extension FUT16 {
                        "X-UT-Embed-Error" : "true"]
         
         
-        let request = alamo.request(.POST, url, headers: headers, parameters: parameters, encoding: encoding).responseJSON { (response) -> Void in
+        alamo.request(.POST, url, headers: headers, parameters: parameters, encoding: encoding).responseJSON { (response) -> Void in
             switch response.result {
             case .Success:
                 completion(json: JSON(response.result.value!))
@@ -30,7 +30,5 @@ extension FUT16 {
                 print("Failed to fetch JSON (error: \(error)")
             }
         }
-        
-//        debugPrint(request)
     }
 }
