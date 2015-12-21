@@ -48,8 +48,38 @@ class ViewController: NSViewController {
     }
     
     @IBAction func doStuffPressed(sender: NSButton) {
-        // Riberi 156616
-        fut16.searchForPlayer(FUT16.PlayerParams(playerId: "156616", maxPrice: 58000))
+        findMinBin()
+        NSTimer.scheduledTimerWithTimeInterval(2.0, target: self, selector: Selector("findMinBin"), userInfo: nil, repeats: true)
+    }
+    
+    var minPrice: UInt = 150
+    var minBin: UInt = 1000000
+    var numSearches = 0
+    
+    
+    
+    func findMinBin() {
+        // Ribery 156616
+        // Neuer 167495
+        // Götze 192318
+        var curMinBin: UInt = 1000000
+        
+        fut16.findBinForPlayerId("192318", maxBin: 5500) { (auctions) -> Void in
+            auctions.forEach({ (id, bin) -> () in
+                if let curBin = UInt(bin) {
+                    if curBin < curMinBin {
+                        curMinBin = curBin
+                    }
+                }
+            })
+            
+            if curMinBin < self.minBin {
+                self.minBin = curMinBin
+            }
+            
+            self.numSearches++
+            print("Search: \(self.numSearches) - Cur Min: \(curMinBin) (Min: \(self.minBin))")
+        }
     }
     
     private func loadSavedSettings() {

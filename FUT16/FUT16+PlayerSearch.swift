@@ -47,8 +47,8 @@ extension FUT16 {
                 var url: String = "transfermarket?type=player&maskedDefId=\(playerId)"
                 url = minPrice > 0 ? url + "&micr=\(minPrice)" : url
                 url = maxPrice > 0 ? url + "&macr=\(maxPrice)" : url
-                url = minBin > 0 ? url + "&minb=\(minPrice)" : url
-                url = maxBin > 0 ? url + "&maxb=\(minPrice)" : url
+                url = minBin > 0 ? url + "&minb=\(minBin)" : url
+                url = maxBin > 0 ? url + "&maxb=\(maxBin)" : url
                 url = startRecord > 0 ? url + "&start=\(startRecord)" : url
                 url = numRecords > 0 ? url + "&num=\(numRecords)" : url
                 return url
@@ -59,7 +59,47 @@ extension FUT16 {
     public func searchForPlayer(playerParams: PlayerParams) {
         fetchJsonFromPath(playerParams.urlPath) { (json) -> Void in
 //            print(json)
-            json["auctionInfo"].forEach { (key, json) in print("\(key) - \(json["buyNowPrice"])") }
+            if json["auctionInfo"].count > 0 {
+                json["auctionInfo"].forEach { (key, json) in print("\(key) - \(json["buyNowPrice"])") }
+            } else {
+                print("Nothing found.")
+            }
+        }
+    }
+    
+    public func findBinForPlayerId(playerId: String, maxBin: UInt, minPrice: UInt = 0, completion: (auctions: [String : String]) -> Void) {
+        let params = PlayerParams(playerId: playerId, maxBin: maxBin, minPrice: minPrice)
+        
+        fetchJsonFromPath(params.urlPath) { (json) -> Void in
+            var auctions = [String : String]()
+            if json["auctionInfo"].count > 0 {
+                json["auctionInfo"].forEach{ (key, json) in
+                    auctions[json["tradeId"].stringValue] = json["buyNowPrice"].stringValue
+                }
+            } else {
+                print("Nothing found.")
+                print(json)
+            }
+            completion(auctions: auctions)
         }
     }
 }
+// Format:
+
+//auctionInfo: [{tradeId: 1219355173,…}, {tradeId: 1219349619,…}, {tradeId: 1219364321,…}, {tradeId: 1219370322,…},…]
+//0: {tradeId: 1219355173,…}
+//bidState: "none"
+//buyNowPrice: 63000
+//confidenceValue: 100
+//currentBid: 0
+//expires: 33
+//itemData: {id: 102327832878, timestamp: 1450582409, formation: "f3412", untradeable: false, assetId: 156616,…}
+//offers: 0
+//sellerEstablished: 0
+//sellerId: 0
+//sellerName: "FIFA UT"
+//startingBid: 62500
+//tradeId: 1219355173
+//tradeOwner: false
+//tradeState: "active"
+//watched: null

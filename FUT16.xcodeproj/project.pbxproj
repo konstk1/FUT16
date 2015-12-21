@@ -19,6 +19,10 @@
 		1CF6A7411C23663B009A9181 /* SwiftyJSON.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1CF6A73E1C236633009A9181 /* SwiftyJSON.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		1CF6A8101C237993009A9181 /* FUT16+Transport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CF6A80F1C237993009A9181 /* FUT16+Transport.swift */; };
 		1CF6A8121C246071009A9181 /* FUT16+PlayerSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CF6A8111C246071009A9181 /* FUT16+PlayerSearch.swift */; };
+		FF50D21E1C274241003F1D02 /* Alamofire in Resources */ = {isa = PBXBuildFile; fileRef = FF50D21D1C274241003F1D02 /* Alamofire */; };
+		FF50D2201C274A2D003F1D02 /* FUT16+Bid.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF50D21F1C274A2D003F1D02 /* FUT16+Bid.swift */; };
+		FF50D2221C277775003F1D02 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF50D2211C277775003F1D02 /* Utilities.swift */; };
+		FF50D2241C2780AE003F1D02 /* players.json in Resources */ = {isa = PBXBuildFile; fileRef = FF50D2231C2780AE003F1D02 /* players.json */; };
 		FFAC0AEC1C26656E00EE95FA /* md5_ea.c in Sources */ = {isa = PBXBuildFile; fileRef = FFAC0AEA1C26656E00EE95FA /* md5_ea.c */; };
 /* End PBXBuildFile section */
 
@@ -50,6 +54,10 @@
 		1CF6A73E1C236633009A9181 /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = Carthage/Build/Mac/SwiftyJSON.framework; sourceTree = "<group>"; };
 		1CF6A80F1C237993009A9181 /* FUT16+Transport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FUT16+Transport.swift"; sourceTree = "<group>"; };
 		1CF6A8111C246071009A9181 /* FUT16+PlayerSearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FUT16+PlayerSearch.swift"; sourceTree = "<group>"; };
+		FF50D21D1C274241003F1D02 /* Alamofire */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Alamofire; path = Carthage/Checkouts/Alamofire; sourceTree = "<group>"; };
+		FF50D21F1C274A2D003F1D02 /* FUT16+Bid.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FUT16+Bid.swift"; sourceTree = "<group>"; };
+		FF50D2211C277775003F1D02 /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
+		FF50D2231C2780AE003F1D02 /* players.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = players.json; sourceTree = "<group>"; };
 		FFAC0AE91C26656E00EE95FA /* FUT16-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FUT16-Bridging-Header.h"; sourceTree = "<group>"; };
 		FFAC0AEA1C26656E00EE95FA /* md5_ea.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = md5_ea.c; sourceTree = "<group>"; };
 		FFAC0AEB1C26656E00EE95FA /* md5_ea.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = md5_ea.h; sourceTree = "<group>"; };
@@ -71,6 +79,7 @@
 		1C21A9DD1C20B2EB00B4941E = {
 			isa = PBXGroup;
 			children = (
+				FF50D21D1C274241003F1D02 /* Alamofire */,
 				1CF6A73E1C236633009A9181 /* SwiftyJSON.framework */,
 				1C21AA021C20BC4400B4941E /* Alamofire.framework */,
 				1C21A9E81C20B2EB00B4941E /* FUT16 */,
@@ -94,15 +103,26 @@
 				1C21A9FE1C20B79000B4941E /* FUT16.swift */,
 				1CF6A80F1C237993009A9181 /* FUT16+Transport.swift */,
 				1CF6A8111C246071009A9181 /* FUT16+PlayerSearch.swift */,
-				1C21A9ED1C20B2EC00B4941E /* Assets.xcassets */,
+				FF50D21F1C274A2D003F1D02 /* FUT16+Bid.swift */,
+				FF50D2211C277775003F1D02 /* Utilities.swift */,
 				1C21A9EF1C20B2EC00B4941E /* Main.storyboard */,
+				FF50D21A1C274194003F1D02 /* Supporting Files */,
+			);
+			path = FUT16;
+			sourceTree = "<group>";
+		};
+		FF50D21A1C274194003F1D02 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				FF50D2231C2780AE003F1D02 /* players.json */,
 				FFAC0AEA1C26656E00EE95FA /* md5_ea.c */,
 				FFAC0AEB1C26656E00EE95FA /* md5_ea.h */,
 				FFAC0AE91C26656E00EE95FA /* FUT16-Bridging-Header.h */,
+				1C21A9ED1C20B2EC00B4941E /* Assets.xcassets */,
 				1C21A9F21C20B2EC00B4941E /* Info.plist */,
 				1CF6A73C1C2365D8009A9181 /* Cartfile */,
 			);
-			path = FUT16;
+			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -165,8 +185,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				1CF6A73D1C2365D8009A9181 /* Cartfile in Resources */,
+				FF50D21E1C274241003F1D02 /* Alamofire in Resources */,
 				1C21A9EE1C20B2EC00B4941E /* Assets.xcassets in Resources */,
 				1C21A9F11C20B2EC00B4941E /* Main.storyboard in Resources */,
+				FF50D2241C2780AE003F1D02 /* players.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -177,11 +199,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FF50D2201C274A2D003F1D02 /* FUT16+Bid.swift in Sources */,
 				FFAC0AEC1C26656E00EE95FA /* md5_ea.c in Sources */,
 				1C21A9FF1C20B79000B4941E /* FUT16.swift in Sources */,
 				1CF6A8121C246071009A9181 /* FUT16+PlayerSearch.swift in Sources */,
 				1C21A9EC1C20B2EC00B4941E /* ViewController.swift in Sources */,
 				1CF6A8101C237993009A9181 /* FUT16+Transport.swift in Sources */,
+				FF50D2221C277775003F1D02 /* Utilities.swift in Sources */,
 				1C21A9EA1C20B2EC00B4941E /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

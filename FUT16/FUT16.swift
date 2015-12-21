@@ -69,6 +69,9 @@ public class FUT16 {
         }
     }
     
+    // TODO: Add logout
+    // https://www.easports.com/fifa/logout?redirectUri=https%3A%2F%2Fwww.easports.com%2Ffifa%2F
+    
     private func sendUsernamePassword(email: String, password: String) {
         let parameters = ["email"    : email,
                           "password" : password,
@@ -92,7 +95,6 @@ public class FUT16 {
                           "_trustThisDevice" : "on",
                           "trustThisDevice" : "on",
                           "_eventId" : "submit"]
-        
         alamo.request(.POST, loginUrl, parameters: parameters).response {(request, response, data, error) -> Void in
             if response!.URL!.URLString.URLString.containsString(self.webAppUrl) {
                 print("Login Successfull. Authenticating Session...")
@@ -166,17 +168,18 @@ public class FUT16 {
                        "X-UT-SID" : sessionId,
                        "X-UT-Embed-Error" : "true",
                        "X-UT-Route" : "https://utas.s3.fut.ea.com:443" ]
-        
-        print(phishingQuestionAnswer)
-        print(phishingQuestionAnswer.md5())
 
         let parameters = ["answer" : phishingQuestionAnswer.md5()]
         
         alamo.request(.POST, validateUrl, headers: headers, parameters: parameters).responseJSON { (response) -> Void in
             guard let json = response.result.value else { return }
             self.phishingToken = JSON(json)["token"].stringValue
-            // TODO: return error instead of this print if failed
-            print(json)
+            
+            guard !self.phishingToken.isEmpty else {
+                print ("Failed to get phishing token.")
+                return
+            }
+            
             print("Phishing Token: \(self.phishingToken)")
         }
     }

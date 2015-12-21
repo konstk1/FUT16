@@ -776,6 +776,7 @@
                         </subviews>
                     </view>
                     <connections>
+                        <outlet property="authTextField" destination="tcz-TA-J5p" id="Qlj-In-nxY"/>
                         <outlet property="emailTextField" destination="akR-Rp-1E5" id="RQJ-a9-0TF"/>
                         <outlet property="loginButton" destination="TSZ-UY-ztd" id="Z2B-lZ-5Gk"/>
                         <outlet property="passwordTextField" destination="2rA-cJ-MTl" id="RSf-aE-Yh5"/>
