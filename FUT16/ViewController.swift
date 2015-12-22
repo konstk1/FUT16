@@ -16,16 +16,23 @@ class ViewController: NSViewController {
     
     @IBOutlet weak var secretAnswerTextField: NSTextField!
     
+    @IBOutlet weak var playerIdTextField: NSTextField!
+    @IBOutlet weak var binTextField: NSTextField!
+    @IBOutlet weak var buyAtTextField: NSTextField!
+    @IBOutlet weak var breakEvenTextField: NSTextField!
+    
     @IBOutlet weak var loginButton: NSButton!
     @IBOutlet weak var submitButton: NSButton!
     
     private let fut16 = FUT16()
+    private var autoTrader: AutoTrader!
     
     override func viewDidLoad() {
         
         super.viewDidLoad()
 
         loadSavedSettings()
+        autoTrader = AutoTrader(fut16: fut16)
     }
 
     override var representedObject: AnyObject? {
@@ -47,45 +54,26 @@ class ViewController: NSViewController {
         fut16.sendAuthCode(authTextField.stringValue)
     }
     
-    @IBAction func doStuffPressed(sender: NSButton) {
-        findMinBin()
-        NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("findMinBin"), userInfo: nil, repeats: true)
-    }
-    
-    var minPrice: UInt = 150
-    var minBin: UInt = 1000000
-    var numSearches = 0
-    
-    func findMinBin() {
+    @IBAction func setSearchParamsPressed(sender: NSButton) {
         // Ribery 156616
         // Neuer 167495
         // Götze 192318
         // Martial 211300
-        var curMinBin: UInt = 1000000
-        var curMinId: String = ""
+        let playerId = playerIdTextField.stringValue
+        let maxSearchBin = UInt(binTextField.integerValue)
+        let buyAtBin = UInt(buyAtTextField.integerValue)
+ 
+        autoTrader?.setTradeParams(playerId, maxSearchBin: maxSearchBin, buyAtBin: buyAtBin)
         
-        fut16.findBinForPlayerId("211300", maxBin: 1700) { (auctions) -> Void in
-            auctions.forEach({ (id, bin) -> () in
-                if let curBin = UInt(bin) {
-                    if curBin < curMinBin {
-                        curMinBin = curBin
-                        curMinId = id
-                    }
-                }
-            })
-            
-            if curMinBin <= 1300 {
-                print("Purchasing...")
-                self.fut16.placeBidOnAuction(curMinId, ammount: curMinBin)
-            }
-            
-            if curMinBin < self.minBin {
-                self.minBin = curMinBin
-            }
-            
-            self.numSearches++
-            print("Search: \(self.numSearches) (\(auctions.count)) - Cur Min: \(curMinBin) (Min: \(self.minBin))")
-        }
+        let defaults = NSUserDefaults.standardUserDefaults()
+        defaults.setValue(playerIdTextField.stringValue, forKey: "ea-player-id")
+        defaults.setValue(binTextField.stringValue, forKey: "ea-max-search-bin")
+        defaults.setValue(buyAtTextField.stringValue, forKey: "ea-buy-at-bin")
+    }
+    
+    @IBAction func doStuffPressed(sender: NSButton) {
+        setSearchParamsPressed(sender)
+        autoTrader?.startTrading()
     }
     
     private func loadSavedSettings() {
@@ -98,6 +86,15 @@ class ViewController: NSViewController {
         }
         if let secret = defaults.valueForKey("ea-secret") as? String {
             secretAnswerTextField.stringValue = secret
+        }
+        if let playerId = defaults.valueForKey("ea-player-id") as? String {
+            playerIdTextField.stringValue = playerId
+        }
+        if let maxSearchBin = defaults.valueForKey("ea-max-search-bin") as? String {
+            binTextField.stringValue = String(maxSearchBin)
+        }
+        if let buyAtBin = defaults.valueForKey("ea-buy-at-bin") as? String {
+            buyAtTextField.stringValue = String(buyAtBin)
         }
     }
 }

@@ -670,7 +670,7 @@
             <objects>
                 <viewController id="XfG-lQ-9wD" customClass="ViewController" customModule="FUT16" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="m2S-Jp-Qdl">
-                        <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
+                        <rect key="frame" x="0.0" y="0.0" width="470" height="270"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="akR-Rp-1E5">
@@ -695,6 +695,54 @@
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uQY-Nu-LMB">
                                 <rect key="frame" x="37" y="228" width="37" height="17"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Email" id="XSK-pM-0Qa">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5cO-1s-mTc">
+                                <rect key="frame" x="39" y="77" width="78" height="22"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="RvD-fp-TCL">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eFf-os-8UL">
+                                <rect key="frame" x="49" y="101" width="58" height="17"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Player ID" id="CP1-vO-Y7f">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pMl-At-YRk">
+                                <rect key="frame" x="145" y="77" width="76" height="22"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="right" placeholderString="1000" drawsBackground="YES" id="PkA-Ax-wvL">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="w0b-hF-tiB">
+                                <rect key="frame" x="170" y="101" width="26" height="17"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="BIN" id="q5x-Ll-NGn">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pE5-L9-qcG">
+                                <rect key="frame" x="246" y="77" width="78" height="22"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="right" placeholderString="1000" drawsBackground="YES" id="BWo-za-MDe">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9k9-6Q-NuI">
+                                <rect key="frame" x="263" y="101" width="44" height="17"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Buy At" id="RDs-eI-Kua">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -745,13 +793,23 @@
                                 </connections>
                             </button>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9qA-Ul-4Gu">
-                                <rect key="frame" x="122" y="80" width="195" height="24"/>
+                                <rect key="frame" x="39" y="12" width="285" height="38"/>
                                 <buttonCell key="cell" type="smallSquare" title="Do Stuff" bezelStyle="smallSquare" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Ytm-Es-s5U">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
                                 <connections>
                                     <action selector="doStuffPressed:" target="XfG-lQ-9wD" id="5yF-qO-Lul"/>
+                                </connections>
+                            </button>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Rx6-Z6-4is">
+                                <rect key="frame" x="347" y="76" width="83" height="24"/>
+                                <buttonCell key="cell" type="smallSquare" title="Set" bezelStyle="smallSquare" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="sSA-Xh-0Db">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="setSearchParamsPressed:" target="XfG-lQ-9wD" id="nr2-iE-jiy"/>
                                 </connections>
                             </button>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zYb-FI-pTp">
@@ -773,20 +831,41 @@
                                     </allowedInputSourceLocales>
                                 </secureTextFieldCell>
                             </secureTextField>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EFS-Nh-bPe">
+                                <rect key="frame" x="213" y="57" width="48" height="17"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="49,500" id="zOA-J8-08e">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="95b-0o-caX">
+                                <rect key="frame" x="108" y="57" width="101" height="17"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Break even buy:" id="pFQ-W6-GpF">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
                         </subviews>
                     </view>
                     <connections>
                         <outlet property="authTextField" destination="tcz-TA-J5p" id="Qlj-In-nxY"/>
+                        <outlet property="binTextField" destination="pMl-At-YRk" id="faY-Vq-SL5"/>
+                        <outlet property="breakEvenTextField" destination="EFS-Nh-bPe" id="bgo-Fy-Lx9"/>
+                        <outlet property="buyAtTextField" destination="pE5-L9-qcG" id="DtQ-fC-4Lp"/>
                         <outlet property="emailTextField" destination="akR-Rp-1E5" id="RQJ-a9-0TF"/>
                         <outlet property="loginButton" destination="TSZ-UY-ztd" id="Z2B-lZ-5Gk"/>
                         <outlet property="passwordTextField" destination="2rA-cJ-MTl" id="RSf-aE-Yh5"/>
+                        <outlet property="playerIdTextField" destination="5cO-1s-mTc" id="6lb-v5-fTd"/>
                         <outlet property="secretAnswerTextField" destination="M5y-X6-hqa" id="wGR-Yl-rsd"/>
                         <outlet property="submitButton" destination="evu-8P-xTr" id="KNB-ed-TMI"/>
                     </connections>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+                <userDefaultsController representsSharedInstance="YES" id="RjE-TD-ifc"/>
             </objects>
-            <point key="canvasLocation" x="75" y="655"/>
+            <point key="canvasLocation" x="70" y="655"/>
         </scene>
     </scenes>
 </document>

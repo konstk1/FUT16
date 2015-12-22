@@ -23,6 +23,7 @@
 		FF50D2201C274A2D003F1D02 /* FUT16+Bid.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF50D21F1C274A2D003F1D02 /* FUT16+Bid.swift */; };
 		FF50D2221C277775003F1D02 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF50D2211C277775003F1D02 /* Utilities.swift */; };
 		FF50D2241C2780AE003F1D02 /* players.json in Resources */ = {isa = PBXBuildFile; fileRef = FF50D2231C2780AE003F1D02 /* players.json */; };
+		FF50D2261C28AA05003F1D02 /* AutoTrader.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF50D2251C28AA05003F1D02 /* AutoTrader.swift */; };
 		FFAC0AEC1C26656E00EE95FA /* md5_ea.c in Sources */ = {isa = PBXBuildFile; fileRef = FFAC0AEA1C26656E00EE95FA /* md5_ea.c */; };
 /* End PBXBuildFile section */
 
@@ -58,6 +59,7 @@
 		FF50D21F1C274A2D003F1D02 /* FUT16+Bid.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FUT16+Bid.swift"; sourceTree = "<group>"; };
 		FF50D2211C277775003F1D02 /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		FF50D2231C2780AE003F1D02 /* players.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = players.json; sourceTree = "<group>"; };
+		FF50D2251C28AA05003F1D02 /* AutoTrader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoTrader.swift; sourceTree = "<group>"; };
 		FFAC0AE91C26656E00EE95FA /* FUT16-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FUT16-Bridging-Header.h"; sourceTree = "<group>"; };
 		FFAC0AEA1C26656E00EE95FA /* md5_ea.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = md5_ea.c; sourceTree = "<group>"; };
 		FFAC0AEB1C26656E00EE95FA /* md5_ea.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = md5_ea.h; sourceTree = "<group>"; };
@@ -104,6 +106,7 @@
 				1CF6A80F1C237993009A9181 /* FUT16+Transport.swift */,
 				1CF6A8111C246071009A9181 /* FUT16+PlayerSearch.swift */,
 				FF50D21F1C274A2D003F1D02 /* FUT16+Bid.swift */,
+				FF50D2251C28AA05003F1D02 /* AutoTrader.swift */,
 				FF50D2211C277775003F1D02 /* Utilities.swift */,
 				1C21A9EF1C20B2EC00B4941E /* Main.storyboard */,
 				FF50D21A1C274194003F1D02 /* Supporting Files */,
@@ -200,6 +203,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FF50D2201C274A2D003F1D02 /* FUT16+Bid.swift in Sources */,
+				FF50D2261C28AA05003F1D02 /* AutoTrader.swift in Sources */,
 				FFAC0AEC1C26656E00EE95FA /* md5_ea.c in Sources */,
 				1C21A9FF1C20B79000B4941E /* FUT16.swift in Sources */,
 				1CF6A8121C246071009A9181 /* FUT16+PlayerSearch.swift in Sources */,
