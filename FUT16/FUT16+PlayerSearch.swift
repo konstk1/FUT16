@@ -77,9 +77,10 @@ extension FUT16 {
                     auctions[json["tradeId"].stringValue] = json["buyNowPrice"].stringValue
                 }
             } else if json["code"].stringValue == "401" {
-                print(json)
+                print("Expired session...renewing...")
                 self.retrieveSessionId()
             } else {
+                print(json)
                 print("Nothing found.")
             }
             completion(auctions: auctions)

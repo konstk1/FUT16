@@ -18,7 +18,13 @@ extension FUT16 {
         let parameters = ["bid" : ammount]
         
         self.requestForPath(bidUrl, withParameters: parameters, encoding: .JSON, methodOverride: "PUT") { (json) -> Void in
-            print("Purchased \(json["auctionInfo"][0]["tradeId"]) for \(ammount) - \(json["auctionInfo"][0]["tradeState"])")
+            let tradeId = json["auctionInfo"][0]["tradeId"].stringValue
+            if tradeId == "" {
+                print("Failed to purchase.")
+                print(json)
+            } else {
+                print("Purchased \(tradeId) for \(ammount) - \(json["auctionInfo"][0]["tradeState"])")
+            }
         }
     }
     
