@@ -63,7 +63,9 @@ class ViewController: NSViewController {
         let maxSearchBin = UInt(binTextField.integerValue)
         let buyAtBin = UInt(buyAtTextField.integerValue)
  
-        autoTrader?.setTradeParams(playerId, maxSearchBin: maxSearchBin, buyAtBin: buyAtBin)
+        let breakEvenPrice = autoTrader?.setTradeParams(playerId, maxSearchBin: maxSearchBin, buyAtBin: buyAtBin)
+        
+        breakEvenTextField.integerValue = Int(breakEvenPrice!)
         
         let defaults = NSUserDefaults.standardUserDefaults()
         defaults.setValue(playerIdTextField.stringValue, forKey: "ea-player-id")

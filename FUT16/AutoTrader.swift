@@ -21,11 +21,12 @@ class AutoTrader: NSObject {
         self.fut16 = fut16
     }
     
-    func setTradeParams(playerId: String, maxSearchBin: UInt, buyAtBin: UInt) {
+    // return break-even buy
+    func setTradeParams(playerId: String, maxSearchBin: UInt, buyAtBin: UInt) -> UInt {
         guard buyAtBin <= maxSearchBin else {
             print("Buy BIN is more than search BIN!")
             stopTrading()
-            return
+            return 0
         }
         
         self.playerId = playerId
@@ -33,6 +34,9 @@ class AutoTrader: NSObject {
         self.buyAtBin = buyAtBin
         
         print("Trade params: \(playerId) - search <= \(self.maxSearchBin) - buy at <= \(self.buyAtBin)")
+        
+        let breakEvenPrice = UInt(round(Double(maxSearchBin) * 0.95))
+        return breakEvenPrice
     }
     
     func startTrading() {
@@ -49,6 +53,7 @@ class AutoTrader: NSObject {
     private var searchCount = 0
     
     func pollAuctions() {
+        print(".", terminator: "")
         var curMinBin: UInt = 10000000
         var curMinId: String = ""
         
