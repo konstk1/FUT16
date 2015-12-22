@@ -36,6 +36,8 @@ public class FUT16 {
     private var sessionId = ""
     private var phishingToken = ""
     
+    var isSessionValid = false
+    
     func getSessionId() -> String {
         return sessionId
     }
@@ -136,7 +138,7 @@ public class FUT16 {
         }
     }
     
-    private func retrieveSessionId() {
+    func retrieveSessionId() {
         let headers = ["X-UT-Embed-Error" : "true",
                        "X-UT-Route" : "https://utas.s3.fut.ea.com:443" ]
         
@@ -151,6 +153,9 @@ public class FUT16 {
                                                 "nucleusPersonaPlatform" : "360",
                                                 "priorityLevel" : "4",
                                                 "sku" : "FUT16WEB"]
+        
+        // if fetching new session ID, marked previous as invalid until the fetching is done
+        isSessionValid = false
         
         alamo.request(.POST, authUrl, headers: headers, parameters: parameters, encoding: .JSON).responseJSON { (response) -> Void in
             guard let json = response.result.value else { return }
@@ -181,6 +186,8 @@ public class FUT16 {
             }
             
             print("Phishing Token: \(self.phishingToken)")
+            // this is last step in the login process, mark session as valid
+            self.isSessionValid = true
         }
     }
 }

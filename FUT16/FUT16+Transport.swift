@@ -13,13 +13,18 @@ import SwiftyJSON
 // generic transport functions
 extension FUT16 {
     func requestForPath(urlPath: String, withParameters parameters: [String : AnyObject]? = nil, encoding: ParameterEncoding = .URL, methodOverride: String = "GET", completion: (json: JSON) -> Void) {
+        
+        guard isSessionValid else {
+            print("Waing for valid session...")
+            return
+        }
+        
         let url: URLStringConvertible = futUrl.URLString + urlPath
         
         let headers = ["X-UT-SID" : getSessionId(),
                        "X-UT-PHISHING-TOKEN" : getPhishingToken(),
                        "X-HTTP-Method-Override" : methodOverride,
                        "X-UT-Embed-Error" : "true"]
-        
         
         alamo.request(.POST, url, headers: headers, parameters: parameters, encoding: encoding).responseJSON { (response) -> Void in
             switch response.result {

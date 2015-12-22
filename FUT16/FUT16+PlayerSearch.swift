@@ -76,11 +76,11 @@ extension FUT16 {
                 json["auctionInfo"].forEach{ (key, json) in
                     auctions[json["tradeId"].stringValue] = json["buyNowPrice"].stringValue
                 }
+            } else if json["code"].stringValue == "401" {
+                print(json)
+                self.retrieveSessionId()
             } else {
                 print("Nothing found.")
-                if json["auctionInfo"].error != nil {
-                    print(json)
-                }
             }
             completion(auctions: auctions)
         }
