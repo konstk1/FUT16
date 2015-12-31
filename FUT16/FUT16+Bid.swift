@@ -19,11 +19,18 @@ extension FUT16 {
         
         self.requestForPath(bidUrl, withParameters: parameters, encoding: .JSON, methodOverride: "PUT") { (json) -> Void in
             let tradeId = json["auctionInfo"][0]["tradeId"].stringValue
+            let funds = json["currencies"][0]["finalFunds"].stringValue
+            let fundCurrency = json["currencies"][0]["name"].stringValue
+            
+            if fundCurrency == "COINS" {
+                self.coinFunds = funds
+            }
             if tradeId == "" {
                 print("Failed to purchase.")
                 print(json)
             } else {
-                print("Purchased \(tradeId) for \(ammount) - \(json["auctionInfo"][0]["tradeState"])")
+                print("Purchased \(tradeId) for \(ammount) - \(json["auctionInfo"][0]["tradeState"]) (Bal: \(self.coinsBallance()))")
+                exit(0)
             }
         }
     }
@@ -56,3 +63,10 @@ extension FUT16 {
 //tradeOwner: false
 //tradeState: "closed"
 //watched: false
+
+// Money Left:
+//currencies: [{name: "COINS", funds: 4264, finalFunds: 4264}, {name: "POINTS", funds: 0, finalFunds: 0},…]
+//0: {name: "COINS", funds: 4264, finalFunds: 4264}
+//finalFunds: 4264
+//funds: 4264
+//name: "COINS"

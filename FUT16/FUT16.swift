@@ -20,7 +20,7 @@ public class FUT16 {
     
     private var loginUrl: URLStringConvertible!
     private let webAppUrl = "https://www.easports.com/fifa/ultimate-team/web-app"
-    private let baseShowoffUrl: URLStringConvertible = "https://www.easports.com/iframe/fut16/?locale=en_US&baseShowoffUrl=https%3A%2F%2Fwww.easports.com%2Ffifa%2Fultimate-team%2Fweb-app%2Fshow-off&guest_app_uri=http%3A%2F%2Fwww.easports.com%2Ffifa%2Fultimate-team%2Fweb-app"
+    private let baseShowoffUrl: URLStringConvertible = "https://www.easports.com/iframe/fut16/?baseShowoffUrl=https%3A%2F%2Fwww.easports.com%2Ffifa%2Fultimate-team%2Fweb-app%2Fshow-off&guest_app_uri=http%3A%2F%2Fwww.easports.com%2Ffifa%2Fultimate-team%2Fweb-app&locale=en_US"
     private let acctInfoUrl: URLStringConvertible = "https://www.easports.com/iframe/fut16/p/ut/game/fifa16/user/accountinfo?sku=FUT16WEB&returningUserGameYear=2015"
     private let authUrl: URLStringConvertible = "https://www.easports.com/iframe/fut16/p/ut/auth"
     private let validateUrl: URLStringConvertible = "https://www.easports.com/iframe/fut16/p/ut/game/fifa16/phishing/validate"
@@ -36,6 +36,8 @@ public class FUT16 {
     private var sessionId = ""
     private var phishingToken = ""
     
+    var coinFunds = ""
+    
     var isSessionValid = false
     
     func getSessionId() -> String {
@@ -45,16 +47,27 @@ public class FUT16 {
     func getPhishingToken() -> String {
         return phishingToken
     }
+    
+    func coinsBallance() -> Int {
+        return Int(coinFunds) ?? -1
+    }
 
     public init() {
         cfg.HTTPCookieStorage = cookieStoreage
         cfg.HTTPCookieAcceptPolicy = NSHTTPCookieAcceptPolicy.Always
-        
+
 //        for cookie in cookieStoreage.cookies! {
 //            cookieStoreage.deleteCookie(cookie)
 //        }
 
-        alamo = Alamofire.Manager.sharedInstance
+        var defaultHeaders = Alamofire.Manager.sharedInstance.session.configuration.HTTPAdditionalHeaders ?? [:]
+        defaultHeaders["User-Agent"] = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36"
+        defaultHeaders["Connection"] = "keep-alive"
+        defaultHeaders["Host"] = "www.easports.com"
+        
+        cfg.HTTPAdditionalHeaders = defaultHeaders
+        
+        alamo = Alamofire.Manager(configuration: cfg)
     }
     
     public func login(email: String, password: String, secretAnswer: String) {

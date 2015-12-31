@@ -78,9 +78,10 @@ extension FUT16 {
                 }
             } else if json["code"].stringValue == "401" {
                 print("Expired session...renewing...")
-                self.retrieveSessionId()
+//                self.retrieveSessionId()
+                exit(0)
             } else {
-                print(json)
+//                print(json)
                 print("Nothing found.")
             }
             completion(auctions: auctions)

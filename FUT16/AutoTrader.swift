@@ -8,13 +8,18 @@
 
 import Foundation
 
+// TODO: Auto pause
+// TODO: Display account ballance
+// TODO: Request count (per day)
+// TOOD: If error multiple times in a row, stop trading
+
 class AutoTrader: NSObject {
     private var fut16: FUT16
     private var playerId = ""
     private var maxSearchBin: UInt = 0
     private var buyAtBin: UInt = 0
     
-    var pollingInterval: NSTimeInterval = 1.0
+    var pollingInterval: NSTimeInterval = 3.0
     private var pollTimer: NSTimer!
     
     init(fut16: FUT16) {
