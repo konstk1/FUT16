@@ -59,6 +59,7 @@ class ViewController: NSViewController {
         // Neuer 167495
         // Götze 192318
         // Martial 211300
+        // Tévez 143001
         let playerId = playerIdTextField.stringValue
         let maxSearchBin = UInt(binTextField.integerValue)
         let buyAtBin = UInt(buyAtTextField.integerValue)

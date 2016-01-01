@@ -12,6 +12,8 @@ import Foundation
 // TODO: Display account ballance
 // TODO: Request count (per day)
 // TOOD: If error multiple times in a row, stop trading
+// TODO: Auto-increment max price (starting from BIN)
+// TODO: Search by league, team, nationality
 
 class AutoTrader: NSObject {
     private var fut16: FUT16

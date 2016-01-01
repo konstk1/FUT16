@@ -28,6 +28,11 @@ extension FUT16 {
         var startRecord: UInt
         var numRecords: UInt
         
+//        nat:54    brazil
+//        team:5    chelsea
+//        lev:gold
+//        leag:13   BPL
+        
         private static let maxRecords: UInt = 50
         
         init(playerId: String = "0", minPrice: UInt = 0, maxPrice: UInt = 0, minBin: UInt = 0, maxBin: UInt = 0, startRecord: UInt = 0, numRecords: UInt = PlayerParams.maxRecords) {
@@ -39,8 +44,6 @@ extension FUT16 {
             self.startRecord = startRecord
             self.numRecords = numRecords
         }
-        
-        // TODO: next price
         
         var urlPath: String {
             get {
@@ -69,7 +72,7 @@ extension FUT16 {
     
     public func findBinForPlayerId(playerId: String, maxBin: UInt, maxPrice: UInt = 0, completion: (auctions: [String : String]) -> Void) {
         let params = PlayerParams(playerId: playerId, maxBin: maxBin, maxPrice: maxPrice)
-        
+//        print(params.urlPath)
         requestForPath(params.urlPath) { (json) -> Void in
             var auctions = [String : String]()
             if json["auctionInfo"].count > 0 {
@@ -79,6 +82,7 @@ extension FUT16 {
             } else if json["code"].stringValue == "401" {
                 print("Expired session...renewing...")
 //                self.retrieveSessionId()
+                // TODO: if error repeats more than X times in a row, exit
                 exit(0)
             } else {
 //                print(json)
