@@ -21,6 +21,10 @@ import Alamofire
 extension FUT16 {
     public struct PlayerParams {
         var playerId: String
+        var nationality: String
+        var league: String
+        var team: String
+        var level: String
         var minPrice: UInt
         var maxPrice: UInt
         var minBin: UInt
@@ -35,8 +39,12 @@ extension FUT16 {
         
         private static let maxRecords: UInt = 50
         
-        init(playerId: String = "0", minPrice: UInt = 0, maxPrice: UInt = 0, minBin: UInt = 0, maxBin: UInt = 0, startRecord: UInt = 0, numRecords: UInt = PlayerParams.maxRecords) {
+        init(playerId: String = "", nationality: String = "", league: String = "", team: String = "", level: String = "", minPrice: UInt = 0, maxPrice: UInt = 0, minBin: UInt = 0, maxBin: UInt = 0, startRecord: UInt = 0, numRecords: UInt = PlayerParams.maxRecords) {
             self.playerId = playerId
+            self.nationality = nationality
+            self.league = league
+            self.team = team
+            self.level = level
             self.minPrice = minPrice
             self.maxPrice = maxPrice
             self.minBin = minBin
@@ -47,7 +55,14 @@ extension FUT16 {
         
         var urlPath: String {
             get {
-                var url: String = "transfermarket?type=player&maskedDefId=\(playerId)"
+                var url: String = "transfermarket?type=player"
+                
+                url =    !playerId.isEmpty ? url + "&maskedDefId=\(playerId)" : url
+                url = !nationality.isEmpty ? url + "&nat=\(nationality)" : url
+                url =      !league.isEmpty ? url + "&leag=\(league)" : url
+                url =        !team.isEmpty ? url + "&team=\(team)" : url
+                url =       !level.isEmpty ? url + "$lev=\(level)" : url
+                
                 url =    minPrice > 0 ? url + "&micr=\(minPrice)" : url
                 url =    maxPrice > 0 ? url + "&macr=\(maxPrice)" : url
                 url =      minBin > 0 ? url + "&minb=\(minBin)" : url
@@ -70,9 +85,9 @@ extension FUT16 {
         }
     }
     
-    public func findBinForPlayerId(playerId: String, maxBin: UInt, maxPrice: UInt = 0, completion: (auctions: [String : String]) -> Void) {
-        let params = PlayerParams(playerId: playerId, maxBin: maxBin, maxPrice: maxPrice)
-//        print(params.urlPath)
+    public func findBinForPlayerId(playerId: String = "", nationality: String = "", league: String = "", team: String = "", level: String = "", maxBin: UInt, maxPrice: UInt = 0, completion: (auctions: [String : String]) -> Void) {
+        let params = PlayerParams(playerId: playerId, nationality: nationality, league: league, team: team, level: level, maxBin: maxBin, maxPrice: maxPrice)
+        print(params.urlPath)
         requestForPath(params.urlPath) { (json) -> Void in
             var auctions = [String : String]()
             if json["auctionInfo"].count > 0 {

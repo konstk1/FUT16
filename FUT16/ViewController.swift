@@ -31,7 +31,6 @@ class ViewController: NSViewController {
         
         super.viewDidLoad()
 
-        loadSavedSettings()
         autoTrader = AutoTrader(fut16: fut16)
     }
 
@@ -42,11 +41,6 @@ class ViewController: NSViewController {
     }
 
     @IBAction func loginPressed(sender: NSButton) {
-        let defaults = NSUserDefaults.standardUserDefaults()
-        defaults.setValue(emailTextField.stringValue, forKey: "ea-email")
-        defaults.setValue(passwordTextField.stringValue, forKey: "ea-password")
-        defaults.setValue(secretAnswerTextField.stringValue, forKey: "ea-secret")
-        
         fut16.login(emailTextField.stringValue, password: passwordTextField.stringValue, secretAnswer: secretAnswerTextField.stringValue)
     }
     
@@ -67,11 +61,6 @@ class ViewController: NSViewController {
         let breakEvenPrice = autoTrader?.setTradeParams(playerId, maxSearchBin: maxSearchBin, buyAtBin: buyAtBin)
         
         breakEvenTextField.integerValue = Int(breakEvenPrice!)
-        
-        let defaults = NSUserDefaults.standardUserDefaults()
-        defaults.setValue(playerIdTextField.stringValue, forKey: "ea-player-id")
-        defaults.setValue(binTextField.stringValue, forKey: "ea-max-search-bin")
-        defaults.setValue(buyAtTextField.stringValue, forKey: "ea-buy-at-bin")
     }
     
     @IBAction func doStuffPressed(sender: NSButton) {
