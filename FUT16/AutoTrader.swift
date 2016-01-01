@@ -52,8 +52,12 @@ class AutoTrader: NSObject {
     }
     
     func stopTrading() {
-        pollTimer.invalidate()
+        if pollTimer.valid {
+            pollTimer.invalidate()
+        }
         searchCount = 0     // reset search count
+        
+        print("Trading stopped.")
     }
     
     private var minBin: UInt = 10000000

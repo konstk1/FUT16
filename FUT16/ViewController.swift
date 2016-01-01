@@ -68,6 +68,10 @@ class ViewController: NSViewController {
         autoTrader?.startTrading()
     }
     
+    @IBAction func stopPressed(sender: NSButton) {
+        autoTrader?.stopTrading()
+    }
+    
     private func loadSavedSettings() {
         let defaults = NSUserDefaults.standardUserDefaults()
         if let email = defaults.valueForKey("ea-email") as? String {
