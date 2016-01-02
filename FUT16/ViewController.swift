@@ -17,6 +17,10 @@ class ViewController: NSViewController {
     @IBOutlet weak var secretAnswerTextField: NSTextField!
     
     @IBOutlet weak var playerIdTextField: NSTextField!
+    @IBOutlet weak var nationalityComboBox: NSComboBox!
+    @IBOutlet weak var leagueComboBox: NSComboBox!
+    @IBOutlet weak var teamComboBox: NSComboBox!
+    @IBOutlet weak var levelComboBox: NSComboBox!
     @IBOutlet weak var binTextField: NSTextField!
     @IBOutlet weak var buyAtTextField: NSTextField!
     @IBOutlet weak var breakEvenTextField: NSTextField!
@@ -39,7 +43,22 @@ class ViewController: NSViewController {
         // Update the view, if already loaded.
         }
     }
+    
+    func getIdFromComboBox(comboBox: NSComboBox) -> String? {
+        if comboBox.stringValue == "Any" {
+            return ""
+        }
+        
+        if comboBox == levelComboBox {
+            return comboBox.stringValue
+        } else {
+            // assuming format is "Label: ID"
+            let comps = comboBox.stringValue.componentsSeparatedByCharactersInSet(NSCharacterSet(charactersInString: ": "))
+            return comps.last
+        }
+    }
 
+// MARK: UI Actions
     @IBAction func loginPressed(sender: NSButton) {
         fut16.login(emailTextField.stringValue, password: passwordTextField.stringValue, secretAnswer: secretAnswerTextField.stringValue)
     }
@@ -54,11 +73,20 @@ class ViewController: NSViewController {
         // Götze 192318
         // Martial 211300
         // Tévez 143001
+        // Benzema 165153
+        // Nani 139068
         let playerId = playerIdTextField.stringValue
+        let nationality = getIdFromComboBox(nationalityComboBox) ?? ""
+        let league = getIdFromComboBox(leagueComboBox) ?? ""
+        let team = getIdFromComboBox(teamComboBox) ?? ""
+        let level  = getIdFromComboBox(levelComboBox) ?? ""
+        
         let maxSearchBin = UInt(binTextField.integerValue)
         let buyAtBin = UInt(buyAtTextField.integerValue)
  
-        let breakEvenPrice = autoTrader?.setTradeParams(playerId, maxSearchBin: maxSearchBin, buyAtBin: buyAtBin)
+        let playerParams = FUT16.PlayerParams(playerId: playerId, nationality: nationality, league: league, team: team, level: level,  maxBin: maxSearchBin)
+        
+        let breakEvenPrice = autoTrader?.setTradeParams(playerParams, buyAtBin: buyAtBin)
         
         breakEvenTextField.integerValue = Int(breakEvenPrice!)
     }
@@ -70,28 +98,6 @@ class ViewController: NSViewController {
     
     @IBAction func stopPressed(sender: NSButton) {
         autoTrader?.stopTrading()
-    }
-    
-    private func loadSavedSettings() {
-        let defaults = NSUserDefaults.standardUserDefaults()
-        if let email = defaults.valueForKey("ea-email") as? String {
-            emailTextField.stringValue = email
-        }
-        if let pass = defaults.valueForKey("ea-password") as? String {
-            passwordTextField.stringValue = pass
-        }
-        if let secret = defaults.valueForKey("ea-secret") as? String {
-            secretAnswerTextField.stringValue = secret
-        }
-        if let playerId = defaults.valueForKey("ea-player-id") as? String {
-            playerIdTextField.stringValue = playerId
-        }
-        if let maxSearchBin = defaults.valueForKey("ea-max-search-bin") as? String {
-            binTextField.stringValue = String(maxSearchBin)
-        }
-        if let buyAtBin = defaults.valueForKey("ea-buy-at-bin") as? String {
-            buyAtTextField.stringValue = String(buyAtBin)
-        }
     }
 }
 

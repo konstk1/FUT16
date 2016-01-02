@@ -101,13 +101,13 @@
 			isa = PBXGroup;
 			children = (
 				1C21A9E91C20B2EC00B4941E /* AppDelegate.swift */,
-				1C21A9EB1C20B2EC00B4941E /* ViewController.swift */,
 				1C21A9FE1C20B79000B4941E /* FUT16.swift */,
 				1CF6A80F1C237993009A9181 /* FUT16+Transport.swift */,
 				1CF6A8111C246071009A9181 /* FUT16+PlayerSearch.swift */,
 				FF50D21F1C274A2D003F1D02 /* FUT16+Bid.swift */,
 				FF50D2251C28AA05003F1D02 /* AutoTrader.swift */,
 				FF50D2211C277775003F1D02 /* Utilities.swift */,
+				1C21A9EB1C20B2EC00B4941E /* ViewController.swift */,
 				1C21A9EF1C20B2EC00B4941E /* Main.storyboard */,
 				FF50D21A1C274194003F1D02 /* Supporting Files */,
 			);

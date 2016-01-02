@@ -8,18 +8,18 @@
 
 import Foundation
 
-// TODO: Auto pause
 // TODO: Display account ballance
 // TODO: Request count (per day)
-// TOOD: If error multiple times in a row, stop trading
+// TOOD: Coin ballance history
 // TODO: Auto-increment max price (starting from BIN)
-// TODO: Search by league, team, nationality
 
 class AutoTrader: NSObject {
     private var fut16: FUT16
-    private var playerId = ""
-    private var maxSearchBin: UInt = 0
+    private var playerParams = FUT16.PlayerParams()
     private var buyAtBin: UInt = 0
+    
+    private var expiredSessionCount = 0
+    private let EXPIRED_SESSIONS_LIMIT = 3      // stop trading after this many expired session errors
     
     var pollingInterval: NSTimeInterval = 3.0
     private var pollTimer: NSTimer!
@@ -29,30 +29,30 @@ class AutoTrader: NSObject {
     }
     
     // return break-even buy
-    func setTradeParams(playerId: String, maxSearchBin: UInt, buyAtBin: UInt) -> UInt {
-        guard buyAtBin <= maxSearchBin else {
+    func setTradeParams(playerParams: FUT16.PlayerParams, buyAtBin: UInt) -> UInt {
+        guard buyAtBin <= playerParams.maxBin else {
             print("Buy BIN is more than search BIN!")
             stopTrading()
             return 0
         }
-        
-        self.playerId = playerId
-        self.maxSearchBin = maxSearchBin
+
+        self.playerParams = playerParams
         self.buyAtBin = buyAtBin
         
-        print("Trade params: \(playerId) - search <= \(self.maxSearchBin) - buy at <= \(self.buyAtBin)")
+        print("Trade params: \(self.playerParams.playerId) - search <= \(self.playerParams.maxBin) - buy at <= \(self.buyAtBin)")
         
-        let breakEvenPrice = UInt(round(Double(maxSearchBin) * 0.95))
+        let breakEvenPrice = UInt(round(Double(playerParams.maxBin) * 0.95))
         return breakEvenPrice
     }
     
     func startTrading() {
+        playerParams.maxPrice = playerParams.maxBin
         pollAuctions()
         pollTimer = NSTimer.scheduledTimerWithTimeInterval(pollingInterval, target: self, selector: Selector("pollAuctions"), userInfo: nil, repeats: true)
     }
     
     func stopTrading() {
-        if pollTimer.valid {
+        if pollTimer != nil && pollTimer.valid {
             pollTimer.invalidate()
         }
         searchCount = 0     // reset search count
@@ -68,7 +68,23 @@ class AutoTrader: NSObject {
         var curMinBin: UInt = 10000000
         var curMinId: String = ""
         
-        fut16.findBinForPlayerId(playerId, maxBin: maxSearchBin) { (auctions) -> Void in
+        // increment max price to avoid cached results
+        playerParams.maxPrice = incrementPrice(playerParams.maxPrice)
+        
+        fut16.findAuctionsForPlayer(playerParams) { (auctions, error) -> Void in
+            self.searchCount++
+            
+            guard error != .ExpiredSession else {
+                self.expiredSessionCount++
+                if self.expiredSessionCount < self.EXPIRED_SESSIONS_LIMIT {
+                    self.fut16.retrieveSessionId()   // re-login
+                } else {
+                    print("Expired sessions limit reached.")
+                    self.stopTrading()
+                }
+                return
+            }
+            
             auctions.forEach({ (id, bin) -> () in
                 if let curBin = UInt(bin) {
                     if curBin < curMinBin {
@@ -78,17 +94,27 @@ class AutoTrader: NSObject {
                 }
             })
             
+            print("Search: \(self.searchCount) (\(auctions.count)) - Cur Min: \(curMinBin) (Min: \(self.minBin)) - \(self.playerParams.maxPrice)")
+            
             if curMinBin <= self.buyAtBin {
-                print("Purchasing...")
-                self.fut16.placeBidOnAuction(curMinId, ammount: curMinBin)
+                print("Purchasing...", terminator: "")
+                self.fut16.placeBidOnAuction(curMinId, ammount: curMinBin) { (error) in
+                    guard error == .None else {
+                        print("Fail.")
+                        return
+                    }
+                    print("Success!")
+                    
+                    if self.fut16.coinsBallance < Int(self.buyAtBin) {
+                        print("Not enough coins.  Ballance: \(self.fut16.coinsBallance)")
+                        self.stopTrading()
+                    }
+                }
             }
             
             if curMinBin < self.minBin {
                 self.minBin = curMinBin
             }
-            
-            self.searchCount++
-            print("Search: \(self.searchCount) (\(auctions.count)) - Cur Min: \(curMinBin) (Min: \(self.minBin))")
         }
     }
 

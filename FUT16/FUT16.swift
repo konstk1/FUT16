@@ -48,8 +48,10 @@ public class FUT16 {
         return phishingToken
     }
     
-    func coinsBallance() -> Int {
-        return Int(coinFunds) ?? -1
+    var coinsBallance: Int {
+        get {
+            return Int(coinFunds) ?? -1
+        }
     }
 
     public init() {

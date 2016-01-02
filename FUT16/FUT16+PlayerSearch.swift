@@ -17,6 +17,12 @@ import Alamofire
 //private let transferSearchPath: URLStringConvertible = "transfermarket?maxb=400&micr=150&start=0&macr=200&minb=300&maskedDefId=156616&num=16&type=player"
 //private let bidPath = "trade/1187858658/bid"
 
+public enum FutError: ErrorType {
+    case None
+    case NothingFound
+    case ExpiredSession
+    case PurchaseFailed
+}
 
 extension FUT16 {
     public struct PlayerParams {
@@ -61,7 +67,7 @@ extension FUT16 {
                 url = !nationality.isEmpty ? url + "&nat=\(nationality)" : url
                 url =      !league.isEmpty ? url + "&leag=\(league)" : url
                 url =        !team.isEmpty ? url + "&team=\(team)" : url
-                url =       !level.isEmpty ? url + "$lev=\(level)" : url
+                url =       !level.isEmpty ? url + "&lev=\(level)" : url
                 
                 url =    minPrice > 0 ? url + "&micr=\(minPrice)" : url
                 url =    maxPrice > 0 ? url + "&macr=\(maxPrice)" : url
@@ -74,36 +80,23 @@ extension FUT16 {
         }
     } // end TransferPlayerSearch
     
-    public func searchForPlayer(playerParams: PlayerParams) {
-        requestForPath(playerParams.urlPath) { (json) -> Void in
-//            print(json)
-            if json["auctionInfo"].count > 0 {
-                json["auctionInfo"].forEach { (key, json) in print("\(key) - \(json["buyNowPrice"])") }
-            } else {
-                print("Nothing found.")
-            }
-        }
-    }
-    
-    public func findBinForPlayerId(playerId: String = "", nationality: String = "", league: String = "", team: String = "", level: String = "", maxBin: UInt, maxPrice: UInt = 0, completion: (auctions: [String : String]) -> Void) {
-        let params = PlayerParams(playerId: playerId, nationality: nationality, league: league, team: team, level: level, maxBin: maxBin, maxPrice: maxPrice)
-        print(params.urlPath)
+    public func findAuctionsForPlayer(params: PlayerParams, completion: (auctions: [String : String], error: FutError) -> Void) {
+//        print(params.urlPath)
         requestForPath(params.urlPath) { (json) -> Void in
             var auctions = [String : String]()
+            var error = FutError.None
+            
             if json["auctionInfo"].count > 0 {
                 json["auctionInfo"].forEach{ (key, json) in
                     auctions[json["tradeId"].stringValue] = json["buyNowPrice"].stringValue
                 }
             } else if json["code"].stringValue == "401" {
-                print("Expired session...renewing...")
-//                self.retrieveSessionId()
-                // TODO: if error repeats more than X times in a row, exit
-                exit(0)
+                error = .ExpiredSession
             } else {
 //                print(json)
-                print("Nothing found.")
+                error = .NothingFound
             }
-            completion(auctions: auctions)
+            completion(auctions: auctions, error: error)
         }
     }
 }
