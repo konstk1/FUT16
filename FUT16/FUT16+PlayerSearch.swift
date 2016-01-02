@@ -17,13 +17,6 @@ import Alamofire
 //private let transferSearchPath: URLStringConvertible = "transfermarket?maxb=400&micr=150&start=0&macr=200&minb=300&maskedDefId=156616&num=16&type=player"
 //private let bidPath = "trade/1187858658/bid"
 
-public enum FutError: ErrorType {
-    case None
-    case NothingFound
-    case ExpiredSession
-    case PurchaseFailed
-}
-
 extension FUT16 {
     public struct PlayerParams {
         var playerId: String

@@ -6,6 +6,14 @@
 //  Copyright © 2015 Kon. All rights reserved.
 //
 
+public enum FutError: ErrorType {
+    case None
+    case NothingFound
+    case ExpiredSession
+    case PurchaseFailed
+    case BidNotAllowed
+}
+
 func incrementPrice(price: UInt) -> UInt {
     var incr: UInt
     

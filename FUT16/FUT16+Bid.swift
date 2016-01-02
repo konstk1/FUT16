@@ -28,9 +28,12 @@ extension FUT16 {
                 self.coinFunds = funds
             }
             if tradeId == "" {
-                print("Failed to purchase.")
-                print(json)
-                error = .PurchaseFailed
+                if json["code"] == "461" {    // Reason: "You are not allowed to bid on this trade" 
+                    error = .BidNotAllowed
+                } else {
+                    print(json)
+                    error = .PurchaseFailed
+                }
             } else {
                 print("Purchased \(tradeId) for \(ammount) - \(json["auctionInfo"][0]["tradeState"]) (Bal: \(self.coinsBallance))")
             }

@@ -42,6 +42,7 @@ public class AutoTrader: NSObject {
         }
 
         self.playerParams = playerParams
+        self.playerParams.maxPrice = playerParams.maxBin
         self.buyAtBin = buyAtBin
         
         print("Trade params: \(self.playerParams.playerId) - search <= \(self.playerParams.maxBin) - buy at <= \(self.buyAtBin)")
@@ -51,7 +52,6 @@ public class AutoTrader: NSObject {
     }
     
     func startTrading() {
-        playerParams.maxPrice = playerParams.maxBin
         pollAuctions()
         pollTimer = NSTimer.scheduledTimerWithTimeInterval(pollingInterval, target: self, selector: Selector("pollAuctions"), userInfo: nil, repeats: true)
     }
@@ -102,7 +102,7 @@ public class AutoTrader: NSObject {
                 print("Purchasing...", terminator: "")
                 self.fut16.placeBidOnAuction(curMinId, ammount: curMinBin) { (error) in
                     guard error == .None else {
-                        print("Fail.")
+                        print("Fail: Error - \(error).")
                         return
                     }
                     self.numPurchases++
