@@ -21,8 +21,8 @@ extension FUT16 {
         
         let url: URLStringConvertible = futUrl.URLString + urlPath
         
-        let headers = ["X-UT-SID" : getSessionId(),
-                       "X-UT-PHISHING-TOKEN" : getPhishingToken(),
+        let headers = ["X-UT-SID" : sessionId,
+                       "X-UT-PHISHING-TOKEN" : phishingToken,
                        "X-HTTP-Method-Override" : methodOverride,
                        "X-UT-Embed-Error" : "true"]
         

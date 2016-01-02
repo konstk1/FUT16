@@ -13,7 +13,7 @@ import Foundation
 // TOOD: Coin ballance history
 // TODO: Auto-increment max price (starting from BIN)
 
-class AutoTrader: NSObject {
+public class AutoTrader: NSObject {
     private var fut16: FUT16
     private var playerParams = FUT16.PlayerParams()
     private var buyAtBin: UInt = 0
@@ -24,7 +24,12 @@ class AutoTrader: NSObject {
     var pollingInterval: NSTimeInterval = 3.0
     private var pollTimer: NSTimer!
     
-    init(fut16: FUT16) {
+    private(set) public var minBin: UInt = 10000000
+    private(set) public var searchCount = 0
+    private(set) public var numPurchases = 0
+    
+    
+    public init(fut16: FUT16) {
         self.fut16 = fut16
     }
     
@@ -59,9 +64,6 @@ class AutoTrader: NSObject {
         
         print("Trading stopped.")
     }
-    
-    private var minBin: UInt = 10000000
-    private var searchCount = 0
     
     func pollAuctions() {
         print(".", terminator: "")
@@ -103,6 +105,7 @@ class AutoTrader: NSObject {
                         print("Fail.")
                         return
                     }
+                    self.numPurchases++
                     print("Success!")
                     
                     if self.fut16.coinsBallance < Int(self.buyAtBin) {

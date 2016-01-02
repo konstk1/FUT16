@@ -33,20 +33,12 @@ public class FUT16 {
     private var personaName = ""
     private var personaId = ""
     
-    private var sessionId = ""
-    private var phishingToken = ""
+    private(set) var sessionId = ""
+    private(set) var phishingToken = ""
     
     var coinFunds = ""
     
     var isSessionValid = false
-    
-    func getSessionId() -> String {
-        return sessionId
-    }
-    
-    func getPhishingToken() -> String {
-        return phishingToken
-    }
     
     var coinsBallance: Int {
         get {
