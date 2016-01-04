@@ -136,6 +136,12 @@ public class AutoTrader: NSObject {
                         print("Not enough coins.  Ballance: \(self.fut16.coinsBallance)")
                         self.stopTrading()
                     }
+                    
+                    // FUT only allows 5 unassigned players
+                    if self.stats.purchaseCount >= 5 {
+                        print("Unassigned slots full.")
+                        self.stopTrading()
+                    }
                 }
             }
             
