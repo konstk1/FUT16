@@ -24,6 +24,13 @@
 		FF50D2221C277775003F1D02 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF50D2211C277775003F1D02 /* Utilities.swift */; };
 		FF50D2241C2780AE003F1D02 /* players.json in Resources */ = {isa = PBXBuildFile; fileRef = FF50D2231C2780AE003F1D02 /* players.json */; };
 		FF50D2261C28AA05003F1D02 /* AutoTrader.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF50D2251C28AA05003F1D02 /* AutoTrader.swift */; };
+		FF68C8481C38B43B00A6D9E1 /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FF68C8461C38B43B00A6D9E1 /* DataModel.xcdatamodeld */; };
+		FF68C85A1C38B8F000A6D9E1 /* Purchase+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF68C8561C38B8F000A6D9E1 /* Purchase+CoreDataProperties.swift */; };
+		FF68C85B1C38B8F000A6D9E1 /* Purchase.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF68C8571C38B8F000A6D9E1 /* Purchase.swift */; };
+		FF68C85D1C38B8F000A6D9E1 /* Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF68C8591C38B8F000A6D9E1 /* Search.swift */; };
+		FF68C8761C38B98000A6D9E1 /* Transaction+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF68C8721C38B98000A6D9E1 /* Transaction+CoreDataProperties.swift */; };
+		FF68C8771C38B98000A6D9E1 /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF68C8731C38B98000A6D9E1 /* Transaction.swift */; };
+		FF68C8791C38B98000A6D9E1 /* Search+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF68C8751C38B98000A6D9E1 /* Search+CoreDataProperties.swift */; };
 		FFAC0AEC1C26656E00EE95FA /* md5_ea.c in Sources */ = {isa = PBXBuildFile; fileRef = FFAC0AEA1C26656E00EE95FA /* md5_ea.c */; };
 /* End PBXBuildFile section */
 
@@ -60,6 +67,13 @@
 		FF50D2211C277775003F1D02 /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		FF50D2231C2780AE003F1D02 /* players.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = players.json; sourceTree = "<group>"; };
 		FF50D2251C28AA05003F1D02 /* AutoTrader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoTrader.swift; sourceTree = "<group>"; };
+		FF68C8471C38B43B00A6D9E1 /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
+		FF68C8561C38B8F000A6D9E1 /* Purchase+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Purchase+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		FF68C8571C38B8F000A6D9E1 /* Purchase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Purchase.swift; sourceTree = "<group>"; };
+		FF68C8591C38B8F000A6D9E1 /* Search.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Search.swift; sourceTree = "<group>"; };
+		FF68C8721C38B98000A6D9E1 /* Transaction+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Transaction+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		FF68C8731C38B98000A6D9E1 /* Transaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
+		FF68C8751C38B98000A6D9E1 /* Search+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Search+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		FFAC0AE91C26656E00EE95FA /* FUT16-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FUT16-Bridging-Header.h"; sourceTree = "<group>"; };
 		FFAC0AEA1C26656E00EE95FA /* md5_ea.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = md5_ea.c; sourceTree = "<group>"; };
 		FFAC0AEB1C26656E00EE95FA /* md5_ea.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = md5_ea.h; sourceTree = "<group>"; };
@@ -109,6 +123,7 @@
 				FF50D2211C277775003F1D02 /* Utilities.swift */,
 				1C21A9EB1C20B2EC00B4941E /* ViewController.swift */,
 				1C21A9EF1C20B2EC00B4941E /* Main.storyboard */,
+				FF68C8551C38B88400A6D9E1 /* CoreData */,
 				FF50D21A1C274194003F1D02 /* Supporting Files */,
 			);
 			path = FUT16;
@@ -126,6 +141,20 @@
 				1CF6A73C1C2365D8009A9181 /* Cartfile */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		FF68C8551C38B88400A6D9E1 /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				FF68C8721C38B98000A6D9E1 /* Transaction+CoreDataProperties.swift */,
+				FF68C8731C38B98000A6D9E1 /* Transaction.swift */,
+				FF68C8561C38B8F000A6D9E1 /* Purchase+CoreDataProperties.swift */,
+				FF68C8571C38B8F000A6D9E1 /* Purchase.swift */,
+				FF68C8751C38B98000A6D9E1 /* Search+CoreDataProperties.swift */,
+				FF68C8591C38B8F000A6D9E1 /* Search.swift */,
+				FF68C8461C38B43B00A6D9E1 /* DataModel.xcdatamodeld */,
+			);
+			name = CoreData;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -203,14 +232,21 @@
 			buildActionMask = 2147483647;
 			files = (
 				FF50D2201C274A2D003F1D02 /* FUT16+Bid.swift in Sources */,
+				FF68C8481C38B43B00A6D9E1 /* DataModel.xcdatamodeld in Sources */,
+				FF68C8771C38B98000A6D9E1 /* Transaction.swift in Sources */,
+				FF68C85A1C38B8F000A6D9E1 /* Purchase+CoreDataProperties.swift in Sources */,
 				FF50D2261C28AA05003F1D02 /* AutoTrader.swift in Sources */,
+				FF68C8761C38B98000A6D9E1 /* Transaction+CoreDataProperties.swift in Sources */,
 				FFAC0AEC1C26656E00EE95FA /* md5_ea.c in Sources */,
 				1C21A9FF1C20B79000B4941E /* FUT16.swift in Sources */,
 				1CF6A8121C246071009A9181 /* FUT16+PlayerSearch.swift in Sources */,
 				1C21A9EC1C20B2EC00B4941E /* ViewController.swift in Sources */,
+				FF68C85B1C38B8F000A6D9E1 /* Purchase.swift in Sources */,
 				1CF6A8101C237993009A9181 /* FUT16+Transport.swift in Sources */,
+				FF68C8791C38B98000A6D9E1 /* Search+CoreDataProperties.swift in Sources */,
 				FF50D2221C277775003F1D02 /* Utilities.swift in Sources */,
 				1C21A9EA1C20B2EC00B4941E /* AppDelegate.swift in Sources */,
+				FF68C85D1C38B8F000A6D9E1 /* Search.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -369,6 +405,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		FF68C8461C38B43B00A6D9E1 /* DataModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				FF68C8471C38B43B00A6D9E1 /* DataModel.xcdatamodel */,
+			);
+			currentVersion = FF68C8471C38B43B00A6D9E1 /* DataModel.xcdatamodel */;
+			path = DataModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 1C21A9DE1C20B2EB00B4941E /* Project object */;
 }

@@ -29,13 +29,16 @@ class ViewController: NSViewController {
     @IBOutlet weak var submitButton: NSButton!
     
     private let fut16 = FUT16()
-    private var autoTrader: AutoTrader!
+    var autoTrader: AutoTrader!
+    dynamic var traderStats = TraderStats()
     
     override func viewDidLoad() {
-        
         super.viewDidLoad()
 
-        autoTrader = AutoTrader(fut16: fut16)
+        autoTrader = AutoTrader(fut16: fut16, update: {
+            self.traderStats = self.autoTrader.stats
+            //self.traderStats.searchCount = self.autoTrader.stats.searchCount
+        })
     }
 
     override var representedObject: AnyObject? {
@@ -98,6 +101,10 @@ class ViewController: NSViewController {
     
     @IBAction func stopPressed(sender: NSButton) {
         autoTrader?.stopTrading()
+    }
+    
+    @IBAction func resetStatsPressed(sender: NSButton) {
+        autoTrader?.resetStats()
     }
 }
 

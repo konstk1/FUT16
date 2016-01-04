@@ -7,11 +7,19 @@
 //
 
 import Foundation
+import Cocoa
 
-// TODO: Display account ballance
 // TODO: Request count (per day)
 // TOOD: Coin ballance history
-// TODO: Auto-increment max price (starting from BIN)
+
+public class TraderStats: NSObject {
+    var searchCount = 0
+    var purchaseCount = 0
+    var purchaseFailCount = 0
+    var purchaseTotalCost = 0
+    var lastPurchaseCost = 0
+    var coinsBallance = 0
+}
 
 public class AutoTrader: NSObject {
     private var fut16: FUT16
@@ -21,16 +29,20 @@ public class AutoTrader: NSObject {
     private var expiredSessionCount = 0
     private let EXPIRED_SESSIONS_LIMIT = 3      // stop trading after this many expired session errors
     
-    var pollingInterval: NSTimeInterval = 3.0
+    var pollingInterval: NSTimeInterval = 2.0
     private var pollTimer: NSTimer!
     
     private(set) public var minBin: UInt = 10000000
-    private(set) public var searchCount = 0
-    private(set) public var numPurchases = 0
     
+    private(set) public var stats = TraderStats()
     
-    public init(fut16: FUT16) {
+    private var updateOwner: (() -> ())?
+    
+    //private let managedObjectContext = (NSApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
+    
+    public init(fut16: FUT16, update: (() -> ())?) {
         self.fut16 = fut16
+        self.updateOwner = update
     }
     
     // return break-even buy
@@ -51,6 +63,11 @@ public class AutoTrader: NSObject {
         return breakEvenPrice
     }
     
+    func resetStats() {
+        stats = TraderStats()
+        updateOwner?()
+    }
+    
     func startTrading() {
         pollAuctions()
         pollTimer = NSTimer.scheduledTimerWithTimeInterval(pollingInterval, target: self, selector: Selector("pollAuctions"), userInfo: nil, repeats: true)
@@ -60,7 +77,8 @@ public class AutoTrader: NSObject {
         if pollTimer != nil && pollTimer.valid {
             pollTimer.invalidate()
         }
-        searchCount = 0     // reset search count
+        
+        stats.searchCount = 0     // reset search count
         
         print("Trading stopped.")
     }
@@ -74,7 +92,7 @@ public class AutoTrader: NSObject {
         playerParams.maxPrice = incrementPrice(playerParams.maxPrice)
         
         fut16.findAuctionsForPlayer(playerParams) { (auctions, error) -> Void in
-            self.searchCount++
+            self.stats.searchCount++
             
             guard error != .ExpiredSession else {
                 self.expiredSessionCount++
@@ -96,16 +114,22 @@ public class AutoTrader: NSObject {
                 }
             })
             
-            print("Search: \(self.searchCount) (\(auctions.count)) - Cur Min: \(curMinBin) (Min: \(self.minBin)) - \(self.playerParams.maxPrice)")
+            print("Search: \(self.stats.searchCount) (\(auctions.count)) - Cur Min: \(curMinBin) (Min: \(self.minBin)) - \(self.playerParams.maxPrice)")
             
             if curMinBin <= self.buyAtBin {
                 print("Purchasing...", terminator: "")
                 self.fut16.placeBidOnAuction(curMinId, ammount: curMinBin) { (error) in
                     guard error == .None else {
                         print("Fail: Error - \(error).")
+                        self.stats.purchaseFailCount++
                         return
                     }
-                    self.numPurchases++
+                    
+                    // some stat keeping
+                    self.stats.purchaseCount++
+                    self.stats.lastPurchaseCost = Int(curMinBin)
+                    self.stats.purchaseTotalCost += self.stats.lastPurchaseCost
+                    
                     print("Success!")
                     
                     if self.fut16.coinsBallance < Int(self.buyAtBin) {
@@ -118,8 +142,9 @@ public class AutoTrader: NSObject {
             if curMinBin < self.minBin {
                 self.minBin = curMinBin
             }
-        }
-    }
-
+            
+            self.updateOwner?()
+        } // findAuctionsForPlayer
+    } // end pollAuctions
     
 }
