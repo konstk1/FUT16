@@ -10,7 +10,7 @@ import Foundation
 import Cocoa
 
 // TODO: Request count (per day)
-// TOOD: Coin ballance history
+// TOOD: Coin Balance history
 
 public class TraderStats: NSObject {
     var searchCount = 0
@@ -18,7 +18,7 @@ public class TraderStats: NSObject {
     var purchaseFailCount = 0
     var purchaseTotalCost = 0
     var lastPurchaseCost = 0
-    var coinsBallance = 0
+    var coinsBalance = 0
 }
 
 public class AutoTrader: NSObject {
@@ -129,11 +129,12 @@ public class AutoTrader: NSObject {
                     self.stats.purchaseCount++
                     self.stats.lastPurchaseCost = Int(curMinBin)
                     self.stats.purchaseTotalCost += self.stats.lastPurchaseCost
+                    self.stats.coinsBalance = self.fut16.coinsBalance
                     
                     print("Success!")
                     
-                    if self.fut16.coinsBallance < Int(self.buyAtBin) {
-                        print("Not enough coins.  Ballance: \(self.fut16.coinsBallance)")
+                    if self.fut16.coinsBalance < Int(self.buyAtBin) {
+                        print("Not enough coins.  Balance: \(self.fut16.coinsBalance)")
                         self.stopTrading()
                     }
                     

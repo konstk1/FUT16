@@ -40,7 +40,7 @@ public class FUT16 {
     
     var isSessionValid = false
     
-    var coinsBallance: Int {
+    var coinsBalance: Int {
         get {
             return Int(coinFunds) ?? -1
         }

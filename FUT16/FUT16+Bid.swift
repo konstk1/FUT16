@@ -35,7 +35,7 @@ extension FUT16 {
                     error = .PurchaseFailed
                 }
             } else {
-                print("Purchased \(tradeId) for \(ammount) - \(json["auctionInfo"][0]["tradeState"]) (Bal: \(self.coinsBallance))")
+                print("Purchased \(tradeId) for \(ammount) - \(json["auctionInfo"][0]["tradeState"]) (Bal: \(self.coinsBalance))")
             }
             
             completion(error: error)
