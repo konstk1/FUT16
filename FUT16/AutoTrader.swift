@@ -17,6 +17,7 @@ public class TraderStats: NSObject {
     var purchaseCount = 0
     var purchaseFailCount = 0
     var purchaseTotalCost = 0
+    var averagePurchaseCost = 0
     var lastPurchaseCost = 0
     var coinsBalance = 0
 }
@@ -131,6 +132,7 @@ public class AutoTrader: NSObject {
                     self.stats.lastPurchaseCost = Int(curMinBin)
                     self.stats.purchaseTotalCost += self.stats.lastPurchaseCost
                     self.stats.coinsBalance = self.fut16.coinsBalance
+                    self.stats.averagePurchaseCost = Int(round(Double(self.stats.purchaseTotalCost) / Double(self.stats.purchaseCount)))
                     
                     print("Success!")
                     
@@ -145,6 +147,7 @@ public class AutoTrader: NSObject {
                         self.stopTrading()
                     }
                 }
+                self.updateOwner?()
             }
             
             if curMinBin < self.minBin {
