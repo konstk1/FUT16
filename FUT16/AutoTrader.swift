@@ -79,6 +79,7 @@ public class AutoTrader: NSObject {
         }
         
         stats.searchCount = 0     // reset search count
+        self.updateOwner?()
         
         print("Trading stopped.")
     }

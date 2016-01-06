@@ -824,6 +824,16 @@
                                     <action selector="stopPressed:" target="XfG-lQ-9wD" id="glJ-Ae-n6Y"/>
                                 </connections>
                             </button>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Z6d-bX-BKz">
+                                <rect key="frame" x="463" y="13" width="146" height="38"/>
+                                <buttonCell key="cell" type="smallSquare" title="Reset Stats" bezelStyle="smallSquare" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="bJK-Ju-ZVN">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="resetStatsPressed:" target="XfG-lQ-9wD" id="zw1-rs-Rt8"/>
+                                </connections>
+                            </button>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Rx6-Z6-4is">
                                 <rect key="frame" x="347" y="83" width="83" height="126"/>
                                 <buttonCell key="cell" type="smallSquare" title="Set" bezelStyle="smallSquare" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="sSA-Xh-0Db">
@@ -1113,17 +1123,6 @@
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iA9-f9-HbA">
-                                <rect key="frame" x="553" y="118" width="58" height="17"/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="0" id="lZY-1v-cnp">
-                                    <font key="font" metaFont="system"/>
-                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                </textFieldCell>
-                                <connections>
-                                    <binding destination="XfG-lQ-9wD" name="value" keyPath="self.traderStats.coinsBalance" id="mWf-Oj-3WO"/>
-                                </connections>
-                            </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mpG-he-2CZ">
                                 <rect key="frame" x="469" y="193" width="58" height="17"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Spent" id="pP8-Vq-d02">
@@ -1162,16 +1161,17 @@
                                     <binding destination="XfG-lQ-9wD" name="value" keyPath="self.traderStats.lastPurchaseCost" id="VbJ-2X-qGK"/>
                                 </connections>
                             </textField>
-                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Z6d-bX-BKz">
-                                <rect key="frame" x="463" y="13" width="146" height="38"/>
-                                <buttonCell key="cell" type="smallSquare" title="Reset Stats" bezelStyle="smallSquare" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="bJK-Ju-ZVN">
-                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iA9-f9-HbA">
+                                <rect key="frame" x="553" y="123" width="58" height="17"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="0" id="lZY-1v-cnp">
                                     <font key="font" metaFont="system"/>
-                                </buttonCell>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
                                 <connections>
-                                    <action selector="resetStatsPressed:" target="XfG-lQ-9wD" id="zw1-rs-Rt8"/>
+                                    <binding destination="XfG-lQ-9wD" name="value" keyPath="self.traderStats.coinsBalance" id="mWf-Oj-3WO"/>
                                 </connections>
-                            </button>
+                            </textField>
                         </subviews>
                     </view>
                     <connections>

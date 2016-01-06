@@ -71,13 +71,12 @@ class ViewController: NSViewController {
     }
     
     @IBAction func setSearchParamsPressed(sender: NSButton) {
-        // Ribery 156616
-        // Neuer 167495
-        // Götze 192318
+        // Ribery 156616 (43.5k)
+        // Neuer 167495 (75k)
         // Martial 211300
         // Tévez 143001
         // Benzema 165153
-        // Nani 139068
+        // Ramos 155862
         let playerId = playerIdTextField.stringValue
         let nationality = getIdFromComboBox(nationalityComboBox) ?? ""
         let league = getIdFromComboBox(leagueComboBox) ?? ""
