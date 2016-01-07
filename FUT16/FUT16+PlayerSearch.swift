@@ -79,7 +79,7 @@ extension FUT16 {
             var auctions = [String : String]()
             var error = FutError.None
             let errorCode = json["code"].stringValue
-            print("Error Code: \(errorCode)")
+            //print("Error Code: \(errorCode)")
             
             if json["auctionInfo"].count > 0 {
                 json["auctionInfo"].forEach{ (key, json) in
