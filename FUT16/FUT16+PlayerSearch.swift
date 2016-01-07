@@ -78,17 +78,19 @@ extension FUT16 {
         requestForPath(params.urlPath) { (json) -> Void in
             var auctions = [String : String]()
             var error = FutError.None
+            let errorCode = json["code"].stringValue
+            print("Error Code: \(errorCode)")
             
             if json["auctionInfo"].count > 0 {
                 json["auctionInfo"].forEach{ (key, json) in
                     auctions[json["tradeId"].stringValue] = json["buyNowPrice"].stringValue
                 }
-            } else if json["code"].stringValue == "401" {
+            } else if errorCode == "401" {
                 error = .ExpiredSession
-            } else {
-//                print(json)
-                error = .NothingFound
+            } else if errorCode == "500" {
+                error = .InternalServerError
             }
+            
             completion(auctions: auctions, error: error)
         }
     }

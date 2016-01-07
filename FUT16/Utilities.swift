@@ -8,8 +8,8 @@
 
 public enum FutError: ErrorType {
     case None
-    case NothingFound
     case ExpiredSession
+    case InternalServerError    // 500
     case PurchaseFailed
     case BidNotAllowed
 }

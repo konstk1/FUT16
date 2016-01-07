@@ -27,8 +27,8 @@ public class AutoTrader: NSObject {
     private var playerParams = FUT16.PlayerParams()
     private var buyAtBin: UInt = 0
     
-    private var expiredSessionCount = 0
-    private let EXPIRED_SESSIONS_LIMIT = 3      // stop trading after this many expired session errors
+    private var sessionErrorCount = 0
+    private let SESSION_ERROR_LIMIT = 3      // stop trading after this many session errors
     
     var pollingInterval: NSTimeInterval = 2.0
     private var pollTimer: NSTimer!
@@ -96,9 +96,10 @@ public class AutoTrader: NSObject {
         fut16.findAuctionsForPlayer(playerParams) { (auctions, error) -> Void in
             self.stats.searchCount++
             
-            guard error != .ExpiredSession else {
-                self.expiredSessionCount++
-                if self.expiredSessionCount < self.EXPIRED_SESSIONS_LIMIT {
+            // anything but 
+            guard error == .None else {
+                self.sessionErrorCount++
+                if self.sessionErrorCount < self.SESSION_ERROR_LIMIT {
                     self.fut16.retrieveSessionId()   // re-login
                 } else {
                     print("Expired sessions limit reached.")
