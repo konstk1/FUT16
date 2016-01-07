@@ -6,6 +6,8 @@
 //  Copyright © 2015 Kon. All rights reserved.
 //
 
+import Foundation
+
 public enum FutError: ErrorType {
     case None
     case ExpiredSession
@@ -30,4 +32,18 @@ func incrementPrice(price: UInt) -> UInt {
     }
     
     return price + incr
+}
+
+extension NSDate {
+    static var hourAgo: NSDate {
+        get {
+            return NSDate(timeIntervalSinceNow: -3600)
+        }
+    }
+    
+    static var dayAgo: NSDate {
+        get {
+            return NSDate(timeIntervalSinceNow: -24 * 3600)
+        }
+    }
 }

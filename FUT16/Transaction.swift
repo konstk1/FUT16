@@ -13,5 +13,11 @@ import CoreData
 class Transaction: NSManagedObject {
 
 // Insert code here to add functionality to your managed object subclass
+    
+//    var description: String {
+//        get {
+//            return "\(NSDate(timeIntervalSinceReferenceDate: time))"
+//        }
+//    }
 
 }

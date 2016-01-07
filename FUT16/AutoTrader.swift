@@ -39,7 +39,7 @@ public class AutoTrader: NSObject {
     
     private var updateOwner: (() -> ())?
     
-    //private let managedObjectContext = (NSApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
+    let managedObjectContext = (NSApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
     
     public init(fut16: FUT16, update: (() -> ())?) {
         self.fut16 = fut16
@@ -83,6 +83,7 @@ public class AutoTrader: NSObject {
         self.updateOwner?()
         
         print("Trading stopped.")
+        printSearches()
     }
     
     func pollAuctions() {
@@ -95,6 +96,7 @@ public class AutoTrader: NSObject {
         
         fut16.findAuctionsForPlayer(playerParams) { (auctions, error) -> Void in
             self.stats.searchCount++
+            self.logSearch()
             
             // anything but 
             guard error == .None else {
@@ -159,4 +161,15 @@ public class AutoTrader: NSObject {
         } // findAuctionsForPlayer
     } // end pollAuctions
     
+// Stat and CoreData helpers
+    func logSearch() {
+        Search.NewSearch(managedObjectContext: managedObjectContext)
+    }
+    
+    func printSearches() {
+        let searches = Search.getSearchesSinceDate(NSDate.hourAgo, managedObjectContext: managedObjectContext)
+        for t in searches {
+            print("T: \(t)")
+        }
+    }
 }

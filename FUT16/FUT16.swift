@@ -68,6 +68,10 @@ public class FUT16 {
         loginUrl = webAppUrl
         phishingQuestionAnswer = secretAnswer
         alamo.request(.GET, loginUrl).response { (request, response, data, error) -> Void in
+            guard response != nil else {
+                print("No response")
+                return
+            }
             self.loginUrl = response!.URL!
             if self.loginUrl.URLString.containsString("web-app") {
                 print("Already Logged In.")

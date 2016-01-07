@@ -24,7 +24,7 @@
 		FF50D2221C277775003F1D02 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF50D2211C277775003F1D02 /* Utilities.swift */; };
 		FF50D2241C2780AE003F1D02 /* players.json in Resources */ = {isa = PBXBuildFile; fileRef = FF50D2231C2780AE003F1D02 /* players.json */; };
 		FF50D2261C28AA05003F1D02 /* AutoTrader.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF50D2251C28AA05003F1D02 /* AutoTrader.swift */; };
-		FF68C8481C38B43B00A6D9E1 /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FF68C8461C38B43B00A6D9E1 /* DataModel.xcdatamodeld */; };
+		FF68C8481C38B43B00A6D9E1 /* FUT16.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FF68C8461C38B43B00A6D9E1 /* FUT16.xcdatamodeld */; };
 		FF68C85A1C38B8F000A6D9E1 /* Purchase+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF68C8561C38B8F000A6D9E1 /* Purchase+CoreDataProperties.swift */; };
 		FF68C85B1C38B8F000A6D9E1 /* Purchase.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF68C8571C38B8F000A6D9E1 /* Purchase.swift */; };
 		FF68C85D1C38B8F000A6D9E1 /* Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF68C8591C38B8F000A6D9E1 /* Search.swift */; };
@@ -67,7 +67,7 @@
 		FF50D2211C277775003F1D02 /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		FF50D2231C2780AE003F1D02 /* players.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = players.json; sourceTree = "<group>"; };
 		FF50D2251C28AA05003F1D02 /* AutoTrader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoTrader.swift; sourceTree = "<group>"; };
-		FF68C8471C38B43B00A6D9E1 /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
+		FF68C8471C38B43B00A6D9E1 /* FUT16.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = FUT16.xcdatamodel; sourceTree = "<group>"; };
 		FF68C8561C38B8F000A6D9E1 /* Purchase+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Purchase+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		FF68C8571C38B8F000A6D9E1 /* Purchase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Purchase.swift; sourceTree = "<group>"; };
 		FF68C8591C38B8F000A6D9E1 /* Search.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Search.swift; sourceTree = "<group>"; };
@@ -152,7 +152,7 @@
 				FF68C8571C38B8F000A6D9E1 /* Purchase.swift */,
 				FF68C8751C38B98000A6D9E1 /* Search+CoreDataProperties.swift */,
 				FF68C8591C38B8F000A6D9E1 /* Search.swift */,
-				FF68C8461C38B43B00A6D9E1 /* DataModel.xcdatamodeld */,
+				FF68C8461C38B43B00A6D9E1 /* FUT16.xcdatamodeld */,
 			);
 			name = CoreData;
 			sourceTree = "<group>";
@@ -232,7 +232,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FF50D2201C274A2D003F1D02 /* FUT16+Bid.swift in Sources */,
-				FF68C8481C38B43B00A6D9E1 /* DataModel.xcdatamodeld in Sources */,
+				FF68C8481C38B43B00A6D9E1 /* FUT16.xcdatamodeld in Sources */,
 				FF68C8771C38B98000A6D9E1 /* Transaction.swift in Sources */,
 				FF68C85A1C38B8F000A6D9E1 /* Purchase+CoreDataProperties.swift in Sources */,
 				FF50D2261C28AA05003F1D02 /* AutoTrader.swift in Sources */,
@@ -407,13 +407,13 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		FF68C8461C38B43B00A6D9E1 /* DataModel.xcdatamodeld */ = {
+		FF68C8461C38B43B00A6D9E1 /* FUT16.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				FF68C8471C38B43B00A6D9E1 /* DataModel.xcdatamodel */,
+				FF68C8471C38B43B00A6D9E1 /* FUT16.xcdatamodel */,
 			);
-			currentVersion = FF68C8471C38B43B00A6D9E1 /* DataModel.xcdatamodel */;
-			path = DataModel.xcdatamodeld;
+			currentVersion = FF68C8471C38B43B00A6D9E1 /* FUT16.xcdatamodel */;
+			path = FUT16.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};
