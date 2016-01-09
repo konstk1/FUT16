@@ -12,14 +12,35 @@ import Cocoa
 // TODO: Request count (per day)
 // TOOD: Coin Balance history
 
+private let managedObjectContext = (NSApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
+
 public class TraderStats: NSObject {
     var searchCount = 0
+    
     var purchaseCount = 0
     var purchaseFailCount = 0
     var purchaseTotalCost = 0
+    
     var averagePurchaseCost = 0
     var lastPurchaseCost = 0
     var coinsBalance = 0
+    
+    var searchCount1Hr: Int {
+        get {
+            return Search.getSearchesSinceDate(NSDate.hourAgo, managedObjectContext: managedObjectContext).count
+        }
+    }
+    var searchCount24Hr: Int {
+        get {
+            return Search.getSearchesSinceDate(NSDate.dayAgo, managedObjectContext: managedObjectContext).count
+        }
+    }
+    
+    var searchCountAllTime: Int {
+        get {
+            return Search.getSearchesSinceDate(NSDate.allTime, managedObjectContext: managedObjectContext).count
+        }
+    }
 }
 
 public class AutoTrader: NSObject {
@@ -39,11 +60,10 @@ public class AutoTrader: NSObject {
     
     private var updateOwner: (() -> ())?
     
-    let managedObjectContext = (NSApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
-    
     public init(fut16: FUT16, update: (() -> ())?) {
         self.fut16 = fut16
         self.updateOwner = update
+        //updateOwner?()
     }
     
     // return break-even buy
@@ -66,6 +86,8 @@ public class AutoTrader: NSObject {
     
     func resetStats() {
         stats = TraderStats()
+        sessionErrorCount = 0
+        minBin = 10000000
         updateOwner?()
     }
     
@@ -79,11 +101,13 @@ public class AutoTrader: NSObject {
             pollTimer.invalidate()
         }
         
-        stats.searchCount = 0     // reset search count
+        for p in Purchase.getPurchasesSinceDate(NSDate.allTime, managedObjectContext: managedObjectContext) {
+            print(p)
+        }
+        
         self.updateOwner?()
         
         print("Trading stopped.")
-        printSearches()
     }
     
     func pollAuctions() {
@@ -104,7 +128,7 @@ public class AutoTrader: NSObject {
                 if self.sessionErrorCount < self.SESSION_ERROR_LIMIT {
                     self.fut16.retrieveSessionId()   // re-login
                 } else {
-                    print("Expired sessions limit reached.")
+                    print("Session error limit reached.")
                     self.stopTrading()
                 }
                 return
@@ -136,6 +160,9 @@ public class AutoTrader: NSObject {
                     self.stats.purchaseTotalCost += self.stats.lastPurchaseCost
                     self.stats.coinsBalance = self.fut16.coinsBalance
                     self.stats.averagePurchaseCost = Int(round(Double(self.stats.purchaseTotalCost) / Double(self.stats.purchaseCount)))
+                    
+                    // save to CoreData
+                    Purchase.NewPurchase(Int(curMinBin), maxBin: Int(self.playerParams.maxBin), coinBallance: self.fut16.coinsBalance, managedObjectContext: managedObjectContext)
                     
                     print("Success!")
                     
