@@ -9,8 +9,7 @@
 import Foundation
 import Cocoa
 
-// TODO: Request count (per day)
-// TOOD: Coin Balance history
+// TODO: 
 
 private let managedObjectContext = (NSApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
 
@@ -50,6 +49,7 @@ public class AutoTrader: NSObject {
     
     private var sessionErrorCount = 0
     private let SESSION_ERROR_LIMIT = 3      // stop trading after this many session errors
+    private let SEARCH_LIMIT_1HR = 950       // stop trading after this many searching within 1 hour
     
     var pollingInterval: NSTimeInterval = 2.0
     private var pollTimer: NSTimer!
@@ -69,8 +69,7 @@ public class AutoTrader: NSObject {
     // return break-even buy
     func setTradeParams(playerParams: FUT16.PlayerParams, buyAtBin: UInt) -> UInt {
         guard buyAtBin <= playerParams.maxBin else {
-            print("Buy BIN is more than search BIN!")
-            stopTrading()
+            stopTrading("Buy BIN is more than search BIN")
             return 0
         }
 
@@ -96,7 +95,7 @@ public class AutoTrader: NSObject {
         pollTimer = NSTimer.scheduledTimerWithTimeInterval(pollingInterval, target: self, selector: Selector("pollAuctions"), userInfo: nil, repeats: true)
     }
     
-    func stopTrading() {
+    func stopTrading(reason: String) {
         if pollTimer != nil && pollTimer.valid {
             pollTimer.invalidate()
         }
@@ -107,7 +106,7 @@ public class AutoTrader: NSObject {
         
         self.updateOwner?()
         
-        print("Trading stopped.")
+        print("Trading stopped: [\(reason)].")
     }
     
     func pollAuctions() {
@@ -120,7 +119,11 @@ public class AutoTrader: NSObject {
         
         fut16.findAuctionsForPlayer(playerParams) { (auctions, error) -> Void in
             self.stats.searchCount++
-            self.logSearch()
+            self.logSearch()        // save to CoreData
+            
+            if self.stats.searchCount1Hr >= self.SEARCH_LIMIT_1HR {
+                self.stopTrading("Search limit reached")
+            }
             
             // anything but 
             guard error == .None else {
@@ -128,8 +131,7 @@ public class AutoTrader: NSObject {
                 if self.sessionErrorCount < self.SESSION_ERROR_LIMIT {
                     self.fut16.retrieveSessionId()   // re-login
                 } else {
-                    print("Session error limit reached.")
-                    self.stopTrading()
+                    self.stopTrading("Session error limit reached")
                 }
                 return
             }
@@ -167,14 +169,12 @@ public class AutoTrader: NSObject {
                     print("Success!")
                     
                     if self.fut16.coinsBalance < Int(self.buyAtBin) {
-                        print("Not enough coins.  Balance: \(self.fut16.coinsBalance)")
-                        self.stopTrading()
+                        self.stopTrading("Not enough coins.  Balance: \(self.fut16.coinsBalance)")
                     }
                     
                     // FUT only allows 5 unassigned players
                     if self.stats.purchaseCount >= 5 {
-                        print("Unassigned slots full.")
-                        self.stopTrading()
+                        self.stopTrading("Unassigned slots full")
                     }
                 }
                 self.updateOwner?()
@@ -188,15 +188,8 @@ public class AutoTrader: NSObject {
         } // findAuctionsForPlayer
     } // end pollAuctions
     
-// Stat and CoreData helpers
+// MARK: Stat and CoreData helpers
     func logSearch() {
         Search.NewSearch(managedObjectContext: managedObjectContext)
-    }
-    
-    func printSearches() {
-        let searches = Search.getSearchesSinceDate(NSDate.hourAgo, managedObjectContext: managedObjectContext)
-        for t in searches {
-            print("T: \(t)")
-        }
     }
 }

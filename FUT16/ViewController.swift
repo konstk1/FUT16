@@ -99,7 +99,7 @@ class ViewController: NSViewController {
     }
     
     @IBAction func stopPressed(sender: NSButton) {
-        autoTrader?.stopTrading()
+        autoTrader?.stopTrading("UI")
     }
     
     @IBAction func resetStatsPressed(sender: NSButton) {
