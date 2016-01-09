@@ -11,13 +11,27 @@ import CoreData
 
 
 class Transaction: NSManagedObject {
-
-// Insert code here to add functionality to your managed object subclass
     
-//    var description: String {
-//        get {
-//            return "\(NSDate(timeIntervalSinceReferenceDate: time))"
-//        }
-//    }
+    class func getTransactions(entityName: String, sinceDate date: NSDate, managedObjectContext: NSManagedObjectContext) -> [Transaction] {
+        
+        let fetchRequest = NSFetchRequest(entityName: entityName)
+        
+        fetchRequest.predicate = NSPredicate(format: "time >= %@", date)
+        
+        do {
+            let transactions = try managedObjectContext.executeFetchRequest(fetchRequest) as! [Transaction]
+            return transactions
+        } catch {
+            fatalError("Failed \(entityName) fetch!")
+        }
+    }
 
+    class func save(managedObjectContext: NSManagedObjectContext) {
+        do {
+            try managedObjectContext.save()
+        } catch {
+            print("Failed to save managed object context")
+        }
+    }
+    
 }

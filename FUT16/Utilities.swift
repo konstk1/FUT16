@@ -46,4 +46,10 @@ extension NSDate {
             return NSDate(timeIntervalSinceNow: -24 * 3600)
         }
     }
+    
+    static var allTime: NSDate {
+        get {
+            return NSDate(timeIntervalSinceReferenceDate: 0)
+        }
+    }
 }

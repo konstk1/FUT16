@@ -2,7 +2,7 @@
 //  Purchase+CoreDataProperties.swift
 //  FUT16
 //
-//  Created by Konstantin Klitenik on 1/2/16.
+//  Created by Konstantin Klitenik on 1/8/16.
 //  Copyright © 2016 Kon. All rights reserved.
 //
 //  Choose "Create NSManagedObject Subclass…" from the Core Data editor menu
@@ -14,6 +14,7 @@ import CoreData
 
 extension Purchase {
 
+    @NSManaged var coinBalance: Int32
     @NSManaged var maxBin: Int32
     @NSManaged var price: Int32
 
