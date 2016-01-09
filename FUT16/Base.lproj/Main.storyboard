@@ -784,18 +784,8 @@
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="evu-8P-xTr">
-                                <rect key="frame" x="347" y="250" width="83" height="24"/>
-                                <buttonCell key="cell" type="smallSquare" title="Submit" bezelStyle="smallSquare" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Mpp-ms-ZMo">
-                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                                <connections>
-                                    <action selector="submitPressed:" target="XfG-lQ-9wD" id="jV3-b2-MQo"/>
-                                </connections>
-                            </button>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TSZ-UY-ztd">
-                                <rect key="frame" x="347" y="289" width="83" height="79"/>
+                                <rect key="frame" x="347" y="286" width="83" height="82"/>
                                 <buttonCell key="cell" type="smallSquare" title="Login" bezelStyle="smallSquare" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="NJ8-cu-Dk4">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -835,7 +825,7 @@
                                 </connections>
                             </button>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Rx6-Z6-4is">
-                                <rect key="frame" x="347" y="83" width="83" height="126"/>
+                                <rect key="frame" x="347" y="86" width="83" height="123"/>
                                 <buttonCell key="cell" type="smallSquare" title="Set" bezelStyle="smallSquare" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="sSA-Xh-0Db">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -1216,6 +1206,16 @@
                                     <binding destination="XfG-lQ-9wD" name="value" keyPath="self.traderStats.searchCount" id="Doc-0l-Wbs"/>
                                 </connections>
                             </textField>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="evu-8P-xTr">
+                                <rect key="frame" x="347" y="256" width="83" height="24"/>
+                                <buttonCell key="cell" type="smallSquare" title="Submit" bezelStyle="smallSquare" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Mpp-ms-ZMo">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="submitPressed:" target="XfG-lQ-9wD" id="jV3-b2-MQo"/>
+                                </connections>
+                            </button>
                         </subviews>
                     </view>
                     <connections>
