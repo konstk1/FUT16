@@ -40,6 +40,13 @@ public class TraderStats: NSObject {
             return Search.getSearchesSinceDate(NSDate.allTime, managedObjectContext: managedObjectContext).count
         }
     }
+    
+    var purchaseTotalAllTime: Int {
+        get {
+            let purchases = Purchase.getPurchasesSinceDate(NSDate.allTime, managedObjectContext: managedObjectContext)
+            return Int(purchases.reduce(0) { $0 + $1.price })
+        }
+    }
 }
 
 public class AutoTrader: NSObject {
@@ -104,13 +111,15 @@ public class AutoTrader: NSObject {
             print(p)
         }
         
+        print("Total: \(self.stats.purchaseTotalAllTime)")
+        
         self.updateOwner?()
         
         print("Trading stopped: [\(reason)].")
     }
     
     func pollAuctions() {
-        print(".", terminator: "")
+        print(".\(NSDate.localTime):  ", terminator: "")
         var curMinBin: UInt = 10000000
         var curMinId: String = ""
         
@@ -127,6 +136,7 @@ public class AutoTrader: NSObject {
             
             // anything but 
             guard error == .None else {
+                print(error)
                 self.sessionErrorCount++
                 if self.sessionErrorCount < self.SESSION_ERROR_LIMIT {
                     self.fut16.retrieveSessionId()   // re-login

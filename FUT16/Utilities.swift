@@ -52,4 +52,10 @@ extension NSDate {
             return NSDate(timeIntervalSinceReferenceDate: 0)
         }
     }
+    
+    static var localTime: String {
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "HH:mm:ss"
+        return dateFormatter.stringFromDate(NSDate())
+    }
 }
