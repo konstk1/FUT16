@@ -16,7 +16,7 @@ class Purchase: Transaction {
     
     override var description: String {
         get {
-            return "Purchase price: \(price) BIN: \(maxBin) CoinBallance: \(coinBalance)"
+            return "Purchase price: \(price) BIN: \(maxBin) CoinsPre: \(coinBalance + price) Time: \(Int(round(time)))"
         }
     }
     
@@ -32,8 +32,8 @@ class Purchase: Transaction {
     }
     
     class func getPurchasesSinceDate(date: NSDate, managedObjectContext: NSManagedObjectContext) -> [Purchase] {
-        
-        return getTransactions(entityName, sinceDate: date, managedObjectContext: managedObjectContext) as! [Purchase]
+        let purchases = getTransactions(entityName, sinceDate: date, managedObjectContext: managedObjectContext) as! [Purchase]
+        return purchases.sort { $0.time < $1.time }
     }
     
 }
