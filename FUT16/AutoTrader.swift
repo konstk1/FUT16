@@ -9,7 +9,7 @@
 import Foundation
 import Cocoa
 
-// TODO: 
+// TODO: Get user info (coins) on login
 
 private let managedObjectContext = (NSApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
 
@@ -98,8 +98,11 @@ public class AutoTrader: NSObject {
     }
     
     func startTrading() {
-        pollAuctions()
-        pollTimer = NSTimer.scheduledTimerWithTimeInterval(pollingInterval, target: self, selector: Selector("pollAuctions"), userInfo: nil, repeats: true)
+        // do nothing if timer is already running
+        if (pollTimer == nil || !pollTimer.valid) {
+            pollAuctions()
+            pollTimer = NSTimer.scheduledTimerWithTimeInterval(pollingInterval, target: self, selector: Selector("pollAuctions"), userInfo: nil, repeats: true)
+        }
     }
     
     func stopTrading(reason: String) {

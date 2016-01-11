@@ -37,3 +37,37 @@ extension FUT16 {
         }
     }
 }
+
+// POST https://utas.s3.fut.ea.com/ut/game/fifa16/user
+//accountCreatedPlatformName: "360"
+//actives: [{id: 102340706883, timestamp: 1450645529, formation: "f433", untradeable: true, assetId: 149,…},…]
+//bidTokens: {}
+//clubAbbr: "A T"
+//clubName: "A Team"
+//credits: 39598
+//currencies: [{name: "COINS", funds: 39598, finalFunds: 39598}, {name: "POINTS", funds: 0, finalFunds: 0},…]
+//0: {name: "COINS", funds: 39598, finalFunds: 39598}
+//1: {name: "POINTS", funds: 0, finalFunds: 0}
+//2: {name: "DRAFT_TOKEN", funds: 0, finalFunds: 0}
+//divisionOffline: 1
+//divisionOnline: 1
+//draw: 0
+//established: "1450645529"
+//feature: {trade: 2}
+//loss: 10
+//personaId: 1721880717
+//personaName: "TwelfthCannon68"
+//purchased: false
+//reliability: {reliability: 105, startedMatches: 16, finishedMatches: 15, matchUnfinishedTime: 0}
+//finishedMatches: 15
+//matchUnfinishedTime: 0
+//reliability: 105
+//startedMatches: 16
+//seasonTicket: false
+//squadList: {,…}
+//trophies: 0
+//unassignedPileSize: 0
+//unopenedPacks: {preOrderPacks: 0, recoveredPacks: 0}
+//preOrderPacks: 0
+//recoveredPacks: 0
+//won: 2
