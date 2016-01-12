@@ -67,7 +67,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         var coordinator: NSPersistentStoreCoordinator? = nil
         if failError == nil {
             coordinator = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel)
-            let url = NSURL(fileURLWithPath: "/Users/kxk03/Dropbox/Apps/FUT16/CocoaAppCD.storedata")
+            let user = NSUserName()
+            let url = NSURL(fileURLWithPath: "/Users/\(user)/Dropbox/Apps/FUT16/CocoaAppCD.storedata")
             do {
                 try coordinator!.addPersistentStoreWithType(NSXMLStoreType, configuration: nil, URL: url, options: nil)
             } catch {
