@@ -77,6 +77,7 @@ class ViewController: NSViewController {
         // Tévez 143001
         // Benzema 165153
         // Ramos 155862
+        // Alves 146530 (13k)
         let playerId = playerIdTextField.stringValue
         let nationality = getIdFromComboBox(nationalityComboBox) ?? ""
         let league = getIdFromComboBox(leagueComboBox) ?? ""

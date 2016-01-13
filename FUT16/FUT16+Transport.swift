@@ -36,9 +36,16 @@ extension FUT16 {
             }
         }
     }
+    
+    func getUserInfo() {
+        requestForPath("user") { (json) -> Void in
+            self.coinFunds = json["credits"].stringValue
+            print("Coins Ballance: \(self.coinFunds)")
+        }
+    }
 }
 
-// POST https://utas.s3.fut.ea.com/ut/game/fifa16/user
+// POST
 //accountCreatedPlatformName: "360"
 //actives: [{id: 102340706883, timestamp: 1450645529, formation: "f433", untradeable: true, assetId: 149,…},…]
 //bidTokens: {}

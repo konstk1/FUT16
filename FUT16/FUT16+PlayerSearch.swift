@@ -9,14 +9,6 @@
 import Foundation
 import Alamofire
 
-// Search player format
-// https://utas.s3.fut.ea.com/ut/game/fifa16/
-
-// Bid
-// https://utas.s3.fut.ea.com/ut/game/fifa16/
-//private let transferSearchPath: URLStringConvertible = "transfermarket?maxb=400&micr=150&start=0&macr=200&minb=300&maskedDefId=156616&num=16&type=player"
-//private let bidPath = "trade/1187858658/bid"
-
 extension FUT16 {
     public struct PlayerParams {
         var playerId: String
@@ -30,11 +22,6 @@ extension FUT16 {
         var maxBin: UInt
         var startRecord: UInt
         var numRecords: UInt
-        
-//        nat:54    brazil
-//        team:5    chelsea
-//        lev:gold
-//        leag:13   BPL
         
         private static let maxRecords: UInt = 50
         
@@ -56,18 +43,18 @@ extension FUT16 {
             get {
                 var url: String = "transfermarket?type=player"
                 
-                url =    !playerId.isEmpty ? url + "&maskedDefId=\(playerId)" : url
-                url = !nationality.isEmpty ? url + "&nat=\(nationality)" : url
-                url =      !league.isEmpty ? url + "&leag=\(league)" : url
-                url =        !team.isEmpty ? url + "&team=\(team)" : url
-                url =       !level.isEmpty ? url + "&lev=\(level)" : url
+                url +=    playerId.isEmpty ? "" : "&maskedDefId=\(playerId)"
+                url += nationality.isEmpty ? "" : "&nat=\(nationality)"
+                url +=      league.isEmpty ? "" : "&leag=\(league)"
+                url +=        team.isEmpty ? "" : "&team=\(team)"
+                url +=       level.isEmpty ? "" : "&lev=\(level)"
                 
-                url =    minPrice > 0 ? url + "&micr=\(minPrice)" : url
-                url =    maxPrice > 0 ? url + "&macr=\(maxPrice)" : url
-                url =      minBin > 0 ? url + "&minb=\(minBin)" : url
-                url =      maxBin > 0 ? url + "&maxb=\(maxBin)" : url
-                url = startRecord > 0 ? url + "&start=\(startRecord)" : url
-                url =  numRecords > 0 ? url + "&num=\(numRecords)" : url
+                url +=    minPrice == 0 ? "" : "&micr=\(minPrice)"
+                url +=    maxPrice == 0 ? "" : "&macr=\(maxPrice)"
+                url +=      minBin == 0 ? "" : "&minb=\(minBin)"
+                url +=      maxBin == 0 ? "" : "&maxb=\(maxBin)"
+                url += startRecord == 0 ? "" : "&start=\(startRecord)"
+                url +=  numRecords == 0 ? "" : "&num=\(numRecords)"
                 return url
             }
         }
@@ -95,22 +82,3 @@ extension FUT16 {
         }
     }
 }
-// Format:
-
-//auctionInfo: [{tradeId: 1219355173,…}, {tradeId: 1219349619,…}, {tradeId: 1219364321,…}, {tradeId: 1219370322,…},…]
-//0: {tradeId: 1219355173,…}
-//bidState: "none"
-//buyNowPrice: 63000
-//confidenceValue: 100
-//currentBid: 0
-//expires: 33
-//itemData: {id: 102327832878, timestamp: 1450582409, formation: "f3412", untradeable: false, assetId: 156616,…}
-//offers: 0
-//sellerEstablished: 0
-//sellerId: 0
-//sellerName: "FIFA UT"
-//startingBid: 62500
-//tradeId: 1219355173
-//tradeOwner: false
-//tradeState: "active"
-//watched: null

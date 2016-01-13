@@ -110,12 +110,7 @@ public class AutoTrader: NSObject {
             pollTimer.invalidate()
         }
         
-        for p in Purchase.getPurchasesSinceDate(NSDate.allTime, managedObjectContext: managedObjectContext) {
-            print(p)
-        }
-        
-        print("Total: \(self.stats.purchaseTotalAllTime)")
-        
+        fut16.getUserInfo()
         self.updateOwner?()
         
         print("Trading stopped: [\(reason)].")
@@ -132,6 +127,8 @@ public class AutoTrader: NSObject {
         fut16.findAuctionsForPlayer(playerParams) { (auctions, error) -> Void in
             self.stats.searchCount++
             self.logSearch()        // save to CoreData
+            
+            self.stats.coinsBalance = self.fut16.coinsBalance   // grab coins ballance
             
             if self.stats.searchCount1Hr >= self.SEARCH_LIMIT_1HR {
                 self.stopTrading("Search limit reached")

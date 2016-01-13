@@ -49,6 +49,7 @@ public class FUT16 {
     public init() {
         cfg.HTTPCookieStorage = cookieStoreage
         cfg.HTTPCookieAcceptPolicy = NSHTTPCookieAcceptPolicy.Always
+        cfg.timeoutIntervalForRequest = 2.0
 
 //        for cookie in cookieStoreage.cookies! {
 //            cookieStoreage.deleteCookie(cookie)
@@ -199,6 +200,8 @@ public class FUT16 {
             print("Phishing Token: \(self.phishingToken)")
             // this is last step in the login process, mark session as valid
             self.isSessionValid = true
+            
+            self.getUserInfo()
         }
     }
 }
