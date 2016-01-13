@@ -29,6 +29,16 @@ public class TraderStats: NSObject {
             return Search.getSearchesSinceDate(NSDate.hourAgo, managedObjectContext: managedObjectContext).count
         }
     }
+    var searchCount90min: Int {
+        get {
+            return Search.getSearchesSinceDate(NSDate(timeIntervalSinceNow: -60*90), managedObjectContext: managedObjectContext).count
+        }
+    }
+    var searchCount2Hr: Int {
+        get {
+            return Search.getSearchesSinceDate(NSDate(timeIntervalSinceNow: -2*3600), managedObjectContext: managedObjectContext).count
+        }
+    }
     var searchCount24Hr: Int {
         get {
             return Search.getSearchesSinceDate(NSDate.dayAgo, managedObjectContext: managedObjectContext).count
