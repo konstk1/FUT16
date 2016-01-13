@@ -120,7 +120,6 @@ public class AutoTrader: NSObject {
             pollTimer.invalidate()
         }
         
-        fut16.getUserInfo()
         self.updateOwner?()
         
         print("Trading stopped: [\(reason)].")
