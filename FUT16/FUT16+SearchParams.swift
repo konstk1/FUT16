@@ -74,10 +74,28 @@ extension FUT16 {
                 url +=      league.isEmpty ? "" : "&leag=\(league)"
                 url +=        team.isEmpty ? "" : "&team=\(team)"
                 
-                print(url)
-
                 return url
             }
         }
-    } // end TransferPlayerSearch
+    }
+    
+    public class ConsumableParams: ItemParams {
+
+        var category: String
+        
+        init(category: String, level: String = "", minPrice: UInt = 0, maxPrice: UInt = 0, minBin: UInt = 0, maxBin: UInt = 0, startRecord: UInt = 0, numRecords: UInt = PlayerParams.maxRecords) {
+
+            self.category = category
+            
+            super.init(level: level, minPrice: minPrice, maxPrice: maxPrice, minBin: minBin, maxBin: maxBin, startRecord: startRecord, numRecords: numRecords)
+        }
+        
+        // transfermarket?minb=600&maxb=650&cat=fitness&num=16&lev=gold&start=0&type=development
+        override var urlPath: String {
+            get {
+                let url = super.urlPath + "&type=development" + "&cat=\(category)"
+                return url
+            }
+        }
+    }
 }
