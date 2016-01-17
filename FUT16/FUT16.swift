@@ -51,6 +51,7 @@ public class FUT16 {
         cfg.HTTPCookieAcceptPolicy = NSHTTPCookieAcceptPolicy.Always
         cfg.timeoutIntervalForRequest = 5.0
 
+
 //        for cookie in cookieStoreage.cookies! {
 //            cookieStoreage.deleteCookie(cookie)
 //        }
