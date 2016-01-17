@@ -9,7 +9,9 @@
 import Foundation
 import Cocoa
 
-// TODO: Get user info (coins) on login
+// TODO: Auto price update (BIN and purchase)
+// TODO: Consumables Search (Fitness)
+// TODO: Auto move to transfer list
 
 private let managedObjectContext = (NSApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
 
