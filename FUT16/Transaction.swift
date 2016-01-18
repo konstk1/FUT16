@@ -25,6 +25,17 @@ class Transaction: NSManagedObject {
             fatalError("Failed \(entityName) fetch!")
         }
     }
+    
+    class func numTransactions(entityName: String, sinceDate date: NSDate, managedObjectContext: NSManagedObjectContext) -> Int {
+        let fetchRequest = NSFetchRequest(entityName: entityName)
+        fetchRequest.includesPropertyValues = false
+        fetchRequest.includesSubentities = false
+        fetchRequest.resultType = NSFetchRequestResultType.CountResultType
+        
+        fetchRequest.predicate = NSPredicate(format: "time >= %@", date)
+        
+        return managedObjectContext.countForFetchRequest(fetchRequest, error: nil)
+    }
 
     class func save(managedObjectContext: NSManagedObjectContext) {
         do {

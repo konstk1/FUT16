@@ -27,4 +27,8 @@ class Search: Transaction {
         
         return getTransactions(entityName, sinceDate: date, managedObjectContext: managedObjectContext) as! [Search]
     }
+    
+    class func numSearchesSinceDate(date: NSDate, managedObjectContext: NSManagedObjectContext) -> Int {
+        return numTransactions(entityName, sinceDate: date, managedObjectContext: managedObjectContext)
+    }
 }

@@ -12,6 +12,7 @@ import Cocoa
 // TODO: Auto price update (BIN and purchase)
 // TODO: Consumables Search (Fitness)
 // TODO: Auto move to transfer list
+// TODO: Fetch data on background thread
 
 private let managedObjectContext = (NSApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
 
@@ -28,28 +29,28 @@ public class TraderStats: NSObject {
     
     var searchCount1Hr: Int {
         get {
-            return Search.getSearchesSinceDate(NSDate.hourAgo, managedObjectContext: managedObjectContext).count
+            return Search.numSearchesSinceDate(NSDate.hourAgo, managedObjectContext: managedObjectContext)
         }
     }
     var searchCount90min: Int {
         get {
-            return Search.getSearchesSinceDate(NSDate(timeIntervalSinceNow: -60*90), managedObjectContext: managedObjectContext).count
+            return 0//Search.numSearchesSinceDate(NSDate(timeIntervalSinceNow: -60*90), managedObjectContext: managedObjectContext)
         }
     }
     var searchCount2Hr: Int {
         get {
-            return Search.getSearchesSinceDate(NSDate(timeIntervalSinceNow: -2*3600), managedObjectContext: managedObjectContext).count
+            return 0//Search.numSearchesSinceDate(NSDate(timeIntervalSinceNow: -2*3600), managedObjectContext: managedObjectContext)
         }
     }
     var searchCount24Hr: Int {
         get {
-            return Search.getSearchesSinceDate(NSDate.dayAgo, managedObjectContext: managedObjectContext).count
+            return Search.numSearchesSinceDate(NSDate.dayAgo, managedObjectContext: managedObjectContext)
         }
     }
     
     var searchCountAllTime: Int {
         get {
-            return Search.getSearchesSinceDate(NSDate.allTime, managedObjectContext: managedObjectContext).count
+            return 0//Search.numSearchesSinceDate(NSDate.allTime, managedObjectContext: managedObjectContext)
         }
     }
     
