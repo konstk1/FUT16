@@ -10,6 +10,7 @@ import Foundation
 
 extension FUT16 {
     public class ItemParams {
+        var type: String
         var level: String
         var minPrice: UInt
         var maxPrice: UInt
@@ -20,7 +21,8 @@ extension FUT16 {
         
         private static let maxRecords: UInt = 50
         
-        init(level: String = "", minPrice: UInt = 0, maxPrice: UInt = 0, minBin: UInt = 0, maxBin: UInt = 0, startRecord: UInt = 0, numRecords: UInt = PlayerParams.maxRecords) {
+        private init(type: String, level: String = "", minPrice: UInt = 0, maxPrice: UInt = 0, minBin: UInt = 0, maxBin: UInt = 0, startRecord: UInt = 0, numRecords: UInt = PlayerParams.maxRecords) {
+            self.type = type
             self.level = level
             self.minPrice = minPrice
             self.maxPrice = maxPrice
@@ -38,6 +40,7 @@ extension FUT16 {
                 url += "num=\(numRecords)"
                 
                 // other optional parameters
+                url +=     type.isEmpty ? "" : "&type=\(type)"
                 url +=    level.isEmpty ? "" : "&lev=\(level)"
                 url +=    minPrice == 0 ? "" : "&micr=\(minPrice)"
                 url +=    maxPrice == 0 ? "" : "&macr=\(maxPrice)"
@@ -62,12 +65,12 @@ extension FUT16 {
             self.league = league
             self.team = team
             
-            super.init(level: level, minPrice: minPrice, maxPrice: maxPrice, minBin: minBin, maxBin: maxBin, startRecord: startRecord, numRecords: numRecords)
+            super.init(type: "player", level: level, minPrice: minPrice, maxPrice: maxPrice, minBin: minBin, maxBin: maxBin, startRecord: startRecord, numRecords: numRecords)
         }
         
         override var urlPath: String {
             get {
-                var url = super.urlPath + "&type=player"
+                var url = super.urlPath
                 
                 url +=    playerId.isEmpty ? "" : "&maskedDefId=\(playerId)"
                 url += nationality.isEmpty ? "" : "&nat=\(nationality)"
@@ -87,7 +90,7 @@ extension FUT16 {
 
             self.category = category
             
-            super.init(level: level, minPrice: minPrice, maxPrice: maxPrice, minBin: minBin, maxBin: maxBin, startRecord: startRecord, numRecords: numRecords)
+            super.init(type: "development", level: level, minPrice: minPrice, maxPrice: maxPrice, minBin: minBin, maxBin: maxBin, startRecord: startRecord, numRecords: numRecords)
         }
         
         // transfermarket?minb=600&maxb=650&cat=fitness&num=16&lev=gold&start=0&type=development

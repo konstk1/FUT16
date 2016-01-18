@@ -10,8 +10,8 @@ import Foundation
 import Alamofire
 
 extension FUT16 {    
-    public func findAuctionsForPlayer(params: PlayerParams, completion: (auctions: [String : String], error: FutError) -> Void) {
-//        print(params.urlPath)
+    public func findAuctionsForItem(params: ItemParams, completion: (auctions: [String : String], error: FutError) -> Void) {
+        print(params.urlPath)
         requestForPath(params.urlPath) { (json) -> Void in
             var auctions = [String : String]()
             var error = FutError.None

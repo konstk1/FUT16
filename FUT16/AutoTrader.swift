@@ -64,7 +64,7 @@ public class TraderStats: NSObject {
 
 public class AutoTrader: NSObject {
     private var fut16: FUT16
-    private var playerParams = FUT16.PlayerParams()
+    private var itemParams: FUT16.ItemParams!
     private var buyAtBin: UInt = 0
     
     private var sessionErrorCount = 0
@@ -83,23 +83,23 @@ public class AutoTrader: NSObject {
     public init(fut16: FUT16, update: (() -> ())?) {
         self.fut16 = fut16
         self.updateOwner = update
-        //updateOwner?()
+        //notifyOwner()
     }
     
     // return break-even buy
-    func setTradeParams(playerParams: FUT16.PlayerParams, buyAtBin: UInt) -> UInt {
-        guard buyAtBin <= playerParams.maxBin else {
+    func setTradeParams(itemParams: FUT16.ItemParams, buyAtBin: UInt) -> UInt {
+        guard buyAtBin <= itemParams.maxBin else {
             stopTrading("Buy BIN is more than search BIN")
             return 0
         }
 
-        self.playerParams = playerParams
-        self.playerParams.maxPrice = playerParams.maxBin
+        self.itemParams = itemParams
+        self.itemParams.maxPrice = itemParams.maxBin
         self.buyAtBin = buyAtBin
         
-        print("Trade params: \(self.playerParams.playerId) - search <= \(self.playerParams.maxBin) - buy at <= \(self.buyAtBin)")
+        print("Trade params: \(self.itemParams.type) - search <= \(self.itemParams.maxBin) - buy at <= \(self.buyAtBin)")
         
-        let breakEvenPrice = UInt(round(Double(playerParams.maxBin) * 0.95))
+        let breakEvenPrice = UInt(round(Double(itemParams.maxBin) * 0.95))
         return breakEvenPrice
     }
     
@@ -107,7 +107,7 @@ public class AutoTrader: NSObject {
         stats = TraderStats()
         sessionErrorCount = 0
         minBin = 10000000
-        updateOwner?()
+        notifyOwner()
     }
     
     func startTrading() {
@@ -123,7 +123,7 @@ public class AutoTrader: NSObject {
             pollTimer.invalidate()
         }
         
-        self.updateOwner?()
+        self.notifyOwner()
         
         print("Trading stopped: [\(reason)].")
     }
@@ -134,9 +134,9 @@ public class AutoTrader: NSObject {
         var curMinId: String = ""
         
         // increment max price to avoid cached results
-        playerParams.maxPrice = incrementPrice(playerParams.maxPrice)
+        itemParams.maxPrice = incrementPrice(itemParams.maxPrice)
         
-        fut16.findAuctionsForPlayer(playerParams) { (auctions, error) -> Void in
+        fut16.findAuctionsForItem(itemParams) { (auctions, error) -> Void in
             self.stats.searchCount++
             self.logSearch()        // save to CoreData
             
@@ -146,7 +146,7 @@ public class AutoTrader: NSObject {
                 self.stopTrading("Search limit reached")
             }
             
-            // anything but 
+            // check for errors
             guard error == .None else {
                 print(error)
                 self.sessionErrorCount++
@@ -158,6 +158,7 @@ public class AutoTrader: NSObject {
                 return
             }
             
+            // find current search min bins
             auctions.forEach({ (id, bin) -> () in
                 if let curBin = UInt(bin) {
                     if curBin < curMinBin {
@@ -167,7 +168,7 @@ public class AutoTrader: NSObject {
                 }
             })
             
-            print("Search: \(self.stats.searchCount) (\(auctions.count)) - Cur Min: \(curMinBin) (Min: \(self.minBin)) - \(self.playerParams.maxPrice)")
+            print("Search: \(self.stats.searchCount) (\(auctions.count)) - Cur Min: \(curMinBin) (Min: \(self.minBin)) - \(self.itemParams.maxPrice)")
             
             if curMinBin <= self.buyAtBin {
                 print("Purchasing...", terminator: "")
@@ -186,10 +187,11 @@ public class AutoTrader: NSObject {
                     self.stats.averagePurchaseCost = Int(round(Double(self.stats.purchaseTotalCost) / Double(self.stats.purchaseCount)))
                     
                     // save to CoreData
-                    Purchase.NewPurchase(Int(curMinBin), maxBin: Int(self.playerParams.maxBin), coinBallance: self.fut16.coinsBalance, managedObjectContext: managedObjectContext)
+                    Purchase.NewPurchase(Int(curMinBin), maxBin: Int(self.itemParams.maxBin), coinBallance: self.fut16.coinsBalance, managedObjectContext: managedObjectContext)
                     
                     print("Success!")
                     
+                    // stop trading if not enough coins for next purchase
                     if self.fut16.coinsBalance < Int(self.buyAtBin) {
                         self.stopTrading("Not enough coins.  Balance: \(self.fut16.coinsBalance)")
                     }
@@ -199,16 +201,20 @@ public class AutoTrader: NSObject {
                         self.stopTrading("Unassigned slots full")
                     }
                 }
-                self.updateOwner?()
+                self.notifyOwner()
             }
             
             if curMinBin < self.minBin {
                 self.minBin = curMinBin
             }
             
-            self.updateOwner?()
+            self.notifyOwner()
         } // findAuctionsForPlayer
     } // end pollAuctions
+    
+    func notifyOwner() {
+        self.updateOwner?()
+    }
     
 // MARK: Stat and CoreData helpers
     func logSearch() {
