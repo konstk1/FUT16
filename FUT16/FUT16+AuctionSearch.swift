@@ -11,7 +11,7 @@ import Alamofire
 
 extension FUT16 {    
     public func findAuctionsForItem(params: ItemParams, completion: (auctions: [String : String], error: FutError) -> Void) {
-        print(params.urlPath)
+//        print(params.urlPath)
         requestForPath(params.urlPath) { (json) -> Void in
             var auctions = [String : String]()
             var error = FutError.None
@@ -22,6 +22,7 @@ extension FUT16 {
                 json["auctionInfo"].forEach{ (key, json) in
                     auctions[json["tradeId"].stringValue] = json["buyNowPrice"].stringValue
                 }
+                print(json["auctionInfo"])
             } else if errorCode == "401" {
                 error = .ExpiredSession
             } else if errorCode == "500" {

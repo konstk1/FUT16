@@ -16,6 +16,8 @@ class ViewController: NSViewController {
     
     @IBOutlet weak var secretAnswerTextField: NSTextField!
     
+    @IBOutlet weak var typeSegment: NSSegmentedControl!
+    
     @IBOutlet weak var playerIdTextField: NSTextField!
     @IBOutlet weak var nationalityComboBox: NSComboBox!
     @IBOutlet weak var leagueComboBox: NSComboBox!
@@ -37,8 +39,9 @@ class ViewController: NSViewController {
 
         autoTrader = AutoTrader(fut16: fut16, update: {
             self.traderStats = self.autoTrader.stats
-            //self.traderStats.searchCount = self.autoTrader.stats.searchCount
         })
+        
+        updateFieldsStateForSearchType(typeSegment.selectedLabel())
     }
 
     override var representedObject: AnyObject? {
@@ -78,7 +81,7 @@ class ViewController: NSViewController {
         // Benzema 165153
         // Ramos 155862
         // Alves 146530 (13k)
-        let playerId = playerIdTextField.stringValue
+        
         let nationality = getIdFromComboBox(nationalityComboBox) ?? ""
         let league = getIdFromComboBox(leagueComboBox) ?? ""
         let team = getIdFromComboBox(teamComboBox) ?? ""
@@ -86,12 +89,50 @@ class ViewController: NSViewController {
         
         let maxSearchBin = UInt(binTextField.integerValue)
         let buyAtBin = UInt(buyAtTextField.integerValue)
- 
-        let playerParams = FUT16.PlayerParams(playerId: playerId, nationality: nationality, league: league, team: team, level: level,  maxBin: maxSearchBin)
         
-        let breakEvenPrice = autoTrader?.setTradeParams(playerParams, buyAtBin: buyAtBin)
+        var params: FUT16.ItemParams!
         
+        switch typeSegment.selectedLabel() {
+        case "Player":
+            let playerId = playerIdTextField.stringValue
+            params = FUT16.PlayerParams(playerId: playerId, nationality: nationality, league: league, team: team, level: level,  maxBin: maxSearchBin)
+        case "Fitness":
+            params = FUT16.ConsumableParams(category: "fitness", level: level, maxBin: maxSearchBin)
+        case "Manager":
+            break
+        default:
+            break
+        }
+        
+        let breakEvenPrice = autoTrader?.setTradeParams(params, buyAtBin: buyAtBin)
         breakEvenTextField.integerValue = Int(breakEvenPrice!)
+    }
+    
+    @IBAction func typeSegmentChanged(sender: NSSegmentedControl) {
+        updateFieldsStateForSearchType(sender.selectedLabel())
+    }
+    
+    func updateFieldsStateForSearchType(type: String) {
+        // enable all and then disabled necessary fields based on type
+        playerIdTextField.enabled = true
+        playerIdTextField.enabled = true
+        teamComboBox.enabled = true
+        leagueComboBox.enabled = true
+        nationalityComboBox.enabled = true
+        
+        switch type {
+        case "Player":
+            break
+        case "Fitness":
+            playerIdTextField.enabled = false
+            teamComboBox.enabled = false
+            leagueComboBox.enabled = false
+            nationalityComboBox.enabled = false
+        case "Manager":
+            playerIdTextField.enabled = false
+        default:
+            break
+        }
     }
     
     @IBAction func doStuffPressed(sender: NSButton) {
@@ -105,6 +146,12 @@ class ViewController: NSViewController {
     
     @IBAction func resetStatsPressed(sender: NSButton) {
         autoTrader?.resetStats()
+    }
+}
+
+extension NSSegmentedControl {
+    func selectedLabel() -> String {
+        return self.labelForSegment(self.selectedSegment) ?? ""
     }
 }
 

@@ -34,6 +34,28 @@ func incrementPrice(price: UInt) -> UInt {
     return price + incr
 }
 
+func decrementPrice(price: UInt) -> UInt {
+    var decr: UInt = 0
+    
+    guard price >= 50 else {
+        return 0
+    }
+
+    if price <= 1000 {
+        decr = 50
+    } else if price <= 10000 {
+        decr = 100
+    } else if price <= 50000 {
+        decr = 250
+    } else if price <= 100000 {
+        decr = 500
+    } else {
+        decr = 1000
+    }
+    
+    return price - decr
+}
+
 extension NSDate {
     static var hourAgo: NSDate {
         get {
