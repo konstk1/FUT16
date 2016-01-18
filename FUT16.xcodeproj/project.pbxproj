@@ -14,6 +14,7 @@
 		1C21A9FF1C20B79000B4941E /* FUT16.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C21A9FE1C20B79000B4941E /* FUT16.swift */; };
 		1C21AA031C20BC4400B4941E /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C21AA021C20BC4400B4941E /* Alamofire.framework */; };
 		1C21AA051C20BC5C00B4941E /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1C21AA021C20BC4400B4941E /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		1C84CF3C1C4D5ED900A4517D /* FUT16+Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C84CF3B1C4D5ED900A4517D /* FUT16+Login.swift */; };
 		1CCB11201C483AD400DB43BA /* FUT16+SearchParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CCB111F1C483AD400DB43BA /* FUT16+SearchParams.swift */; };
 		1CF6A73D1C2365D8009A9181 /* Cartfile in Resources */ = {isa = PBXBuildFile; fileRef = 1CF6A73C1C2365D8009A9181 /* Cartfile */; };
 		1CF6A7401C23663B009A9181 /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CF6A73E1C236633009A9181 /* SwiftyJSON.framework */; };
@@ -59,6 +60,7 @@
 		1C21A9F21C20B2EC00B4941E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1C21A9FE1C20B79000B4941E /* FUT16.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FUT16.swift; sourceTree = "<group>"; };
 		1C21AA021C20BC4400B4941E /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/Mac/Alamofire.framework; sourceTree = "<group>"; };
+		1C84CF3B1C4D5ED900A4517D /* FUT16+Login.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FUT16+Login.swift"; sourceTree = "<group>"; };
 		1CCB111F1C483AD400DB43BA /* FUT16+SearchParams.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FUT16+SearchParams.swift"; sourceTree = "<group>"; };
 		1CF6A73C1C2365D8009A9181 /* Cartfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Cartfile; sourceTree = SOURCE_ROOT; };
 		1CF6A73E1C236633009A9181 /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = Carthage/Build/Mac/SwiftyJSON.framework; sourceTree = "<group>"; };
@@ -118,6 +120,7 @@
 			children = (
 				1C21A9E91C20B2EC00B4941E /* AppDelegate.swift */,
 				1C21A9FE1C20B79000B4941E /* FUT16.swift */,
+				1C84CF3B1C4D5ED900A4517D /* FUT16+Login.swift */,
 				1CF6A80F1C237993009A9181 /* FUT16+Transport.swift */,
 				1CF6A8111C246071009A9181 /* FUT16+PlayerSearch.swift */,
 				FF50D21F1C274A2D003F1D02 /* FUT16+Bid.swift */,
@@ -248,6 +251,7 @@
 				FF68C85B1C38B8F000A6D9E1 /* Purchase.swift in Sources */,
 				1CF6A8101C237993009A9181 /* FUT16+Transport.swift in Sources */,
 				FF68C8791C38B98000A6D9E1 /* Search+CoreDataProperties.swift in Sources */,
+				1C84CF3C1C4D5ED900A4517D /* FUT16+Login.swift in Sources */,
 				FF50D2221C277775003F1D02 /* Utilities.swift in Sources */,
 				1C21A9EA1C20B2EC00B4941E /* AppDelegate.swift in Sources */,
 				FF68C85D1C38B8F000A6D9E1 /* Search.swift in Sources */,
