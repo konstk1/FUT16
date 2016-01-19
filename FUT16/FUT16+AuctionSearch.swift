@@ -8,21 +8,44 @@
 
 import Foundation
 import Alamofire
+import SwiftyJSON
 
-extension FUT16 {    
-    public func findAuctionsForItem(params: ItemParams, completion: (auctions: [String : String], error: FutError) -> Void) {
+extension FUT16 {
+    public struct AuctionInfo: CustomStringConvertible {
+        var tradeId = ""
+        var expiresIn: UInt = 0
+        var buyNowPrice: UInt = 0
+        var isRare = false
+        var subTypeId: UInt = 0
+        
+        init(fromJson json: JSON) {
+            tradeId = json["tradeId"].stringValue
+            expiresIn = json["expires"].uInt ?? 0
+            buyNowPrice = json["buyNowPrice"].uInt ?? 0
+            isRare = json["rare"].boolValue
+            subTypeId = json["cardsubtypeid"].uInt ?? 0
+        }
+        
+        public var description: String {
+            return "Type: \(subTypeId) - \(isRare) BIN: \(buyNowPrice) Expires: \(expiresIn)"
+        }
+    }
+    
+    public func findAuctionsForItem(params: ItemParams, completion: (auctions: [AuctionInfo], error: FutError) -> Void) {
 //        print(params.urlPath)
         requestForPath(params.urlPath) { (json) -> Void in
-            var auctions = [String : String]()
+            var auctions = [AuctionInfo]()
             var error = FutError.None
             let errorCode = json["code"].stringValue
-            //print("Error Code: \(errorCode)")
+//            print("Error Code: \(errorCode)")
             
             if json["auctionInfo"].count > 0 {
                 json["auctionInfo"].forEach{ (key, json) in
-                    auctions[json["tradeId"].stringValue] = json["buyNowPrice"].stringValue
+                    let auction = AuctionInfo(fromJson: json)
+                    auctions.append(auction)
+                    print(auction)
                 }
-                print(json["auctionInfo"])
+//                print(json["auctionInfo"])
             } else if errorCode == "401" {
                 error = .ExpiredSession
             } else if errorCode == "500" {

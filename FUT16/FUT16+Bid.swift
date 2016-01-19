@@ -13,9 +13,9 @@ import SwiftyJSON
 // Params: {"bid":200}
 
 extension FUT16 {
-    func placeBidOnAuction(auctionId: String, ammount: UInt, completion: (error: FutError) -> Void) {
+    func placeBidOnAuction(auctionId: String, amount: UInt, completion: (error: FutError) -> Void) {
         let bidUrl = "trade/\(auctionId)/bid"
-        let parameters = ["bid" : ammount]
+        let parameters = ["bid" : amount]
         
         self.requestForPath(bidUrl, withParameters: parameters, encoding: .JSON, methodOverride: "PUT") { (json) -> Void in
             let tradeId = json["auctionInfo"][0]["tradeId"].stringValue
@@ -35,7 +35,7 @@ extension FUT16 {
                     error = .PurchaseFailed
                 }
             } else {
-                print("Purchased \(tradeId) for \(ammount) - \(json["auctionInfo"][0]["tradeState"]) (Bal: \(self.coinsBalance))")
+                print("Purchased \(tradeId) for \(amount) - \(json["auctionInfo"][0]["tradeState"]) (Bal: \(self.coinsBalance))")
             }
             
             completion(error: error)

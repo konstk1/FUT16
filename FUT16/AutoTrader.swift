@@ -50,7 +50,7 @@ public class TraderStats: NSObject {
     
     var searchCountAllTime: Int {
         get {
-            return 0//Search.numSearchesSinceDate(NSDate.allTime, managedObjectContext: managedObjectContext)
+            return Search.numSearchesSinceDate(NSDate.allTime, managedObjectContext: managedObjectContext)
         }
     }
     
@@ -159,58 +159,80 @@ public class AutoTrader: NSObject {
             }
             
             // find current search min bins
-            auctions.forEach({ (id, bin) -> () in
-                if let curBin = UInt(bin) {
-                    if curBin < curMinBin {
-                        curMinBin = curBin
-                        curMinId = id
-                    }
+            auctions.forEach {
+                if $0.buyNowPrice < curMinBin {
+                    curMinBin = $0.buyNowPrice
+                    curMinId = $0.tradeId
                 }
-            })
+            }
             
             print("Search: \(self.stats.searchCount) (\(auctions.count)) - Cur Min: \(curMinBin) (Min: \(self.minBin)) - \(self.itemParams.maxPrice)")
             
             if curMinBin <= self.buyAtBin {
-                print("Purchasing...", terminator: "")
-                self.fut16.placeBidOnAuction(curMinId, ammount: curMinBin) { (error) in
-                    guard error == .None else {
-                        print("Fail: Error - \(error).")
-                        self.stats.purchaseFailCount++
-                        return
-                    }
-                    
-                    // some stat keeping
-                    self.stats.purchaseCount++
-                    self.stats.lastPurchaseCost = Int(curMinBin)
-                    self.stats.purchaseTotalCost += self.stats.lastPurchaseCost
-                    self.stats.coinsBalance = self.fut16.coinsBalance
-                    self.stats.averagePurchaseCost = Int(round(Double(self.stats.purchaseTotalCost) / Double(self.stats.purchaseCount)))
-                    
-                    // save to CoreData
-                    Purchase.NewPurchase(Int(curMinBin), maxBin: Int(self.itemParams.maxBin), coinBallance: self.fut16.coinsBalance, managedObjectContext: managedObjectContext)
-                    
-                    print("Success!")
-                    
-                    // stop trading if not enough coins for next purchase
-                    if self.fut16.coinsBalance < Int(self.buyAtBin) {
-                        self.stopTrading("Not enough coins.  Balance: \(self.fut16.coinsBalance)")
-                    }
-                    
-                    // FUT only allows 5 unassigned players
-                    if self.stats.purchaseCount >= 5 {
-                        self.stopTrading("Unassigned slots full")
-                    }
-                }
-                self.notifyOwner()
+                //self.bidOnAuction(curMinId, amount: curMinBin)
             }
             
+            // update session min
             if curMinBin < self.minBin {
                 self.minBin = curMinBin
             }
             
+            self.tuneSearchParamsFromAuctions(auctions)
+            
             self.notifyOwner()
         } // findAuctionsForPlayer
     } // end pollAuctions
+    
+    func tuneSearchParamsFromAuctions(auctions: [FUT16.AuctionInfo]) {
+        // at the moment, tune start page only
+        // find page that has newly listed auctions (as close to but less than 1hr - 3600 seconds)
+        print("Tune: start \(itemParams.startRecord): \(auctions.first?.expiresIn) - \(auctions.last?.expiresIn)")
+        
+        // if there is less then a single page of auctions, do nothing
+        if auctions.count < Int(itemParams.numRecords) {
+            return
+        }
+        
+        if auctions.last?.expiresIn < 3600 {
+            itemParams.startRecord += itemParams.numRecords
+        } else if auctions.first?.expiresIn >= 3600 {
+            itemParams.startRecord -= itemParams.numRecords
+        }
+    }
+    
+    func bidOnAuction(id: String, amount: UInt) {
+        print("Purchasing...", terminator: "")
+        self.fut16.placeBidOnAuction(id, amount: amount) { (error) in
+            guard error == .None else {
+                print("Fail: Error - \(error).")
+                self.stats.purchaseFailCount++
+                return
+            }
+            
+            // some stat keeping
+            self.stats.purchaseCount++
+            self.stats.lastPurchaseCost = Int(amount)
+            self.stats.purchaseTotalCost += self.stats.lastPurchaseCost
+            self.stats.coinsBalance = self.fut16.coinsBalance
+            self.stats.averagePurchaseCost = Int(round(Double(self.stats.purchaseTotalCost) / Double(self.stats.purchaseCount)))
+            
+            // save to CoreData
+            Purchase.NewPurchase(Int(amount), maxBin: Int(self.itemParams.maxBin), coinBallance: self.fut16.coinsBalance, managedObjectContext: managedObjectContext)
+            
+            print("Success!")
+            
+            // stop trading if not enough coins for next purchase
+            if self.fut16.coinsBalance < Int(self.buyAtBin) {
+                self.stopTrading("Not enough coins.  Balance: \(self.fut16.coinsBalance)")
+            }
+            
+            // FUT only allows 5 unassigned players
+            if self.stats.purchaseCount >= 5 {
+                self.stopTrading("Unassigned slots full")
+            }
+        }
+        self.notifyOwner()
+    }
     
     func notifyOwner() {
         self.updateOwner?()

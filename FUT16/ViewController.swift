@@ -23,7 +23,8 @@ class ViewController: NSViewController {
     @IBOutlet weak var leagueComboBox: NSComboBox!
     @IBOutlet weak var teamComboBox: NSComboBox!
     @IBOutlet weak var levelComboBox: NSComboBox!
-    @IBOutlet weak var binTextField: NSTextField!
+    @IBOutlet weak var minBinTextField: NSTextField!
+    @IBOutlet weak var maxBinTextField: NSTextField!
     @IBOutlet weak var buyAtTextField: NSTextField!
     @IBOutlet weak var breakEvenTextField: NSTextField!
     
@@ -87,7 +88,8 @@ class ViewController: NSViewController {
         let team = getIdFromComboBox(teamComboBox) ?? ""
         let level  = getIdFromComboBox(levelComboBox) ?? ""
         
-        let maxSearchBin = UInt(binTextField.integerValue)
+        let minSearchBin = UInt(minBinTextField.integerValue)
+        let maxSearchBin = UInt(maxBinTextField.integerValue)
         let buyAtBin = UInt(buyAtTextField.integerValue)
         
         var params: FUT16.ItemParams!
@@ -95,9 +97,9 @@ class ViewController: NSViewController {
         switch typeSegment.selectedLabel() {
         case "Player":
             let playerId = playerIdTextField.stringValue
-            params = FUT16.PlayerParams(playerId: playerId, nationality: nationality, league: league, team: team, level: level,  maxBin: maxSearchBin)
+            params = FUT16.PlayerParams(playerId: playerId, nationality: nationality, league: league, team: team, level: level, minBin: minSearchBin, maxBin: maxSearchBin)
         case "Fitness":
-            params = FUT16.ConsumableParams(category: "fitness", level: level, maxBin: maxSearchBin)
+            params = FUT16.ConsumableParams(category: "fitness", level: level, minBin: minSearchBin, maxBin: maxSearchBin)
         case "Manager":
             break
         default:
