@@ -76,6 +76,8 @@ public class AutoTrader: NSObject {
     
     private(set) public var minBin: UInt = 10000000
     
+    private var purchaseQueue = Array<FUT16.AuctionInfo>()
+    
     private(set) public var stats = TraderStats()
     
     private var updateOwner: (() -> ())?
@@ -97,7 +99,7 @@ public class AutoTrader: NSObject {
         self.itemParams.maxPrice = itemParams.maxBin
         self.buyAtBin = buyAtBin
         
-        print("Trade params: \(self.itemParams.type) - search <= \(self.itemParams.maxBin) - buy at <= \(self.buyAtBin)")
+        print("Trade params: \(self.itemParams.type) - search <= \(self.itemParams.minBin)-\(self.itemParams.maxBin) - buy at <= \(self.buyAtBin)")
         
         let breakEvenPrice = UInt(round(Double(itemParams.maxBin) * 0.95))
         return breakEvenPrice
@@ -131,7 +133,6 @@ public class AutoTrader: NSObject {
     func pollAuctions() {
         print(".\(NSDate.localTime):  ", terminator: "")
         var curMinBin: UInt = 10000000
-        var curMinId: String = ""
         
         // increment max price to avoid cached results
         itemParams.maxPrice = incrementPrice(itemParams.maxPrice)
@@ -162,21 +163,22 @@ public class AutoTrader: NSObject {
             auctions.forEach {
                 if $0.buyNowPrice < curMinBin {
                     curMinBin = $0.buyNowPrice
-                    curMinId = $0.tradeId
+                }
+                
+                if $0.buyNowPrice <= self.buyAtBin && $0.isRare {
+                    self.purchaseQueue.append($0)
+                    print("Purchase Queued")
                 }
             }
             
-            print("Search: \(self.stats.searchCount) (\(auctions.count)) - Cur Min: \(curMinBin) (Min: \(self.minBin)) - \(self.itemParams.maxPrice)")
-            
-            if curMinBin <= self.buyAtBin {
-                //self.bidOnAuction(curMinId, amount: curMinBin)
-            }
+            print("Search: \(self.stats.searchCount) (\(auctions.count)-\(self.itemParams.startRecord)) - Cur Min: \(curMinBin) (Min: \(self.minBin)) - \(self.itemParams.maxPrice)")
             
             // update session min
             if curMinBin < self.minBin {
                 self.minBin = curMinBin
             }
             
+            self.processPurchaseQueue()
             self.tuneSearchParamsFromAuctions(auctions)
             
             self.notifyOwner()
@@ -186,23 +188,37 @@ public class AutoTrader: NSObject {
     func tuneSearchParamsFromAuctions(auctions: [FUT16.AuctionInfo]) {
         // at the moment, tune start page only
         // find page that has newly listed auctions (as close to but less than 1hr - 3600 seconds)
-        print("Tune: start \(itemParams.startRecord): \(auctions.first?.expiresIn) - \(auctions.last?.expiresIn)")
-        
-        // if there is less then a single page of auctions, do nothing
-        if auctions.count < Int(itemParams.numRecords) {
+//        print("Tune: start \(itemParams.startRecord): \(auctions.first?.expiresIn) - \(auctions.last?.expiresIn)")
+
+        if auctions.isEmpty {
+            // if empty, back off one page but don't go past 0
+            if itemParams.startRecord < itemParams.numRecords {
+                itemParams.startRecord = 0
+            } else {
+                itemParams.startRecord -= itemParams.numRecords
+            }
+        } else if auctions.count < Int(itemParams.numRecords) {
+            // if there is less then a single page of auctions, do nothing
             return
-        }
-        
-        if auctions.last?.expiresIn < 3600 {
+        } else if auctions.last?.expiresIn < 3600 {
             itemParams.startRecord += itemParams.numRecords
         } else if auctions.first?.expiresIn >= 3600 {
             itemParams.startRecord -= itemParams.numRecords
         }
     }
     
-    func bidOnAuction(id: String, amount: UInt) {
+    var currentAuction: FUT16.AuctionInfo!
+    
+    func processPurchaseQueue() {
+        guard purchaseQueue.count > 0 else { return }
+        
+        let auction = purchaseQueue.removeFirst()
+        
         print("Purchasing...", terminator: "")
-        self.fut16.placeBidOnAuction(id, amount: amount) { (error) in
+        self.fut16.placeBidOnAuction(auction.tradeId, amount: auction.buyNowPrice) { (error) in
+            defer {
+                self.processPurchaseQueue()
+            }
             guard error == .None else {
                 print("Fail: Error - \(error).")
                 self.stats.purchaseFailCount++
@@ -211,13 +227,13 @@ public class AutoTrader: NSObject {
             
             // some stat keeping
             self.stats.purchaseCount++
-            self.stats.lastPurchaseCost = Int(amount)
+            self.stats.lastPurchaseCost = Int(auction.buyNowPrice)
             self.stats.purchaseTotalCost += self.stats.lastPurchaseCost
             self.stats.coinsBalance = self.fut16.coinsBalance
             self.stats.averagePurchaseCost = Int(round(Double(self.stats.purchaseTotalCost) / Double(self.stats.purchaseCount)))
             
             // save to CoreData
-            Purchase.NewPurchase(Int(amount), maxBin: Int(self.itemParams.maxBin), coinBallance: self.fut16.coinsBalance, managedObjectContext: managedObjectContext)
+            Purchase.NewPurchase(Int(auction.buyNowPrice), maxBin: Int(self.itemParams.maxBin), coinBallance: self.fut16.coinsBalance, managedObjectContext: managedObjectContext)
             
             print("Success!")
             

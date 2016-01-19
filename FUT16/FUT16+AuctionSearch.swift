@@ -22,8 +22,8 @@ extension FUT16 {
             tradeId = json["tradeId"].stringValue
             expiresIn = json["expires"].uInt ?? 0
             buyNowPrice = json["buyNowPrice"].uInt ?? 0
-            isRare = json["rare"].boolValue
-            subTypeId = json["cardsubtypeid"].uInt ?? 0
+            isRare = json["itemData"]["rareflag"].boolValue
+            subTypeId = json["itemData"]["cardsubtypeid"].uInt ?? 0
         }
         
         public var description: String {
@@ -43,7 +43,7 @@ extension FUT16 {
                 json["auctionInfo"].forEach{ (key, json) in
                     let auction = AuctionInfo(fromJson: json)
                     auctions.append(auction)
-                    print(auction)
+//                    print(auction)
                 }
 //                print(json["auctionInfo"])
             } else if errorCode == "401" {
