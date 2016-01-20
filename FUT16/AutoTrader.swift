@@ -167,7 +167,7 @@ public class AutoTrader: NSObject {
                 
                 if $0.buyNowPrice <= self.buyAtBin && $0.isRare {
                     self.purchaseQueue.append($0)
-                    print("Purchase Queued")
+                    print("Purchase Queued \($0.tradeId)")
                 }
             }
             
@@ -214,7 +214,7 @@ public class AutoTrader: NSObject {
         
         let auction = purchaseQueue.removeFirst()
         
-        print("Purchasing...", terminator: "")
+        print("Purchasing \(auction.tradeId)...", terminator: "")
         self.fut16.placeBidOnAuction(auction.tradeId, amount: auction.buyNowPrice) { (error) in
             defer {
                 self.processPurchaseQueue()
