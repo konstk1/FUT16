@@ -220,7 +220,7 @@ public class AutoTrader: NSObject {
                 self.processPurchaseQueue()
             }
             guard error == .None else {
-                print("Fail: Error - \(error).")
+                print("Fail: Error - \(error), missed \(auction.buyNowPrice).")
                 self.stats.purchaseFailCount++
                 return
             }
