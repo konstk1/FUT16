@@ -10,7 +10,6 @@ import Foundation
 import Cocoa
 
 // TODO: Auto price update (BIN and purchase)
-// TODO: Consumables Search (Fitness)
 // TODO: Auto move to transfer list
 // TODO: Fetch data on background thread
 
@@ -217,7 +216,7 @@ public class AutoTrader: NSObject {
         print("Purchasing \(auction.tradeId) (\(auction.buyNowPrice))...", terminator: "")
         self.fut16.placeBidOnAuction(auction.tradeId, amount: auction.buyNowPrice) { (error) in
             defer {
-                self.processPurchaseQueue()
+                NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: Selector("processPurchaseQueue"), userInfo: nil, repeats: false)
             }
             guard error == .None else {
                 print("Fail: Error - \(error).")
