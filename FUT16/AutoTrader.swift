@@ -214,13 +214,13 @@ public class AutoTrader: NSObject {
         
         let auction = purchaseQueue.removeFirst()
         
-        print("Purchasing \(auction.tradeId)...", terminator: "")
+        print("Purchasing \(auction.tradeId) (\(auction.buyNowPrice))...", terminator: "")
         self.fut16.placeBidOnAuction(auction.tradeId, amount: auction.buyNowPrice) { (error) in
             defer {
                 self.processPurchaseQueue()
             }
             guard error == .None else {
-                print("Fail: Error - \(error), missed \(auction.buyNowPrice).")
+                print("Fail: Error - \(error).")
                 self.stats.purchaseFailCount++
                 return
             }
