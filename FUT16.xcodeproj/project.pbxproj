@@ -14,6 +14,7 @@
 		1C21A9FF1C20B79000B4941E /* FUT16.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C21A9FE1C20B79000B4941E /* FUT16.swift */; };
 		1C21AA031C20BC4400B4941E /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C21AA021C20BC4400B4941E /* Alamofire.framework */; };
 		1C21AA051C20BC5C00B4941E /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1C21AA021C20BC4400B4941E /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		1C6DBA991C52C15000ECE215 /* FUT16+Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C6DBA981C52C15000ECE215 /* FUT16+Item.swift */; };
 		1C84CF3C1C4D5ED900A4517D /* FUT16+Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C84CF3B1C4D5ED900A4517D /* FUT16+Login.swift */; };
 		1CCB11201C483AD400DB43BA /* FUT16+SearchParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CCB111F1C483AD400DB43BA /* FUT16+SearchParams.swift */; };
 		1CF6A73D1C2365D8009A9181 /* Cartfile in Resources */ = {isa = PBXBuildFile; fileRef = 1CF6A73C1C2365D8009A9181 /* Cartfile */; };
@@ -60,6 +61,7 @@
 		1C21A9F21C20B2EC00B4941E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1C21A9FE1C20B79000B4941E /* FUT16.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FUT16.swift; sourceTree = "<group>"; };
 		1C21AA021C20BC4400B4941E /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/Mac/Alamofire.framework; sourceTree = "<group>"; };
+		1C6DBA981C52C15000ECE215 /* FUT16+Item.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FUT16+Item.swift"; sourceTree = "<group>"; };
 		1C84CF3B1C4D5ED900A4517D /* FUT16+Login.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FUT16+Login.swift"; sourceTree = "<group>"; };
 		1CCB111F1C483AD400DB43BA /* FUT16+SearchParams.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FUT16+SearchParams.swift"; sourceTree = "<group>"; };
 		1CF6A73C1C2365D8009A9181 /* Cartfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Cartfile; sourceTree = SOURCE_ROOT; };
@@ -125,6 +127,7 @@
 				1CF6A8111C246071009A9181 /* FUT16+AuctionSearch.swift */,
 				FF50D21F1C274A2D003F1D02 /* FUT16+Bid.swift */,
 				1CCB111F1C483AD400DB43BA /* FUT16+SearchParams.swift */,
+				1C6DBA981C52C15000ECE215 /* FUT16+Item.swift */,
 				FF50D2251C28AA05003F1D02 /* AutoTrader.swift */,
 				FF50D2211C277775003F1D02 /* Utilities.swift */,
 				1C21A9EB1C20B2EC00B4941E /* ViewController.swift */,
@@ -247,6 +250,7 @@
 				1C21A9FF1C20B79000B4941E /* FUT16.swift in Sources */,
 				1CF6A8121C246071009A9181 /* FUT16+AuctionSearch.swift in Sources */,
 				1C21A9EC1C20B2EC00B4941E /* ViewController.swift in Sources */,
+				1C6DBA991C52C15000ECE215 /* FUT16+Item.swift in Sources */,
 				1CCB11201C483AD400DB43BA /* FUT16+SearchParams.swift in Sources */,
 				FF68C85B1C38B8F000A6D9E1 /* Purchase.swift in Sources */,
 				1CF6A8101C237993009A9181 /* FUT16+Transport.swift in Sources */,

@@ -70,7 +70,7 @@ public class AutoTrader: NSObject {
     private let SESSION_ERROR_LIMIT = 3      // stop trading after this many session errors
     private let SEARCH_LIMIT_1HR = 950       // stop trading after this many searching within 1 hour
     
-    var pollingInterval: NSTimeInterval = 2.0
+    var pollingInterval: NSTimeInterval = 1.5 //2.0
     private var pollTimer: NSTimer!
     
     private(set) public var minBin: UInt = 10000000
@@ -136,7 +136,10 @@ public class AutoTrader: NSObject {
         // re-enable app nap
         if activity != nil {
             NSProcessInfo().endActivity(activity)
+            activity = nil
         }
+        
+        fut16.sendItemsToTransferList()
     }
     
     func pollAuctions() {
