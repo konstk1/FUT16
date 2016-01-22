@@ -81,6 +81,8 @@ public class AutoTrader: NSObject {
     
     private var updateOwner: (() -> ())?
     
+    private var activity: NSObjectProtocol!      // activity to disable app nap
+    
     public init(fut16: FUT16, update: (() -> ())?) {
         self.fut16 = fut16
         self.updateOwner = update
@@ -117,6 +119,9 @@ public class AutoTrader: NSObject {
             pollAuctions()
             pollTimer = NSTimer.scheduledTimerWithTimeInterval(pollingInterval, target: self, selector: Selector("pollAuctions"), userInfo: nil, repeats: true)
         }
+        
+        // disable app nap
+        activity = NSProcessInfo().beginActivityWithOptions(.UserInitiated, reason: "FUT Trading")
     }
     
     func stopTrading(reason: String) {
@@ -127,6 +132,11 @@ public class AutoTrader: NSObject {
         self.notifyOwner()
         
         print("Trading stopped: [\(reason)].")
+        
+        // re-enable app nap
+        if activity != nil {
+            NSProcessInfo().endActivity(activity)
+        }
     }
     
     func pollAuctions() {
