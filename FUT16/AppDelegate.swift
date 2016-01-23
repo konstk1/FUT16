@@ -68,18 +68,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         if failError == nil {
             coordinator = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel)
             let user = NSUserName()
-            let url = NSURL(fileURLWithPath: "/Users/\(user)/Dropbox/Apps/FUT16/CocoaAppCD.storedata")
-            let newUrl = NSURL(fileURLWithPath: "/Users/\(user)/Dropbox/Apps/FUT16/CocoaAppCD.sqlite")
+            let url = NSURL(fileURLWithPath: "/Users/\(user)/Dropbox/Apps/FUT16/CocoaAppCD.sqlite")
             let fileManager = NSFileManager.defaultManager()
             do {
-                try coordinator!.addPersistentStoreWithType(NSXMLStoreType, configuration: nil, URL: url, options: nil)
-                
-                let managedModel = NSManagedObjectModel.mergedModelFromBundles(nil)
-                let tempCoordinator = NSPersistentStoreCoordinator(managedObjectModel: managedModel!)
-                let xmlStore = try tempCoordinator.addPersistentStoreWithType(NSXMLStoreType, configuration: nil, URL: url, options: nil)
-                try tempCoordinator.migratePersistentStore(xmlStore, toURL: newUrl, options: nil, withType: NSSQLiteStoreType)
-                print("Migration Success!")
-                
+                try coordinator!.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: url, options: nil)
             } catch {
                 failError = error as NSError
             }
