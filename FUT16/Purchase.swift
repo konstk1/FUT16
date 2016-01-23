@@ -28,7 +28,7 @@ class Purchase: Transaction {
         purchase.maxBin = Int32(maxBin)
         purchase.coinBalance = Int32(coinBallance)
         
-        save(managedObjectContext)
+//        save(managedObjectContext)
     }
     
     class func getPurchasesSinceDate(date: NSDate, managedObjectContext: NSManagedObjectContext) -> [Purchase] {

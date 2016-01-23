@@ -19,7 +19,7 @@ class Search: Transaction {
         let search = NSEntityDescription.insertNewObjectForEntityForName(entityName, inManagedObjectContext: managedObjectContext) as! Search
         search.time = NSDate().timeIntervalSinceReferenceDate
         
-        save(managedObjectContext)
+//        save(managedObjectContext)
     }
     
     // if hours is nil, fetch all

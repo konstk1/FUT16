@@ -133,6 +133,8 @@ public class AutoTrader: NSObject {
         
         print("Trading stopped: [\(reason)].")
         
+        Transaction.save(managedObjectContext)
+        
         // re-enable app nap
         if activity != nil {
             NSProcessInfo().endActivity(activity)
