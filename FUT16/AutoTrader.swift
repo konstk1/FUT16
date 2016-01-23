@@ -10,8 +10,6 @@ import Foundation
 import Cocoa
 
 // TODO: Auto price update (BIN and purchase)
-// TODO: Auto move to transfer list
-// TODO: Fetch data on background thread
 
 private let managedObjectContext = (NSApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
 
@@ -33,12 +31,12 @@ public class TraderStats: NSObject {
     }
     var searchCount90min: Int {
         get {
-            return 0//Search.numSearchesSinceDate(NSDate(timeIntervalSinceNow: -60*90), managedObjectContext: managedObjectContext)
+            return Search.numSearchesSinceDate(NSDate(timeIntervalSinceNow: -60*90), managedObjectContext: managedObjectContext)
         }
     }
     var searchCount2Hr: Int {
         get {
-            return 0//Search.numSearchesSinceDate(NSDate(timeIntervalSinceNow: -2*3600), managedObjectContext: managedObjectContext)
+            return Search.numSearchesSinceDate(NSDate(timeIntervalSinceNow: -2*3600), managedObjectContext: managedObjectContext)
         }
     }
     var searchCount24Hr: Int {
