@@ -244,10 +244,11 @@ public class AutoTrader: NSObject {
             self.stats.coinsBalance = self.fut16.coinsBalance
             self.stats.averagePurchaseCost = Int(round(Double(self.stats.purchaseTotalCost) / Double(self.stats.purchaseCount)))
             
-            // save to CoreData
+            // add to CoreData
             Purchase.NewPurchase(Int(auction.buyNowPrice), maxBin: Int(self.itemParams.maxBin), coinBallance: self.fut16.coinsBalance, managedObjectContext: managedObjectContext)
             
             print("Success!")
+            NSSound(named: "Ping")?.play()
             
             // stop trading if not enough coins for next purchase
             if self.fut16.coinsBalance < Int(self.buyAtBin) {
