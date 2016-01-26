@@ -9,7 +9,7 @@
 import Foundation
 import Cocoa
 
-// TODO: Auto price update (BIN and purchase)
+// TODO: Auto move to transfer list after 5 purchases (don't stop trading)
 
 private let managedObjectContext = (NSApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
 

@@ -14,6 +14,7 @@ public enum FutError: ErrorType {
     case InternalServerError    // 500
     case PurchaseFailed
     case BidNotAllowed
+    case NotEnoughCredit        // 470
 }
 
 func incrementPrice(price: UInt) -> UInt {

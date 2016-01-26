@@ -25,9 +25,13 @@ extension FUT16 {
                 self.coinFunds = funds
             }
             if tradeId == "" {
-                if json["code"] == "461" {    // Reason: "You are not allowed to bid on this trade" 
+                let errorCode = json["code"]
+                switch errorCode {
+                case "461":
                     error = .BidNotAllowed
-                } else {
+                case "470":
+                    error = .NotEnoughCredit
+                default:
                     print(json)
                     error = .PurchaseFailed
                 }
