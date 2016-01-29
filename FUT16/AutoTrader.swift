@@ -57,6 +57,10 @@ public class TraderStats: NSObject {
             return Int(purchases.reduce(0) { $0 + $1.price })
         }
     }
+    
+    func searchCountHours(hours: Double) -> Int {
+        return Search.numSearchesSinceDate(NSDate(timeIntervalSinceNow: -3600*hours), managedObjectContext: managedObjectContext)
+    }
 }
 
 public class AutoTrader: NSObject {
@@ -140,6 +144,12 @@ public class AutoTrader: NSObject {
         }
         
         fut16.sendItemsToTransferList()
+        
+        print("Searches (hours): ", terminator: "")
+        for i in 1...4 {
+            print(" \(i): \(stats.searchCountHours(Double(i))),", terminator: "")
+        }
+        print("")
     }
     
     func pollAuctions() {
