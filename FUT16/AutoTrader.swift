@@ -9,7 +9,7 @@
 import Foundation
 import Cocoa
 
-// TODO: Auto move to transfer list after 5 purchases (don't stop trading)
+// TODO: Queue for requests (timing, priority, order)
 
 private let managedObjectContext = (NSApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
 
@@ -265,9 +265,10 @@ public class AutoTrader: NSObject {
                 self.stopTrading("Not enough coins.  Balance: \(self.fut16.coinsBalance)")
             }
             
-            // FUT only allows 5 unassigned players
+            // After 5 purchases, move all to transfer list
             if self.stats.purchaseCount >= 5 {
-                self.stopTrading("Unassigned slots full")
+                self.fut16.sendItemsToTransferList()
+                self.stats.purchaseCount = 0
             }
         }
         self.notifyOwner()
