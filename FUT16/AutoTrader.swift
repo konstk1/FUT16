@@ -9,6 +9,7 @@
 import Foundation
 import Cocoa
 
+// TODO: Add code locking after X requests (for distribution)
 // TODO: Queue for requests (timing, priority, order)
 
 private let managedObjectContext = (NSApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
@@ -102,7 +103,7 @@ public class AutoTrader: NSObject {
         self.itemParams.maxPrice = itemParams.maxBin
         self.buyAtBin = buyAtBin
         
-        print("Trade params: \(self.itemParams.type) - search <= \(self.itemParams.minBin)-\(self.itemParams.maxBin) - buy at <= \(self.buyAtBin)")
+        Log.print("Trade params: \(self.itemParams.type) - search <= \(self.itemParams.minBin)-\(self.itemParams.maxBin) - buy at <= \(self.buyAtBin)")
         
         let breakEvenPrice = UInt(round(Double(itemParams.maxBin) * 0.95))
         return breakEvenPrice
@@ -133,7 +134,7 @@ public class AutoTrader: NSObject {
         
         self.notifyOwner()
         
-        print("Trading stopped: [\(reason)].")
+        Log.print("Trading stopped: [\(reason)].")
         
         Transaction.save(managedObjectContext)
         
@@ -145,15 +146,15 @@ public class AutoTrader: NSObject {
         
         fut16.sendItemsToTransferList()
         
-        print("Searches (hours): ", terminator: "")
+        Log.print("Searches (hours): ", terminator: "")
         for i in 1...4 {
-            print(" \(i): \(stats.searchCountHours(Double(i))),", terminator: "")
+            Log.print(" \(i): \(stats.searchCountHours(Double(i))),", terminator: "")
         }
-        print("")
+        Log.print("")
     }
     
     func pollAuctions() {
-        print(".\(NSDate.localTime):  ", terminator: "")
+        Log.print(".\(NSDate.localTime):  ", terminator: "")
         var curMinBin: UInt = 10000000
         
         // increment max price to avoid cached results
@@ -171,7 +172,7 @@ public class AutoTrader: NSObject {
             
             // check for errors
             guard error == .None else {
-                print(error)
+                Log.print(error)
                 self.sessionErrorCount++
                 if self.sessionErrorCount < self.SESSION_ERROR_LIMIT {
                     self.fut16.retrieveSessionId()   // re-login
@@ -189,11 +190,11 @@ public class AutoTrader: NSObject {
                 
                 if $0.buyNowPrice <= self.buyAtBin && $0.isRare {
                     self.purchaseQueue.append($0)
-                    print("Purchase Queued \($0.tradeId)")
+                    Log.print("Purchase Queued \($0.tradeId)")
                 }
             }
             
-            print("Search: \(self.stats.searchCount) (\(auctions.count)-\(self.itemParams.startRecord)) - Cur Min: \(curMinBin) (Min: \(self.minBin)) - \(self.itemParams.maxPrice)")
+            Log.print("Search: \(self.stats.searchCount) (\(auctions.count)-\(self.itemParams.startRecord)) - Cur Min: \(curMinBin) (Min: \(self.minBin)) - \(self.itemParams.maxPrice)")
             
             // update session min
             if curMinBin < self.minBin {
@@ -210,7 +211,7 @@ public class AutoTrader: NSObject {
     func tuneSearchParamsFromAuctions(auctions: [FUT16.AuctionInfo]) {
         // at the moment, tune start page only
         // find page that has newly listed auctions (as close to but less than 1hr - 3600 seconds)
-//        print("Tune: start \(itemParams.startRecord): \(auctions.first?.expiresIn) - \(auctions.last?.expiresIn)")
+//        Log.print("Tune: start \(itemParams.startRecord): \(auctions.first?.expiresIn) - \(auctions.last?.expiresIn)")
 
         if auctions.isEmpty {
             // if empty, back off one page but don't go past 0
@@ -236,13 +237,13 @@ public class AutoTrader: NSObject {
         
         let auction = purchaseQueue.removeFirst()
         
-        print("Purchasing \(auction.tradeId) (\(auction.buyNowPrice))...", terminator: "")
+        Log.print("Purchasing \(auction.tradeId) (\(auction.buyNowPrice))...", terminator: "")
         self.fut16.placeBidOnAuction(auction.tradeId, amount: auction.buyNowPrice) { (error) in
             defer {
                 NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: Selector("processPurchaseQueue"), userInfo: nil, repeats: false)
             }
             guard error == .None else {
-                print("Fail: Error - \(error).")
+                Log.print("Fail: Error - \(error).")
                 self.stats.purchaseFailCount++
                 return
             }
@@ -257,7 +258,7 @@ public class AutoTrader: NSObject {
             // add to CoreData
             Purchase.NewPurchase(Int(auction.buyNowPrice), maxBin: Int(self.itemParams.maxBin), coinBallance: self.fut16.coinsBalance, managedObjectContext: managedObjectContext)
             
-            print("Success!")
+            Log.print("Success!")
             NSSound(named: "Ping")?.play()
             
             // stop trading if not enough coins for next purchase

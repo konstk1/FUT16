@@ -31,20 +31,20 @@ extension FUT16 {
     }
     
     public func findAuctionsForItem(params: ItemParams, completion: (auctions: [AuctionInfo], error: FutError) -> Void) {
-//        print(params.urlPath)
+//        Log.print(params.urlPath)
         requestForPath(params.urlPath) { (json) -> Void in
             var auctions = [AuctionInfo]()
             var error = FutError.None
             let errorCode = json["code"].stringValue
-//            print("Error Code: \(errorCode)")
+//            Log.print("Error Code: \(errorCode)")
             
             if json["auctionInfo"].count > 0 {
                 json["auctionInfo"].forEach{ (key, json) in
                     let auction = AuctionInfo(fromJson: json)
                     auctions.append(auction)
-//                    print(auction)
+//                    Log.print(auction)
                 }
-//                print(json["auctionInfo"])
+//                Log.print(json["auctionInfo"])
             } else if errorCode == "401" {
                 error = .ExpiredSession
             } else if errorCode == "500" {

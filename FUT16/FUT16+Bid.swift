@@ -32,11 +32,11 @@ extension FUT16 {
                 case "470":
                     error = .NotEnoughCredit
                 default:
-                    print(json)
+                    Log.print(json)
                     error = .PurchaseFailed
                 }
             } else {
-                print("Purchased \(tradeId) for \(amount) - \(json["auctionInfo"][0]["tradeState"]) (Bal: \(self.coinsBalance))")
+                Log.print("Purchased \(tradeId) for \(amount) - \(json["auctionInfo"][0]["tradeState"]) (Bal: \(self.coinsBalance))")
             }
             
             completion(error: error)

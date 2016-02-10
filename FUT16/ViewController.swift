@@ -31,6 +31,8 @@ class ViewController: NSViewController {
     @IBOutlet weak var loginButton: NSButton!
     @IBOutlet weak var submitButton: NSButton!
     
+    @IBOutlet var logTextView: NSTextView!
+    
     private let fut16 = FUT16()
     var autoTrader: AutoTrader!
     dynamic var traderStats = TraderStats()
@@ -64,10 +66,20 @@ class ViewController: NSViewController {
             return comps.last
         }
     }
+    
+    func log(string: String) {
+        logTextView.textStorage?.appendAttributedString(NSAttributedString(string: string))
+        logTextView.scrollToEndOfDocument(nil)
+    }
+    
+    func clearLog() {
+        logTextView.string = ""
+    }
 
 // MARK: UI Actions
     @IBAction func loginPressed(sender: NSButton) {
         fut16.login(emailTextField.stringValue, password: passwordTextField.stringValue, secretAnswer: secretAnswerTextField.stringValue)
+        Log.print("Logging in")
     }
     
     @IBAction func submitPressed(sender: NSButton) {
@@ -148,6 +160,7 @@ class ViewController: NSViewController {
     
     @IBAction func resetStatsPressed(sender: NSButton) {
         autoTrader?.resetStats()
+        clearLog()
     }
 }
 

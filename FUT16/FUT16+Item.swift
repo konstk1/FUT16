@@ -24,7 +24,7 @@ extension FUT16 {
             
             self.requestForPath("item", withParameters: parameters, encoding: .JSON, methodOverride: "PUT", completion: { (json) -> Void in
                 json["itemData"].forEach({ (key, json) -> () in
-                    print("\(key) - \(json["id"]) - \(json["pile"]) - \(json["success"])")
+                    Log.print("\(key) - \(json["id"]) - \(json["pile"]) - \(json["success"])")
                 })
             })
         }

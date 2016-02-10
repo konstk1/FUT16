@@ -15,7 +15,7 @@ extension FUT16 {
     func requestForPath(urlPath: String, withParameters parameters: [String : AnyObject]? = nil, encoding: ParameterEncoding = .URL, methodOverride: String = "GET", completion: (json: JSON) -> Void) -> Request! {
         
         guard isSessionValid else {
-            print("Waing for valid session...")
+            Log.print("Waing for valid session...")
             return nil
         }
         
@@ -32,7 +32,7 @@ extension FUT16 {
                 completion(json: JSON(response.result.value!))
             case .Failure (let error):
                 completion(json: "")
-                print("Failed to fetch JSON (error: \(error)")
+                Log.print("Failed to fetch JSON (error: \(error)")
             }
         }
     }
@@ -40,7 +40,7 @@ extension FUT16 {
     func getUserInfo() {
         requestForPath("user") { (json) -> Void in
             self.coinFunds = json["credits"].stringValue
-            print("Coins Ballance: \(self.coinFunds)")
+            Log.print("Coins Ballance: \(self.coinFunds)")
         }
     }
 }

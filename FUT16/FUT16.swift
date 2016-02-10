@@ -63,12 +63,12 @@ public class FUT16 {
 extension FUT16 {
     private func printCookies() {
         guard let cookies = cookieStoreage.cookies else {
-            print("Cookies: None")
+            Log.print("Cookies: None")
             return
         }
         
-        print("Cookies:")
+        Log.print("Cookies:")
         
-        print(NSHTTPCookie.requestHeaderFieldsWithCookies(cookies))
+        Log.print(NSHTTPCookie.requestHeaderFieldsWithCookies(cookies))
     }
 }

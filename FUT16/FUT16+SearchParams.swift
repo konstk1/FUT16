@@ -19,7 +19,7 @@ extension FUT16 {
         var startRecord: UInt
         var numRecords: UInt
         
-        private static let maxRecords: UInt = 50
+        private static let maxRecords: UInt = 16 //50
         
         private init(type: String, level: String = "", minPrice: UInt = 0, maxPrice: UInt = 0, minBin: UInt = 0, maxBin: UInt = 0, startRecord: UInt = 0, numRecords: UInt = PlayerParams.maxRecords) {
             self.type = type

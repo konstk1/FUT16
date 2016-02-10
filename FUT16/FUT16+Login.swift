@@ -22,12 +22,12 @@ extension FUT16 {
         phishingQuestionAnswer = secretAnswer
         alamo.request(.GET, loginUrl).response { (request, response, data, error) -> Void in
             guard response != nil else {
-                print("No response")
+                Log.print("No response")
                 return
             }
             self.loginUrl = response!.URL!
             if self.loginUrl.URLString.containsString("web-app") {
-                print("Already Logged In.")
+                Log.print("Already Logged In.")
                 self.authenticate()
             } else {
                 self.sendUsernamePassword(email, password: password)
@@ -46,11 +46,11 @@ extension FUT16 {
         alamo.request(.POST, loginUrl, parameters: parameters).response { (request, response, data, error) -> Void in
             if let responseString = String(data: data!, encoding: NSUTF8StringEncoding) {
                 if responseString.containsString("Submit Security Code") {
-                    print("Enter Security Code!")
+                    Log.print("Enter Security Code!")
                     // update login URL to sequence 2
                     self.loginUrl = response!.URL!
                 } else {
-                    print("Login Failure: Invalid login")
+                    Log.print("Login Failure: Invalid login")
                 }
             }
         }
@@ -63,12 +63,12 @@ extension FUT16 {
             "_eventId" : "submit"]
         alamo.request(.POST, loginUrl, parameters: parameters).response {(request, response, data, error) -> Void in
             if response!.URL!.URLString.URLString.containsString(webAppUrl) {
-                print("Login Successfull. Authenticating Session...")
+                Log.print("Login Successfull. Authenticating Session...")
                 self.authenticate()
             } else {
-                print(response!.URL!.URLString)
-                print(webAppUrl)
-                print("Login Failed: Invalid two factor code")
+                Log.print(response!.URL!.URLString)
+                Log.print(webAppUrl)
+                Log.print("Login Failed: Invalid two factor code")
             }
         }
     }
@@ -77,10 +77,10 @@ extension FUT16 {
         alamo.request(.GET, baseShowoffUrl).response {(request, response, data, error) -> Void in
             self.EASW_ID = self.extractEaswIdFromString(data!.string!)
             if self.EASW_ID == "0" {
-                print("Login failure: EASW_ID")
+                Log.print("Login failure: EASW_ID")
                 return
             }
-            print("EASW_ID: \(self.EASW_ID)")
+            Log.print("EASW_ID: \(self.EASW_ID)")
             self.getAcctInfo()
         }
     }
@@ -96,7 +96,7 @@ extension FUT16 {
             
             self.personaName = infoJson["userAccountInfo"]["personas"][0]["personaName"].stringValue
             self.personaId = infoJson["userAccountInfo"]["personas"][0]["personaId"].stringValue
-            print("Persona: \(self.personaName), ID: \(self.personaId)")
+            Log.print("Persona: \(self.personaName), ID: \(self.personaId)")
             
             self.retrieveSessionId()
         }
@@ -124,7 +124,7 @@ extension FUT16 {
         alamo.request(.POST, authUrl, headers: headers, parameters: parameters, encoding: .JSON).responseJSON { (response) -> Void in
             guard let json = response.result.value else { return }
             self.sessionId = JSON(json)["sid"].stringValue
-            print("Session ID: \(self.sessionId)")
+            Log.print("Session ID: \(self.sessionId)")
             
             // TODO: ask for question and only retrieve token if necessary
             self.retrievePhishingToken()
@@ -145,11 +145,11 @@ extension FUT16 {
             self.phishingToken = JSON(json)["token"].stringValue
             
             guard !self.phishingToken.isEmpty else {
-                print ("Failed to get phishing token.")
+                Log.print ("Failed to get phishing token.")
                 return
             }
             
-            print("Phishing Token: \(self.phishingToken)")
+            Log.print("Phishing Token: \(self.phishingToken)")
             // this is last step in the login process, mark session as valid
             self.isSessionValid = true
             

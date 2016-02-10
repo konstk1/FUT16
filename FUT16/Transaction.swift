@@ -41,7 +41,7 @@ class Transaction: NSManagedObject {
         do {
             try managedObjectContext.save()
         } catch {
-            print("Failed to save managed object context")
+            Log.print("Failed to save managed object context")
         }
     }
     
