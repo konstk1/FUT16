@@ -9,6 +9,7 @@
 import Foundation
 import Cocoa
 
+// TODO: Add clear cookies options
 // TODO: Add code locking after X requests (for distribution)
 // TODO: Queue for requests (timing, priority, order)
 
@@ -73,7 +74,7 @@ public class AutoTrader: NSObject {
     private let SESSION_ERROR_LIMIT = 3      // stop trading after this many session errors
     private let SEARCH_LIMIT_1HR = 950       // stop trading after this many searching within 1 hour
     
-    var pollingInterval: NSTimeInterval = 2.0
+    var pollingInterval: NSTimeInterval = 3.0
     private var pollTimer: NSTimer!
     
     private(set) public var minBin: UInt = 10000000
