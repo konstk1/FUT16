@@ -2,7 +2,7 @@
 //  Log.swift
 //  FUT16
 //
-//  Created by Konstantin Klitenik on 2/10/16.
+//  Created by Kon on 2/10/16.
 //  Copyright © 2016 Kon. All rights reserved.
 //
 

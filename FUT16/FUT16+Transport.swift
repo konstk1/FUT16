@@ -2,7 +2,7 @@
 //  FUT16+Transport.swift
 //  FUT16
 //
-//  Created by Konstantin Klitenik on 12/17/15.
+//  Created by Kon on 12/17/15.
 //  Copyright © 2015 Kon. All rights reserved.
 //
 

@@ -2,7 +2,7 @@
 //  FUT16+SearchParams.swift
 //  FUT16
 //
-//  Created by Konstantin Klitenik on 1/14/16.
+//  Created by Kon on 1/14/16.
 //  Copyright © 2016 Kon. All rights reserved.
 //
 

@@ -2,7 +2,7 @@
 //  MD5.c
 //  FUT16
 //
-//  Created by Konstantin Klitenik on 12/19/15.
+//  Created by Kon on 12/19/15.
 //  Copyright © 2015 Kon. All rights reserved.
 //
 
