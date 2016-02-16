@@ -44,11 +44,6 @@ public class FUT16 {
         cfg.HTTPCookieAcceptPolicy = NSHTTPCookieAcceptPolicy.Always
         cfg.timeoutIntervalForRequest = 5.0
 
-
-//        for cookie in cookieStoreage.cookies! {
-//            cookieStoreage.deleteCookie(cookie)
-//        }
-
         var defaultHeaders = Alamofire.Manager.sharedInstance.session.configuration.HTTPAdditionalHeaders ?? [:]
         defaultHeaders["User-Agent"] = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36"
         defaultHeaders["Connection"] = "keep-alive"
@@ -57,6 +52,12 @@ public class FUT16 {
         cfg.HTTPAdditionalHeaders = defaultHeaders
         
         alamo = Alamofire.Manager(configuration: cfg)
+    }
+    
+    public func clearCookies() {
+        for cookie in cookieStoreage.cookies! {
+            cookieStoreage.deleteCookie(cookie)
+        }
     }
 }
 

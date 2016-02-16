@@ -686,10 +686,10 @@
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <size key="minSize" width="600" height="252"/>
-                                            <size key="maxSize" width="600" height="10000000"/>
+                                            <size key="maxSize" width="617" height="10000000"/>
                                             <color key="insertionPointColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                             <size key="minSize" width="600" height="252"/>
-                                            <size key="maxSize" width="600" height="10000000"/>
+                                            <size key="maxSize" width="617" height="10000000"/>
                                         </textView>
                                     </subviews>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1426,15 +1426,6 @@
                                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                     </textFieldCell>
                                                 </textField>
-                                                <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1Lh-tY-Vbs">
-                                                    <rect key="frame" x="133" y="353" width="45" height="22"/>
-                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="2.0" drawsBackground="YES" id="Eio-MF-8MT">
-                                                        <numberFormatter key="formatter" formatterBehavior="default10_4" numberStyle="decimal" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" maximumFractionDigits="3" id="Lsm-Uu-aBz"/>
-                                                        <font key="font" metaFont="system"/>
-                                                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                    </textFieldCell>
-                                                </textField>
                                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uS5-8W-Dre">
                                                     <rect key="frame" x="256" y="353" width="26" height="17"/>
                                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="sec" id="tiC-X2-hAO">
@@ -1443,32 +1434,17 @@
                                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                     </textFieldCell>
                                                 </textField>
-                                                <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="SUA-uI-WYM">
-                                                    <rect key="frame" x="205" y="353" width="45" height="22"/>
-                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="3.0" drawsBackground="YES" id="Vmt-ec-owZ">
-                                                        <numberFormatter key="formatter" formatterBehavior="default10_4" numberStyle="decimal" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" maximumFractionDigits="3" id="RP8-OQ-bOX"/>
-                                                        <font key="font" metaFont="system"/>
-                                                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                    </textFieldCell>
-                                                </textField>
-                                                <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bAx-M4-MQJ">
-                                                    <rect key="frame" x="133" y="323" width="73" height="22"/>
-                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="30" drawsBackground="YES" id="JM8-1K-Dma">
-                                                        <numberFormatter key="formatter" formatterBehavior="default10_4" numberStyle="decimal" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" maximumFractionDigits="3" id="JmC-2T-2fs"/>
-                                                        <font key="font" metaFont="system"/>
-                                                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                    </textFieldCell>
-                                                </textField>
-                                                <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bY0-Nh-wlM">
+                                                <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IPN-12-Oev">
                                                     <rect key="frame" x="133" y="291" width="73" height="22"/>
-                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="15" drawsBackground="YES" id="C23-F3-9iX">
-                                                        <numberFormatter key="formatter" formatterBehavior="default10_4" numberStyle="decimal" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" maximumFractionDigits="3" id="hWH-4y-n9Q"/>
+                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="right" placeholderString="15" drawsBackground="YES" id="G2O-EY-eG4">
+                                                        <numberFormatter key="formatter" formatterBehavior="default10_4" numberStyle="decimal" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" maximumFractionDigits="3" id="d96-0p-yGp"/>
                                                         <font key="font" metaFont="system"/>
                                                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                     </textFieldCell>
+                                                    <connections>
+                                                        <binding destination="RjE-TD-ifc" name="value" keyPath="values.cycleBreak" id="gnA-rY-Rot"/>
+                                                    </connections>
                                                 </textField>
                                                 <box horizontalHuggingPriority="750" fixedFrame="YES" title="Box" boxType="separator" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="Lr2-Pe-5KM">
                                                     <rect key="frame" x="303" y="112" width="5" height="294"/>
@@ -1482,6 +1458,9 @@
                                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                         <font key="font" metaFont="system"/>
                                                     </buttonCell>
+                                                    <connections>
+                                                        <action selector="saveSettingsPressed:" target="XfG-lQ-9wD" id="2iZ-qX-5uG"/>
+                                                    </connections>
                                                 </button>
                                                 <box verticalHuggingPriority="750" fixedFrame="YES" title="Box" boxType="separator" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="mXY-B6-OTd">
                                                     <rect key="frame" x="7" y="253" width="290" height="5"/>
@@ -1510,6 +1489,9 @@
                                                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                     </textFieldCell>
+                                                    <connections>
+                                                        <binding destination="RjE-TD-ifc" name="value" keyPath="values.unlockCode" id="Nqp-gZ-oBb"/>
+                                                    </connections>
                                                 </textField>
                                                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KZA-NK-pAO">
                                                     <rect key="frame" x="364" y="271" width="166" height="38"/>
@@ -1517,7 +1499,46 @@
                                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                         <font key="font" metaFont="system"/>
                                                     </buttonCell>
+                                                    <connections>
+                                                        <action selector="clearCookiesPressed:" target="XfG-lQ-9wD" id="HWZ-LA-RVc"/>
+                                                    </connections>
                                                 </button>
+                                                <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1Lh-tY-Vbs">
+                                                    <rect key="frame" x="133" y="353" width="45" height="22"/>
+                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="right" placeholderString="2.0" drawsBackground="YES" id="Eio-MF-8MT">
+                                                        <numberFormatter key="formatter" formatterBehavior="default10_4" numberStyle="decimal" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" maximumFractionDigits="3" id="Lsm-Uu-aBz"/>
+                                                        <font key="font" metaFont="system"/>
+                                                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                    </textFieldCell>
+                                                    <connections>
+                                                        <binding destination="RjE-TD-ifc" name="value" keyPath="values.reqTimingMin" id="Xkd-8e-xOC"/>
+                                                    </connections>
+                                                </textField>
+                                                <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="SUA-uI-WYM">
+                                                    <rect key="frame" x="205" y="353" width="45" height="22"/>
+                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="right" placeholderString="3.0" drawsBackground="YES" id="Vmt-ec-owZ">
+                                                        <numberFormatter key="formatter" formatterBehavior="default10_4" numberStyle="decimal" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" maximumFractionDigits="3" id="RP8-OQ-bOX"/>
+                                                        <font key="font" metaFont="system"/>
+                                                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                    </textFieldCell>
+                                                    <connections>
+                                                        <binding destination="RjE-TD-ifc" name="value" keyPath="values.reqTimingMax" id="Lha-Nf-mql"/>
+                                                    </connections>
+                                                </textField>
+                                                <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bAx-M4-MQJ">
+                                                    <rect key="frame" x="133" y="323" width="73" height="22"/>
+                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="right" placeholderString="30" drawsBackground="YES" id="JM8-1K-Dma">
+                                                        <numberFormatter key="formatter" formatterBehavior="default10_4" numberStyle="decimal" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" maximumFractionDigits="3" id="JmC-2T-2fs"/>
+                                                        <font key="font" metaFont="system"/>
+                                                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                    </textFieldCell>
+                                                    <connections>
+                                                        <binding destination="RjE-TD-ifc" name="value" keyPath="values.cycleTime" id="YFK-6T-4Bj"/>
+                                                    </connections>
+                                                </textField>
                                             </subviews>
                                         </view>
                                     </tabViewItem>
@@ -1529,6 +1550,8 @@
                         <outlet property="authTextField" destination="tcz-TA-J5p" id="Qlj-In-nxY"/>
                         <outlet property="breakEvenTextField" destination="EFS-Nh-bPe" id="bgo-Fy-Lx9"/>
                         <outlet property="buyAtTextField" destination="pE5-L9-qcG" id="DtQ-fC-4Lp"/>
+                        <outlet property="cycleBreakTextField" destination="IPN-12-Oev" id="035-5a-P4T"/>
+                        <outlet property="cycleTimeTextField" destination="bAx-M4-MQJ" id="8Qt-37-KLe"/>
                         <outlet property="emailTextField" destination="akR-Rp-1E5" id="RQJ-a9-0TF"/>
                         <outlet property="leagueComboBox" destination="GDI-G0-K09" id="2Tk-F4-NCd"/>
                         <outlet property="levelComboBox" destination="hGq-Vv-N1u" id="cHX-DG-JPh"/>
@@ -1539,10 +1562,13 @@
                         <outlet property="nationalityComboBox" destination="Xhs-i4-1IS" id="eR3-DA-WRt"/>
                         <outlet property="passwordTextField" destination="2rA-cJ-MTl" id="RSf-aE-Yh5"/>
                         <outlet property="playerIdTextField" destination="5cO-1s-mTc" id="6lb-v5-fTd"/>
+                        <outlet property="reqTimingMaxTextField" destination="SUA-uI-WYM" id="gCU-nV-Xrz"/>
+                        <outlet property="reqTimingMinTextField" destination="1Lh-tY-Vbs" id="065-CV-aGX"/>
                         <outlet property="secretAnswerTextField" destination="M5y-X6-hqa" id="wGR-Yl-rsd"/>
                         <outlet property="submitButton" destination="evu-8P-xTr" id="KNB-ed-TMI"/>
                         <outlet property="teamComboBox" destination="dGz-5c-zMu" id="iqZ-bN-Jyl"/>
                         <outlet property="typeSegment" destination="lH2-lu-hGj" id="gVl-iu-gIg"/>
+                        <outlet property="unlockCodeTextField" destination="4Ve-or-Ssg" id="0Ox-Lq-uXK"/>
                     </connections>
                 </viewController>
             </objects>

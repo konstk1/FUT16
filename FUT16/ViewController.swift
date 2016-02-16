@@ -31,11 +31,19 @@ class ViewController: NSViewController {
     @IBOutlet weak var loginButton: NSButton!
     @IBOutlet weak var submitButton: NSButton!
     
+    // Settings outlets
+    @IBOutlet weak var reqTimingMinTextField: NSTextField!
+    @IBOutlet weak var reqTimingMaxTextField: NSTextField!
+    @IBOutlet weak var cycleTimeTextField: NSTextField!
+    @IBOutlet weak var cycleBreakTextField: NSTextField!
+    @IBOutlet weak var unlockCodeTextField: NSTextField!
+    
     @IBOutlet var logTextView: NSTextView!
     
     private let fut16 = FUT16()
     var autoTrader: AutoTrader!
     dynamic var traderStats = TraderStats()
+    var settings = Settings.sharedInstance
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,6 +53,7 @@ class ViewController: NSViewController {
         })
         
         updateFieldsStateForSearchType(typeSegment.selectedLabel())
+        updateSettings()
     }
 
     override var representedObject: AnyObject? {
@@ -149,6 +158,14 @@ class ViewController: NSViewController {
         }
     }
     
+    func updateSettings() {
+        settings.reqTimingMin = reqTimingMinTextField.doubleValue
+        settings.reqTimingMax = reqTimingMaxTextField.doubleValue
+        settings.cycleTime    = cycleTimeTextField.doubleValue * 60.0       // convert from min to seconds
+        settings.cycleBreak   = cycleBreakTextField.doubleValue * 60.0      // convert from min to seconds
+        settings.unlockCode   = unlockCodeTextField.stringValue
+    }
+    
     @IBAction func doStuffPressed(sender: NSButton) {
         setSearchParamsPressed(sender)
         autoTrader?.startTrading()
@@ -161,6 +178,15 @@ class ViewController: NSViewController {
     @IBAction func resetStatsPressed(sender: NSButton) {
         autoTrader?.resetStats()
         clearLog()
+    }
+    
+    @IBAction func saveSettingsPressed(sender: NSButton) {
+        updateSettings()
+        Log.print("Settings: \(settings)")
+    }
+    
+    @IBAction func clearCookiesPressed(sender: NSButton) {
+        fut16.clearCookies()
     }
 }
 

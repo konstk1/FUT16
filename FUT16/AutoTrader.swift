@@ -9,61 +9,11 @@
 import Foundation
 import Cocoa
 
-// TODO: Add clear cookies options
+// TODO: Implement timing settings
 // TODO: Add code locking after X requests (for distribution)
 // TODO: Queue for requests (timing, priority, order)
 
 private let managedObjectContext = (NSApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
-
-public class TraderStats: NSObject {
-    var searchCount = 0
-    
-    var purchaseCount = 0
-    var purchaseFailCount = 0
-    var purchaseTotalCost = 0
-    
-    var averagePurchaseCost = 0
-    var lastPurchaseCost = 0
-    var coinsBalance = 0
-    
-    var searchCount1Hr: Int {
-        get {
-            return Search.numSearchesSinceDate(NSDate.hourAgo, managedObjectContext: managedObjectContext)
-        }
-    }
-    var searchCount90min: Int {
-        get {
-            return Search.numSearchesSinceDate(NSDate(timeIntervalSinceNow: -60*90), managedObjectContext: managedObjectContext)
-        }
-    }
-    var searchCount2Hr: Int {
-        get {
-            return Search.numSearchesSinceDate(NSDate(timeIntervalSinceNow: -2*3600), managedObjectContext: managedObjectContext)
-        }
-    }
-    var searchCount24Hr: Int {
-        get {
-            return Search.numSearchesSinceDate(NSDate.dayAgo, managedObjectContext: managedObjectContext)
-        }
-    }
-    
-    var searchCountAllTime: Int {
-        get {
-            return Search.numSearchesSinceDate(NSDate.allTime, managedObjectContext: managedObjectContext)
-        }
-    }
-    
-    var purchaseTotalAllTime: Int {
-        get {
-            let purchases = Purchase.getPurchasesSinceDate(NSDate.allTime, managedObjectContext: managedObjectContext)
-            return Int(purchases.reduce(0) { $0 + $1.price })
-        }
-    }
-    
-    func searchCountHours(hours: Double) -> Int {
-        return Search.numSearchesSinceDate(NSDate(timeIntervalSinceNow: -3600*hours), managedObjectContext: managedObjectContext)
-    }
-}
 
 public class AutoTrader: NSObject {
     private var fut16: FUT16
@@ -74,14 +24,15 @@ public class AutoTrader: NSObject {
     private let SESSION_ERROR_LIMIT = 3      // stop trading after this many session errors
     private let SEARCH_LIMIT_1HR = 950       // stop trading after this many searching within 1 hour
     
-    var pollingInterval: NSTimeInterval = 3.0
     private var pollTimer: NSTimer!
+    private var cycleTimer: NSTimer!
     
     private(set) public var minBin: UInt = 10000000
     
     private var purchaseQueue = Array<FUT16.AuctionInfo>()
     
     private(set) public var stats = TraderStats()
+    private var settings = Settings.sharedInstance
     
     private var updateOwner: (() -> ())?
     
@@ -121,7 +72,10 @@ public class AutoTrader: NSObject {
         // do nothing if timer is already running
         if (pollTimer == nil || !pollTimer.valid) {
             pollAuctions()
-            pollTimer = NSTimer.scheduledTimerWithTimeInterval(pollingInterval, target: self, selector: Selector("pollAuctions"), userInfo: nil, repeats: true)
+            
+            if (cycleTimer == nil || !cycleTimer.valid) {
+                cycleTimer = NSTimer.scheduledTimerWithTimeInterval(settings.cycleTime, target: self, selector: Selector("cycleBreak"), userInfo: nil, repeats: false)
+            }
         }
         
         // disable app nap
@@ -131,6 +85,10 @@ public class AutoTrader: NSObject {
     func stopTrading(reason: String) {
         if pollTimer != nil && pollTimer.valid {
             pollTimer.invalidate()
+        }
+        
+        if cycleTimer != nil && cycleTimer.valid {
+            cycleTimer.invalidate()
         }
         
         self.notifyOwner()
@@ -154,9 +112,27 @@ public class AutoTrader: NSObject {
         Log.print("")
     }
     
+    private func scheduleNextPoll() {
+        pollTimer = NSTimer.scheduledTimerWithTimeInterval(settings.reqTimingRand, target: self, selector: Selector("pollAuctions"), userInfo: nil, repeats: false)
+    }
+    
+    func cycleStart() {
+        Log.print("------------------------------ Start cycle: \(settings.cycleTime) ------------------------------")
+        startTrading()
+        cycleTimer = NSTimer.scheduledTimerWithTimeInterval(settings.cycleTime, target: self, selector: Selector("cycleBreak"), userInfo: nil, repeats: false)
+    }
+    
+    func cycleBreak() {
+        Log.print("------------------------------ Break cycle: \(settings.cycleBreak) ------------------------------")
+        stopTrading("Cycle break")
+        cycleTimer = NSTimer.scheduledTimerWithTimeInterval(settings.cycleBreak, target: self, selector: Selector("cycleStart"), userInfo: nil, repeats: false)
+    }
+    
     func pollAuctions() {
         Log.print(".\(NSDate.localTime):  ", terminator: "")
         var curMinBin: UInt = 10000000
+        
+        scheduleNextPoll()  // set up timer for next request
         
         // increment max price to avoid cached results
         itemParams.maxPrice = incrementPrice(itemParams.maxPrice)
@@ -283,5 +259,55 @@ public class AutoTrader: NSObject {
 // MARK: Stat and CoreData helpers
     func logSearch() {
         Search.NewSearch(managedObjectContext: managedObjectContext)
+    }
+}
+
+public class TraderStats: NSObject {
+    var searchCount = 0
+    
+    var purchaseCount = 0
+    var purchaseFailCount = 0
+    var purchaseTotalCost = 0
+    
+    var averagePurchaseCost = 0
+    var lastPurchaseCost = 0
+    var coinsBalance = 0
+    
+    var searchCount1Hr: Int {
+        get {
+            return Search.numSearchesSinceDate(NSDate.hourAgo, managedObjectContext: managedObjectContext)
+        }
+    }
+    var searchCount90min: Int {
+        get {
+            return Search.numSearchesSinceDate(NSDate(timeIntervalSinceNow: -60*90), managedObjectContext: managedObjectContext)
+        }
+    }
+    var searchCount2Hr: Int {
+        get {
+            return Search.numSearchesSinceDate(NSDate(timeIntervalSinceNow: -2*3600), managedObjectContext: managedObjectContext)
+        }
+    }
+    var searchCount24Hr: Int {
+        get {
+            return Search.numSearchesSinceDate(NSDate.dayAgo, managedObjectContext: managedObjectContext)
+        }
+    }
+    
+    var searchCountAllTime: Int {
+        get {
+            return Search.numSearchesSinceDate(NSDate.allTime, managedObjectContext: managedObjectContext)
+        }
+    }
+    
+    var purchaseTotalAllTime: Int {
+        get {
+            let purchases = Purchase.getPurchasesSinceDate(NSDate.allTime, managedObjectContext: managedObjectContext)
+            return Int(purchases.reduce(0) { $0 + $1.price })
+        }
+    }
+    
+    func searchCountHours(hours: Double) -> Int {
+        return Search.numSearchesSinceDate(NSDate(timeIntervalSinceNow: -3600*hours), managedObjectContext: managedObjectContext)
     }
 }
