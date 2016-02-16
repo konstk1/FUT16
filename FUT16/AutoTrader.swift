@@ -9,7 +9,6 @@
 import Foundation
 import Cocoa
 
-// TODO: Implement timing settings
 // TODO: Add code locking after X requests (for distribution)
 // TODO: Queue for requests (timing, priority, order)
 
@@ -86,9 +85,19 @@ public class AutoTrader: NSObject {
         if pollTimer != nil && pollTimer.valid {
             pollTimer.invalidate()
         }
-        
+
+        // if cycle timer is calling this, it'll be invalid, in which case 
+        // we don't need to completely stop trading, just pause it until next cycle fires
+
         if cycleTimer != nil && cycleTimer.valid {
             cycleTimer.invalidate()
+            
+            // re-enable app nap
+            if activity != nil {
+                NSProcessInfo().endActivity(activity)
+                activity = nil
+            }
+
         }
         
         self.notifyOwner()
@@ -96,12 +105,6 @@ public class AutoTrader: NSObject {
         Log.print("Trading stopped: [\(reason)].")
         
         Transaction.save(managedObjectContext)
-        
-        // re-enable app nap
-        if activity != nil {
-            NSProcessInfo().endActivity(activity)
-            activity = nil
-        }
         
         fut16.sendItemsToTransferList()
         
