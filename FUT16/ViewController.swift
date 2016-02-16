@@ -68,7 +68,7 @@ class ViewController: NSViewController {
     }
     
     func log(string: String) {
-        logTextView.textStorage?.appendAttributedString(NSAttributedString(string: string))
+        logTextView.textStorage?.appendAttributedString(NSAttributedString(string: string, attributes: [NSFontAttributeName : NSFont(name: "Menlo", size: 11)!]))
         logTextView.scrollToEndOfDocument(nil)
     }
     
