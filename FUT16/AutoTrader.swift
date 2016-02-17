@@ -152,6 +152,12 @@ public class AutoTrader: NSObject {
         itemParams.maxPrice = incrementPrice(itemParams.maxPrice)
         
         fut16.findAuctionsForItem(itemParams) { (auctions, error) -> Void in
+            defer {
+                // schedule next request at the end of the callback 
+                // in order to avoid sending out next request while current one is still pending
+                self.scheduleNextPoll()  // set up timer for next request
+            }
+            
             self.stats.searchCount++
             self.logSearch()        // save to CoreData
             
@@ -196,11 +202,6 @@ public class AutoTrader: NSObject {
             self.tuneSearchParamsFromAuctions(auctions)
             
             self.notifyOwner()
-            
-            // schedule next request here in order to avoid sending out
-            // next request while current one is still pending
-            self.scheduleNextPoll()  // set up timer for next request
-            
         } // findAuctionsForPlayer
     } // end pollAuctions
     
