@@ -135,8 +135,6 @@ public class AutoTrader: NSObject {
         Log.print(".\(NSDate.localTime):  ", terminator: "")
         var curMinBin: UInt = 10000000
         
-        scheduleNextPoll()  // set up timer for next request
-        
         // increment max price to avoid cached results
         itemParams.maxPrice = incrementPrice(itemParams.maxPrice)
         
@@ -185,6 +183,11 @@ public class AutoTrader: NSObject {
             self.tuneSearchParamsFromAuctions(auctions)
             
             self.notifyOwner()
+            
+            // schedule next request here in order to avoid sending out
+            // next request while current one is still pending
+            self.scheduleNextPoll()  // set up timer for next request
+            
         } // findAuctionsForPlayer
     } // end pollAuctions
     
