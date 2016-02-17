@@ -26,6 +26,15 @@ public class AutoTrader: NSObject {
     private var pollTimer: NSTimer!
     private var cycleTimer: NSTimer!
     
+    enum State {
+        case Ready
+        case Polling
+        case Break
+        case Stopped
+    }
+    
+    private var state = State.Ready
+    
     private(set) public var minBin: UInt = 10000000
     
     private var purchaseQueue = Array<FUT16.AuctionInfo>()
@@ -68,17 +77,14 @@ public class AutoTrader: NSObject {
     }
     
     func startTrading() {
-        // do nothing if timer is already running
-        if (pollTimer == nil || !pollTimer.valid) {
-            pollAuctions()
-            
-            if (cycleTimer == nil || !cycleTimer.valid) {
-                cycleTimer = NSTimer.scheduledTimerWithTimeInterval(settings.cycleTime, target: self, selector: Selector("cycleBreak"), userInfo: nil, repeats: false)
-            }
+        if state == .Ready || state == .Stopped {
+            cycleStart()
         }
         
         // disable app nap
-        activity = NSProcessInfo().beginActivityWithOptions(.UserInitiated, reason: "FUT Trading")
+        if activity == nil {
+            activity = NSProcessInfo().beginActivityWithOptions(.UserInitiated, reason: "FUT Trading")
+        }
     }
     
     func stopTrading(reason: String) {
@@ -86,20 +92,10 @@ public class AutoTrader: NSObject {
             pollTimer.invalidate()
         }
 
-        // if cycle timer is calling this, it'll be invalid, in which case 
-        // we don't need to completely stop trading, just pause it until next cycle fires
-
         if cycleTimer != nil && cycleTimer.valid {
             cycleTimer.invalidate()
-            
-            // re-enable app nap
-            if activity != nil {
-                NSProcessInfo().endActivity(activity)
-                activity = nil
-            }
-
         }
-        
+
         self.notifyOwner()
         
         Log.print("Trading stopped: [\(reason)].")
@@ -113,20 +109,32 @@ public class AutoTrader: NSObject {
             Log.print(" \(i): \(stats.searchCountHours(Double(i))),", terminator: "")
         }
         Log.print("")
+        
+        // re-enable app nap if trading stopped (as opposed to cycle break)
+        if state == .Stopped && activity != nil {
+            NSProcessInfo().endActivity(activity)
+            activity = nil
+        }
     }
     
     private func scheduleNextPoll() {
+        guard state == .Ready || state == .Polling else {
+            return
+        }
+        
         pollTimer = NSTimer.scheduledTimerWithTimeInterval(settings.reqTimingRand, target: self, selector: Selector("pollAuctions"), userInfo: nil, repeats: false)
     }
     
     func cycleStart() {
         Log.print("------------------------------ Start cycle: \(settings.cycleTime) ------------------------------")
-        startTrading()
+        state = .Polling
+        pollAuctions()
         cycleTimer = NSTimer.scheduledTimerWithTimeInterval(settings.cycleTime, target: self, selector: Selector("cycleBreak"), userInfo: nil, repeats: false)
     }
     
     func cycleBreak() {
         Log.print("------------------------------ Break cycle: \(settings.cycleBreak) ------------------------------")
+        state = .Break
         stopTrading("Cycle break")
         cycleTimer = NSTimer.scheduledTimerWithTimeInterval(settings.cycleBreak, target: self, selector: Selector("cycleStart"), userInfo: nil, repeats: false)
     }

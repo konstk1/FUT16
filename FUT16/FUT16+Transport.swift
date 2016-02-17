@@ -15,7 +15,8 @@ extension FUT16 {
     func requestForPath(urlPath: String, withParameters parameters: [String : AnyObject]? = nil, encoding: ParameterEncoding = .URL, methodOverride: String = "GET", completion: (json: JSON) -> Void) -> Request! {
         
         guard isSessionValid else {
-            Log.print("Waing for valid session...")
+            Log.print("Waiting for valid session...")
+            completion(json: "")
             return nil
         }
         
