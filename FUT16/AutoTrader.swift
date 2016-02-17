@@ -88,6 +88,11 @@ public class AutoTrader: NSObject {
     }
     
     func stopTrading(reason: String) {
+        // if this is called from anywhere but the cycle break, means we want a full stop
+        if state != .Break {
+            state = .Stopped
+        }
+        
         if pollTimer != nil && pollTimer.valid {
             pollTimer.invalidate()
         }
