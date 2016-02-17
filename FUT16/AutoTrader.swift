@@ -262,8 +262,8 @@ public class AutoTrader: NSObject {
                 self.fut16.sendItemsToTransferList()
                 self.stats.purchaseCount = 0
             }
+            self.notifyOwner()
         }
-        self.notifyOwner()
     }
     
     func notifyOwner() {
