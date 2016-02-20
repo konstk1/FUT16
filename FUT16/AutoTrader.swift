@@ -9,6 +9,7 @@
 import Foundation
 import Cocoa
 
+// TODO: Stop reason params
 // TODO: Add code locking after X requests (for distribution)
 // TODO: Queue for requests (timing, priority, order)
 
