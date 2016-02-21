@@ -11,8 +11,8 @@ import Cocoa
 
 // TODO: Transactions per user (CoreData)
 // TODO: Stop reason params
+// TODO: Multi-user
 // TODO: Add code locking after X requests (for distribution)
-// TODO: Queue for requests (timing, priority, order)
 
 private let managedObjectContext = (NSApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
 
