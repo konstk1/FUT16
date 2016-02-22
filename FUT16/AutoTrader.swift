@@ -23,7 +23,7 @@ public class AutoTrader: NSObject {
     
     private var sessionErrorCount = 0
     private let SESSION_ERROR_LIMIT = 3      // stop trading after this many session errors
-    private let SEARCH_LIMIT_1HR = 950       // stop trading after this many searching within 1 hour
+    private let SEARCH_LIMIT_1HR = 1600       // stop trading after this many searching within 1 hour
     
     private var pollTimer: NSTimer!
     private var cycleTimer: NSTimer!
