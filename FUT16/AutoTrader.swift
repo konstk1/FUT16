@@ -9,7 +9,6 @@
 import Foundation
 import Cocoa
 
-// TODO: Transactions per user (CoreData)
 // TODO: Stop reason params
 // TODO: Multi-user
 // TODO: Add code locking after X requests (for distribution)
@@ -23,7 +22,7 @@ public class AutoTrader: NSObject {
     
     private var sessionErrorCount = 0
     private let SESSION_ERROR_LIMIT = 3      // stop trading after this many session errors
-    private let SEARCH_LIMIT_1HR = 1600       // stop trading after this many searching within 1 hour
+    private let SEARCH_LIMIT_1HR = 950       // stop trading after this many searching within 1 hour
     
     private var pollTimer: NSTimer!
     private var cycleTimer: NSTimer!
@@ -41,7 +40,7 @@ public class AutoTrader: NSObject {
     
     private var purchaseQueue = Array<FUT16.AuctionInfo>()
     
-    private(set) public var stats = TraderStats()
+    private(set) public var stats: TraderStats
     private var settings = Settings.sharedInstance
     
     private var updateOwner: (() -> ())?
@@ -51,7 +50,14 @@ public class AutoTrader: NSObject {
     public init(fut16: FUT16, update: (() -> ())?) {
         self.fut16 = fut16
         self.updateOwner = update
+        
+        stats = TraderStats(email: self.fut16.email)
         //notifyOwner()
+        print("Autotrader Init")
+    }
+    
+    deinit {
+        print("Autotrader Deinit")
     }
     
     // return break-even buy
@@ -72,7 +78,7 @@ public class AutoTrader: NSObject {
     }
     
     func resetStats() {
-        stats = TraderStats()
+        stats = TraderStats(email: fut16.email)
         sessionErrorCount = 0
         minBin = 10000000
         notifyOwner()
@@ -255,7 +261,7 @@ public class AutoTrader: NSObject {
             self.stats.averagePurchaseCost = Int(round(Double(self.stats.purchaseTotalCost) / Double(self.stats.purchaseCount)))
             
             // add to CoreData
-            Purchase.NewPurchase(Int(auction.buyNowPrice), maxBin: Int(self.itemParams.maxBin), coinBallance: self.fut16.coinsBalance, managedObjectContext: managedObjectContext)
+            Purchase.NewPurchase(self.fut16.email, price: Int(auction.buyNowPrice), maxBin: Int(self.itemParams.maxBin), coinBallance: self.fut16.coinsBalance, managedObjectContext: managedObjectContext)
             
             Log.print("Success!")
             NSSound(named: "Ping")?.play()
@@ -280,11 +286,13 @@ public class AutoTrader: NSObject {
     
 // MARK: Stat and CoreData helpers
     func logSearch() {
-        Search.NewSearch(managedObjectContext: managedObjectContext)
+        Search.NewSearch(fut16.email, managedObjectContext: managedObjectContext)
     }
 }
 
 public class TraderStats: NSObject {
+    var email: String
+    
     var searchCount = 0
     
     var purchaseCount = 0
@@ -295,41 +303,45 @@ public class TraderStats: NSObject {
     var lastPurchaseCost = 0
     var coinsBalance = 0
     
+    init(email: String) {
+        self.email = email
+    }
+    
     var searchCount1Hr: Int {
         get {
-            return Search.numSearchesSinceDate(NSDate.hourAgo, managedObjectContext: managedObjectContext)
+            return Search.numSearchesSinceDate(NSDate.hourAgo, forEmail: email, managedObjectContext: managedObjectContext)
         }
     }
     var searchCount90min: Int {
         get {
-            return Search.numSearchesSinceDate(NSDate(timeIntervalSinceNow: -60*90), managedObjectContext: managedObjectContext)
+            return Search.numSearchesSinceDate(NSDate(timeIntervalSinceNow: -60*90), forEmail: email, managedObjectContext: managedObjectContext)
         }
     }
     var searchCount2Hr: Int {
         get {
-            return Search.numSearchesSinceDate(NSDate(timeIntervalSinceNow: -2*3600), managedObjectContext: managedObjectContext)
+            return Search.numSearchesSinceDate(NSDate(timeIntervalSinceNow: -2*3600), forEmail: email, managedObjectContext: managedObjectContext)
         }
     }
     var searchCount24Hr: Int {
         get {
-            return Search.numSearchesSinceDate(NSDate.dayAgo, managedObjectContext: managedObjectContext)
+            return Search.numSearchesSinceDate(NSDate.dayAgo, forEmail: email, managedObjectContext: managedObjectContext)
         }
     }
     
     var searchCountAllTime: Int {
         get {
-            return Search.numSearchesSinceDate(NSDate.allTime, managedObjectContext: managedObjectContext)
+            return Search.numSearchesSinceDate(NSDate.allTime, forEmail: email, managedObjectContext: managedObjectContext)
         }
     }
     
     var purchaseTotalAllTime: Int {
         get {
-            let purchases = Purchase.getPurchasesSinceDate(NSDate.allTime, managedObjectContext: managedObjectContext)
+            let purchases = Purchase.getPurchasesSinceDate(NSDate.allTime, forEmail: email, managedObjectContext: managedObjectContext)
             return Int(purchases.reduce(0) { $0 + $1.price })
         }
     }
     
     func searchCountHours(hours: Double) -> Int {
-        return Search.numSearchesSinceDate(NSDate(timeIntervalSinceNow: -3600*hours), managedObjectContext: managedObjectContext)
+        return Search.numSearchesSinceDate(NSDate(timeIntervalSinceNow: -3600*hours), forEmail: email, managedObjectContext: managedObjectContext)
     }
 }

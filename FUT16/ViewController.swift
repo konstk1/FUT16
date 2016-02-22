@@ -42,15 +42,11 @@ class ViewController: NSViewController {
     
     private let fut16 = FUT16()
     var autoTrader: AutoTrader!
-    dynamic var traderStats = TraderStats()
+    dynamic var traderStats = TraderStats(email: "")
     var settings = Settings.sharedInstance
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        autoTrader = AutoTrader(fut16: fut16, update: {
-            self.traderStats = self.autoTrader.stats
-        })
         
         updateFieldsStateForSearchType(typeSegment.selectedLabel())
         updateSettings()
@@ -89,6 +85,10 @@ class ViewController: NSViewController {
     @IBAction func loginPressed(sender: NSButton) {
         fut16.login(emailTextField.stringValue, password: passwordTextField.stringValue, secretAnswer: secretAnswerTextField.stringValue)
         Log.print("Logging in")
+        
+        autoTrader = AutoTrader(fut16: fut16, update: {
+            self.traderStats = self.autoTrader.stats
+        })
     }
     
     @IBAction func submitPressed(sender: NSButton) {

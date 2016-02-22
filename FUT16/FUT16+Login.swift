@@ -18,6 +18,7 @@ private let validateUrl: URLStringConvertible = "https://www.easports.com/iframe
 
 extension FUT16 {
     public func login(email: String, password: String, secretAnswer: String) {
+        self.email = email
         loginUrl = webAppUrl
         phishingQuestionAnswer = secretAnswer
         alamo.request(.GET, loginUrl).response { (request, response, data, error) -> Void in
@@ -38,7 +39,7 @@ extension FUT16 {
     // TODO: Add logout
     // https://www.easports.com/fifa/logout?redirectUri=https%3A%2F%2Fwww.easports.com%2Ffifa%2F
     
-    private func sendUsernamePassword(email: String, password: String) {
+    private func sendUsernamePassword(email: String, password: String) {        
         let parameters = ["email"    : email,
             "password" : password,
             "_eventId" : "submit"]

@@ -63,6 +63,7 @@
 		1C21A9F21C20B2EC00B4941E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1C21A9FE1C20B79000B4941E /* FUT16.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = FUT16.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		1C21AA021C20BC4400B4941E /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/Mac/Alamofire.framework; sourceTree = "<group>"; };
+		1C5F3D401C7B64C90055B5EE /* FUT 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "FUT 2.xcdatamodel"; sourceTree = "<group>"; };
 		1C6DBA981C52C15000ECE215 /* FUT16+Item.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "FUT16+Item.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		1C7DD6E51C73789100710B19 /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		1C84CF3B1C4D5ED900A4517D /* FUT16+Login.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "FUT16+Login.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -430,9 +431,10 @@
 		FF68C8461C38B43B00A6D9E1 /* FUT16.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				1C5F3D401C7B64C90055B5EE /* FUT 2.xcdatamodel */,
 				FF68C8471C38B43B00A6D9E1 /* FUT16.xcdatamodel */,
 			);
-			currentVersion = FF68C8471C38B43B00A6D9E1 /* FUT16.xcdatamodel */;
+			currentVersion = 1C5F3D401C7B64C90055B5EE /* FUT 2.xcdatamodel */;
 			path = FUT16.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

@@ -69,9 +69,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             coordinator = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel)
             let user = NSUserName()
             let url = NSURL(fileURLWithPath: "/Users/\(user)/Dropbox/Apps/FUT16/CocoaAppCD.sqlite")
+            let options = [NSMigratePersistentStoresAutomaticallyOption: true, NSInferMappingModelAutomaticallyOption: true]
             let fileManager = NSFileManager.defaultManager()
             do {
-                try coordinator!.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: url, options: nil)
+                try coordinator!.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: url, options: options)
             } catch {
                 failError = error as NSError
             }

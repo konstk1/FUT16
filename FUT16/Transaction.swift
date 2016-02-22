@@ -12,11 +12,11 @@ import CoreData
 
 class Transaction: NSManagedObject {
     
-    class func getTransactions(entityName: String, sinceDate date: NSDate, managedObjectContext: NSManagedObjectContext) -> [Transaction] {
+    class func getTransactions(entityName: String, forEmail email: String, sinceDate date: NSDate, managedObjectContext: NSManagedObjectContext) -> [Transaction] {
         
         let fetchRequest = NSFetchRequest(entityName: entityName)
         
-        fetchRequest.predicate = NSPredicate(format: "time >= %@", date)
+        fetchRequest.predicate = NSPredicate(format: "email = %@ AND time >= %@", email, date)
         
         do {
             let transactions = try managedObjectContext.executeFetchRequest(fetchRequest) as! [Transaction]
@@ -26,13 +26,13 @@ class Transaction: NSManagedObject {
         }
     }
     
-    class func numTransactions(entityName: String, sinceDate date: NSDate, managedObjectContext: NSManagedObjectContext) -> Int {
+    class func numTransactions(entityName: String, forEmail email: String, sinceDate date: NSDate, managedObjectContext: NSManagedObjectContext) -> Int {
         let fetchRequest = NSFetchRequest(entityName: entityName)
         fetchRequest.includesPropertyValues = false
         fetchRequest.includesSubentities = false
         fetchRequest.resultType = NSFetchRequestResultType.CountResultType
         
-        fetchRequest.predicate = NSPredicate(format: "time >= %@", date)
+        fetchRequest.predicate = NSPredicate(format: "email = %@ AND time >= %@", email, date)
         
         return managedObjectContext.countForFetchRequest(fetchRequest, error: nil)
     }

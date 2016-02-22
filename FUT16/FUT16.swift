@@ -16,6 +16,8 @@ public class FUT16 {
     
     let alamo: Manager!
     
+    var email: String = ""
+    
     var loginUrl: URLStringConvertible!
     let futUrl: URLStringConvertible = "https://utas.s3.fut.ea.com/ut/game/fifa16/"
     
