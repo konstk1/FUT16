@@ -9,7 +9,6 @@
 import Foundation
 import Cocoa
 
-// TODO: Stop reason params
 // TODO: Multi-user
 // TODO: Add code locking after X requests (for distribution)
 
@@ -95,11 +94,8 @@ public class AutoTrader: NSObject {
         }
     }
     
-    func stopTrading(reason: String) {
-        // if this is called from anywhere but the cycle break, means we want a full stop
-        if state != .Break {
-            state = .Stopped
-        }
+    func stopTrading(reason: String, newState: State = .Stopped) {
+        state = newState
         
         if pollTimer != nil && pollTimer.valid {
             pollTimer.invalidate()
@@ -147,8 +143,7 @@ public class AutoTrader: NSObject {
     
     func cycleBreak() {
         Log.print("------------------------------ Break cycle: \(settings.cycleBreak) ------------------------------")
-        state = .Break
-        stopTrading("Cycle break")
+        stopTrading("Cycle break", newState: .Break)
         cycleTimer = NSTimer.scheduledTimerWithTimeInterval(settings.cycleBreak, target: self, selector: Selector("cycleStart"), userInfo: nil, repeats: false)
     }
     
