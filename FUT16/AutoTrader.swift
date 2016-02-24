@@ -9,6 +9,7 @@
 import Foundation
 import Cocoa
 
+// TODO: 24hr limit of 5400?
 // TODO: Multi-user
 // TODO: Add code locking after X requests (for distribution)
 
