@@ -9,7 +9,6 @@
 import Foundation
 import Cocoa
 
-// TODO: 24hr limit of 5400?
 // TODO: Multi-user
 // TODO: Add code locking after X requests (for distribution)
 
@@ -22,7 +21,8 @@ public class AutoTrader: NSObject {
     
     private var sessionErrorCount = 0
     private let SESSION_ERROR_LIMIT = 3      // stop trading after this many session errors
-    private let SEARCH_LIMIT_1HR = 950       // stop trading after this many searching within 1 hour
+    private let SEARCH_LIMIT_1HR = 950       // stop trading after this many searches within 1 hour
+    private let SEARCH_LIMIT_24HR = 5300     // stop trading after this many searches within 24 hours
     
     private var pollTimer: NSTimer!
     private var cycleTimer: NSTimer!
@@ -167,7 +167,7 @@ public class AutoTrader: NSObject {
             
             self.stats.coinsBalance = self.fut16.coinsBalance   // grab coins ballance
             
-            if self.stats.searchCount1Hr >= self.SEARCH_LIMIT_1HR {
+            if self.stats.searchCount1Hr >= self.SEARCH_LIMIT_1HR || self.stats.searchCount24Hr >= self.SEARCH_LIMIT_24HR {
                 self.stopTrading("Search limit reached")
             }
             
