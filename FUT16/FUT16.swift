@@ -44,7 +44,7 @@ public class FUT16 {
     public init() {
 //        cfg.HTTPCookieStorage = cookieStoreage
 //        cfg.HTTPCookieAcceptPolicy = NSHTTPCookieAcceptPolicy.Always
-        cfg.timeoutIntervalForRequest = 5.0
+        cfg.timeoutIntervalForRequest = 20.0
 
         var defaultHeaders = Alamofire.Manager.sharedInstance.session.configuration.HTTPAdditionalHeaders ?? [:]
         defaultHeaders["User-Agent"] = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36"
