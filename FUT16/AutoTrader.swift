@@ -11,6 +11,7 @@ import Cocoa
 
 // TODO: Fix stats (multi-user)
 // TODO: Make timing setting calculate inner timing
+// TODO: Empty account fields (skip over)
 
 private let managedObjectContext = (NSApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
 
@@ -211,7 +212,7 @@ public class AutoTrader: NSObject {
                 }
             }
             
-            Log.print("Search: \(self.stats.searchCount) (\(auctions.count)-\(self.itemParams.startRecord)) - Cur Min: \(curMinBin) (Min: \(self.minBin)) - \(self.itemParams.maxPrice) [\(self.currentFut.email)]")
+            Log.print("Search: \(self.stats.searchCount) (\(auctions.count)-\(self.itemParams.startRecord)) - Cur Min: \(curMinBin) (Min: \(self.minBin)) [\(self.currentFut.email)]")
             
             // update session min
             if curMinBin < self.minBin {
