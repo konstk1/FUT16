@@ -50,20 +50,15 @@ public class AutoTrader: NSObject {
     
     private var activity: NSObjectProtocol!      // activity to disable app nap
     
-    public init(fut16: FUT16, update: (() -> ())?) {
-        self.fut16.append(fut16)
+    public init(fut16: [FUT16], update: (() -> ())?) {
+        self.fut16 = fut16
         currentFut = self.fut16.first!
         
         self.updateOwner = update
         
         stats = TraderStats()
         //notifyOwner()
-        print("Autotrader Init")
-    }
-    
-    deinit {
-        print("Autotrader Deinit")
-        stopAllTimers()
+//        Log.print("Autotrader Init")
     }
     
     // return break-even buy
@@ -125,7 +120,9 @@ public class AutoTrader: NSObject {
         
         Transaction.save(managedObjectContext)
         
-        currentFut.sendItemsToTransferList()
+        fut16.forEach { (fut) -> () in
+            fut.sendItemsToTransferList()
+        }
         
         Log.print("Searches (hours): ", terminator: "")
         for i in 1...4 {
@@ -148,8 +145,6 @@ public class AutoTrader: NSObject {
         // get next valid FUT
         currentFutIdx = (currentFutIdx + 1) % fut16.count
         currentFut = fut16[currentFutIdx]
-        
-        Log.print("Switching to \(currentFut.email)")
         
         pollTimer = NSTimer.scheduledTimerWithTimeInterval(settings.reqTimingRand, target: self, selector: Selector("pollAuctions"), userInfo: nil, repeats: false)
     }
@@ -211,7 +206,7 @@ public class AutoTrader: NSObject {
                 
                 if $0.buyNowPrice <= self.buyAtBin && $0.isRare {
                     self.purchaseQueue.append($0)
-                    Log.print("Purchase Queued \($0.tradeId)")
+//                    Log.print("Purchase Queued \($0.tradeId)")
                 }
             }
             
@@ -269,6 +264,8 @@ public class AutoTrader: NSObject {
                 return
             }
             
+            Log.print("Success - (Bal: \(self.currentFut.coinsBalance))")
+            
             // some stat keeping
             self.stats.purchaseCount++
             self.stats.lastPurchaseCost = Int(auction.buyNowPrice)
@@ -279,7 +276,6 @@ public class AutoTrader: NSObject {
             // add to CoreData
             Purchase.NewPurchase(self.currentFut.email, price: Int(auction.buyNowPrice), maxBin: Int(self.itemParams.maxBin), coinBallance: self.currentFut.coinsBalance, managedObjectContext: managedObjectContext)
             
-            Log.print("Success!")
             NSSound(named: "Ping")?.play()
             
             // stop trading if not enough coins for next purchase

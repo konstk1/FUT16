@@ -52,6 +52,11 @@ class ViewController: NSViewController {
         // add two places for now
         fut16.append(FUT16())
         fut16.append(FUT16())
+
+        
+        autoTrader = AutoTrader(fut16: fut16, update: {
+            self.traderStats = self.autoTrader.stats
+        })
         
         updateFieldsStateForSearchType(typeSegment.selectedLabel())
         updateSettings()
@@ -109,18 +114,10 @@ class ViewController: NSViewController {
         
         fut16[accountNum].login(email, password: password, secretAnswer: secret)
         Log.print("Logging in [\(sender.tag)] - [\(email)]")
-//
-//        if autoTrader != nil {
-//            autoTrader.stopAllTimers()
-//        }
-//        
-//        autoTrader = AutoTrader(fut16: fut16, update: {
-//            self.traderStats = self.autoTrader.stats
-//        })
     }
     
-    @IBAction func submitPressed(sender: NSButton) {
-        let accountNum = sender.tag
+    @IBAction func submitPressed(sender: AnyObject) {
+        let accountNum = (sender as! NSControl).tag
         var authCode = ""
         
         switch accountNum {
