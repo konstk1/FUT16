@@ -10,11 +10,15 @@ import Cocoa
 
 class ViewController: NSViewController {
 
-    @IBOutlet weak var emailTextField: NSTextField!
-    @IBOutlet weak var passwordTextField: NSSecureTextField!
-    @IBOutlet weak var authTextField: NSTextField!
+    @IBOutlet weak var email0TextField: NSTextField!
+    @IBOutlet weak var password0TextField: NSSecureTextField!
+    @IBOutlet weak var secretAnswer0TextField: NSTextField!
+    @IBOutlet weak var auth0TextField: NSTextField!
     
-    @IBOutlet weak var secretAnswerTextField: NSTextField!
+    @IBOutlet weak var email1TextField: NSTextField!
+    @IBOutlet weak var password1TextField: NSSecureTextField!
+    @IBOutlet weak var secretAnswer1TextField: NSTextField!
+    @IBOutlet weak var auth1TextField: NSTextField!
     
     @IBOutlet weak var typeSegment: NSSegmentedControl!
     
@@ -28,9 +32,6 @@ class ViewController: NSViewController {
     @IBOutlet weak var buyAtTextField: NSTextField!
     @IBOutlet weak var breakEvenTextField: NSTextField!
     
-    @IBOutlet weak var loginButton: NSButton!
-    @IBOutlet weak var submitButton: NSButton!
-    
     // Settings outlets
     @IBOutlet weak var reqTimingMinTextField: NSTextField!
     @IBOutlet weak var reqTimingMaxTextField: NSTextField!
@@ -40,13 +41,17 @@ class ViewController: NSViewController {
     
     @IBOutlet var logTextView: NSTextView!
     
-    private let fut16 = FUT16()
+    private var fut16 = [FUT16]()
     var autoTrader: AutoTrader!
-    dynamic var traderStats = TraderStats(email: "")
+    dynamic var traderStats = TraderStats()
     var settings = Settings.sharedInstance
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // add two places for now
+        fut16.append(FUT16())
+        fut16.append(FUT16())
         
         updateFieldsStateForSearchType(typeSegment.selectedLabel())
         updateSettings()
@@ -83,20 +88,51 @@ class ViewController: NSViewController {
 
 // MARK: UI Actions
     @IBAction func loginPressed(sender: NSButton) {
-        fut16.login(emailTextField.stringValue, password: passwordTextField.stringValue, secretAnswer: secretAnswerTextField.stringValue)
-        Log.print("Logging in")
+        let accountNum = sender.tag
         
-        if autoTrader != nil {
-            autoTrader.stopAllTimers()
+        var email = ""
+        var password = ""
+        var secret = ""
+        
+        switch accountNum {
+        case 0:
+            email = email0TextField.stringValue
+            password = password0TextField.stringValue
+            secret = secretAnswer0TextField.stringValue
+        case 1:
+            email = email1TextField.stringValue
+            password = password1TextField.stringValue
+            secret = secretAnswer1TextField.stringValue
+        default:
+            break
         }
         
-        autoTrader = AutoTrader(fut16: fut16, update: {
-            self.traderStats = self.autoTrader.stats
-        })
+        fut16[accountNum].login(email, password: password, secretAnswer: secret)
+        Log.print("Logging in [\(sender.tag)] - [\(email)]")
+//
+//        if autoTrader != nil {
+//            autoTrader.stopAllTimers()
+//        }
+//        
+//        autoTrader = AutoTrader(fut16: fut16, update: {
+//            self.traderStats = self.autoTrader.stats
+//        })
     }
     
     @IBAction func submitPressed(sender: NSButton) {
-        fut16.sendAuthCode(authTextField.stringValue)
+        let accountNum = sender.tag
+        var authCode = ""
+        
+        switch accountNum {
+        case 0:
+            authCode = auth0TextField.stringValue
+        case 1:
+            authCode = auth1TextField.stringValue
+        default:
+            break
+        }
+        
+        fut16[accountNum].sendAuthCode(authCode)
     }
     
     @IBAction func setSearchParamsPressed(sender: NSButton) {
@@ -187,10 +223,6 @@ class ViewController: NSViewController {
     @IBAction func saveSettingsPressed(sender: NSButton) {
         updateSettings()
         Log.print("Settings: \(settings)")
-    }
-    
-    @IBAction func clearCookiesPressed(sender: NSButton) {
-        fut16.clearCookies()
     }
 }
 

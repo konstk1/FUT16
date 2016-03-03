@@ -12,7 +12,6 @@ import Alamofire
 public class FUT16 {
     
     private let cfg = NSURLSessionConfiguration.ephemeralSessionConfiguration()
-    private let cookieStoreage = NSHTTPCookieStorage.sharedHTTPCookieStorage()
     
     let alamo: Manager!
     
@@ -42,8 +41,6 @@ public class FUT16 {
     }
 
     public init() {
-//        cfg.HTTPCookieStorage = cookieStoreage
-//        cfg.HTTPCookieAcceptPolicy = NSHTTPCookieAcceptPolicy.Always
         cfg.timeoutIntervalForRequest = 20.0
 
         var defaultHeaders = Alamofire.Manager.sharedInstance.session.configuration.HTTPAdditionalHeaders ?? [:]
@@ -54,24 +51,5 @@ public class FUT16 {
         cfg.HTTPAdditionalHeaders = defaultHeaders
         
         alamo = Alamofire.Manager(configuration: cfg)
-    }
-    
-    public func clearCookies() {
-        for cookie in cookieStoreage.cookies! {
-            cookieStoreage.deleteCookie(cookie)
-        }
-    }
-}
-
-extension FUT16 {
-    private func printCookies() {
-        guard let cookies = cookieStoreage.cookies else {
-            Log.print("Cookies: None")
-            return
-        }
-        
-        Log.print("Cookies:")
-        
-        Log.print(NSHTTPCookie.requestHeaderFieldsWithCookies(cookies))
     }
 }
