@@ -58,6 +58,7 @@ public class AutoTrader: NSObject {
     
     deinit {
         print("Autotrader Deinit")
+        stopAllTimers()
     }
     
     // return break-even buy
@@ -84,9 +85,22 @@ public class AutoTrader: NSObject {
         notifyOwner()
     }
     
+    func stopAllTimers() {
+        if pollTimer != nil && pollTimer.valid {
+            pollTimer.invalidate()
+        }
+        
+        if cycleTimer != nil && cycleTimer.valid {
+            cycleTimer.invalidate()
+        }
+    }
+    
     func startTrading() {
+        Log.print("State: \(state)")
         if state == .Ready || state == .Stopped {
             cycleStart()
+        } else {
+            Log.print("Already trading")
         }
         
         // disable app nap
@@ -98,13 +112,7 @@ public class AutoTrader: NSObject {
     func stopTrading(reason: String, newState: State = .Stopped) {
         state = newState
         
-        if pollTimer != nil && pollTimer.valid {
-            pollTimer.invalidate()
-        }
-
-        if cycleTimer != nil && cycleTimer.valid {
-            cycleTimer.invalidate()
-        }
+        stopAllTimers()
 
         self.notifyOwner()
         
@@ -241,7 +249,7 @@ public class AutoTrader: NSObject {
         Log.print("Purchasing \(auction.tradeId) (\(auction.buyNowPrice))...", terminator: "")
         self.fut16.placeBidOnAuction(auction.tradeId, amount: auction.buyNowPrice) { (error) in
             defer {
-                NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: Selector("processPurchaseQueue"), userInfo: nil, repeats: false)
+                //NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: Selector("processPurchaseQueue"), userInfo: nil, repeats: false)
             }
             guard error == .None else {
                 Log.print("Fail: Error - \(error).")

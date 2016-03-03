@@ -86,6 +86,10 @@ class ViewController: NSViewController {
         fut16.login(emailTextField.stringValue, password: passwordTextField.stringValue, secretAnswer: secretAnswerTextField.stringValue)
         Log.print("Logging in")
         
+        if autoTrader != nil {
+            autoTrader.stopAllTimers()
+        }
+        
         autoTrader = AutoTrader(fut16: fut16, update: {
             self.traderStats = self.autoTrader.stats
         })
