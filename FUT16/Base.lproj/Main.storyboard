@@ -708,7 +708,7 @@
                                 <font key="font" metaFont="system"/>
                                 <tabViewItems>
                                     <tabViewItem label="Login" identifier="" id="8k1-rU-lrZ">
-                                        <view key="view" ambiguous="YES" id="std-p5-qOY">
+                                        <view key="view" id="std-p5-qOY">
                                             <rect key="frame" x="10" y="33" width="611" height="407"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
@@ -926,7 +926,7 @@
                                         </view>
                                     </tabViewItem>
                                     <tabViewItem label="Trade" identifier="1" id="Buj-Af-8by">
-                                        <view key="view" id="Hpi-ar-TFD">
+                                        <view key="view" ambiguous="YES" id="Hpi-ar-TFD">
                                             <rect key="frame" x="10" y="33" width="611" height="407"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
@@ -1366,6 +1366,9 @@
                                                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                     </textFieldCell>
+                                                    <connections>
+                                                        <binding destination="RjE-TD-ifc" name="value" keyPath="values.self.traderStats.searchCount" id="zNf-hX-0Np"/>
+                                                    </connections>
                                                 </textField>
                                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aZS-qH-g2k">
                                                     <rect key="frame" x="461" y="299" width="46" height="17"/>

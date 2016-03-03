@@ -9,8 +9,8 @@
 import Foundation
 import Cocoa
 
-// TODO: Multi-user
-// TODO: Add code locking after X requests (for distribution)
+// TODO: Fix stats (multi-user)
+// TODO: Make timing setting calculate inner timing
 
 private let managedObjectContext = (NSApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
 
@@ -121,6 +121,7 @@ public class AutoTrader: NSObject {
         Transaction.save(managedObjectContext)
         
         fut16.forEach { (fut) -> () in
+            Log.print("Transferring [\(fut.email)]")
             fut.sendItemsToTransferList()
         }
         
