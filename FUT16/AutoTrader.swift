@@ -212,7 +212,7 @@ public class AutoTrader: NSObject {
                 }
             }
             
-            Log.print("Search: \(self.stats.searchCount) (\(auctions.count)-\(self.itemParams.startRecord)) - Cur Min: \(curMinBin) (Min: \(self.minBin)) [\(self.currentFut.email)]")
+            Log.print("Search: \(self.stats.searchCount) (\(auctions.count)-\(self.itemParams.startRecord)) - Cur Min: \(curMinBin) (Min: \(self.minBin)) [\(self.currentFut.user)]")
             
             // update session min
             if curMinBin < self.minBin {
