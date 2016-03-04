@@ -15,7 +15,7 @@ class Search: Transaction {
     
     override var description: String { get { return "\(NSDate(timeIntervalSinceReferenceDate: time))" } }
     
-    class func NewSearch(email: String, managedObjectContext managedObjectContext: NSManagedObjectContext) {
+    class func NewSearch(email: String, managedObjectContext: NSManagedObjectContext) {
         let search = NSEntityDescription.insertNewObjectForEntityForName(entityName, inManagedObjectContext: managedObjectContext) as! Search
         search.email = email
         search.time = NSDate().timeIntervalSinceReferenceDate

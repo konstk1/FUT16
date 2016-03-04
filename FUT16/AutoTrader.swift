@@ -9,13 +9,17 @@
 import Foundation
 import Cocoa
 
-// TODO: Multi-user
-// TODO: Add code locking after X requests (for distribution)
+// TODO: Fix stats (multi-user)
+// TODO: Make timing setting calculate inner timing
+// TODO: Empty account fields (skip over)
 
 private let managedObjectContext = (NSApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
 
 public class AutoTrader: NSObject {
-    private var fut16: FUT16
+    private var fut16 = [FUT16]()
+    private var currentFut: FUT16
+    private var currentFutIdx = 0
+    
     private var itemParams: FUT16.ItemParams!
     private var buyAtBin: UInt = 0
     
@@ -47,17 +51,15 @@ public class AutoTrader: NSObject {
     
     private var activity: NSObjectProtocol!      // activity to disable app nap
     
-    public init(fut16: FUT16, update: (() -> ())?) {
+    public init(fut16: [FUT16], update: (() -> ())?) {
         self.fut16 = fut16
+        currentFut = self.fut16.first!
+        
         self.updateOwner = update
         
-        stats = TraderStats(email: self.fut16.email)
+        stats = TraderStats()
         //notifyOwner()
-        print("Autotrader Init")
-    }
-    
-    deinit {
-        print("Autotrader Deinit")
+//        Log.print("Autotrader Init")
     }
     
     // return break-even buy
@@ -78,15 +80,28 @@ public class AutoTrader: NSObject {
     }
     
     func resetStats() {
-        stats = TraderStats(email: fut16.email)
+        stats = TraderStats()
         sessionErrorCount = 0
         minBin = 10000000
         notifyOwner()
     }
     
+    func stopAllTimers() {
+        if pollTimer != nil && pollTimer.valid {
+            pollTimer.invalidate()
+        }
+        
+        if cycleTimer != nil && cycleTimer.valid {
+            cycleTimer.invalidate()
+        }
+    }
+    
     func startTrading() {
+        Log.print("State: \(state)")
         if state == .Ready || state == .Stopped {
             cycleStart()
+        } else {
+            Log.print("Already trading")
         }
         
         // disable app nap
@@ -98,13 +113,7 @@ public class AutoTrader: NSObject {
     func stopTrading(reason: String, newState: State = .Stopped) {
         state = newState
         
-        if pollTimer != nil && pollTimer.valid {
-            pollTimer.invalidate()
-        }
-
-        if cycleTimer != nil && cycleTimer.valid {
-            cycleTimer.invalidate()
-        }
+        stopAllTimers()
 
         self.notifyOwner()
         
@@ -112,11 +121,14 @@ public class AutoTrader: NSObject {
         
         Transaction.save(managedObjectContext)
         
-        fut16.sendItemsToTransferList()
+        fut16.forEach { (fut) -> () in
+            Log.print("Transferring [\(fut.email)]")
+            fut.sendItemsToTransferList()
+        }
         
         Log.print("Searches (hours): ", terminator: "")
         for i in 1...4 {
-            Log.print(" \(i): \(stats.searchCountHours(Double(i))),", terminator: "")
+            Log.print(" \(i): \(stats.searchCountForEmail(currentFut.email, numHours: Double(i))),", terminator: "")
         }
         Log.print("")
         
@@ -131,6 +143,10 @@ public class AutoTrader: NSObject {
         guard state == .Ready || state == .Polling else {
             return
         }
+        
+        // get next valid FUT
+        currentFutIdx = (currentFutIdx + 1) % fut16.count
+        currentFut = fut16[currentFutIdx]
         
         pollTimer = NSTimer.scheduledTimerWithTimeInterval(settings.reqTimingRand, target: self, selector: Selector("pollAuctions"), userInfo: nil, repeats: false)
     }
@@ -149,13 +165,13 @@ public class AutoTrader: NSObject {
     }
     
     func pollAuctions() {
-        Log.print(".\(NSDate.localTime):  ", terminator: "")
+        Log.print("\(NSDate.localTime):  ", terminator: "")
         var curMinBin: UInt = 10000000
         
         // increment max price to avoid cached results
         itemParams.maxPrice = incrementPrice(itemParams.maxPrice)
         
-        fut16.findAuctionsForItem(itemParams) { (auctions, error) -> Void in
+        currentFut.findAuctionsForItem(itemParams) { (auctions, error) -> Void in
             defer {
                 // schedule next request at the end of the callback 
                 // in order to avoid sending out next request while current one is still pending
@@ -165,9 +181,10 @@ public class AutoTrader: NSObject {
             self.stats.searchCount++
             self.logSearch()        // save to CoreData
             
-            self.stats.coinsBalance = self.fut16.coinsBalance   // grab coins ballance
+            self.stats.coinsBalance = self.currentFut.coinsBalance   // grab coins ballance
             
-            if self.stats.searchCount1Hr >= self.SEARCH_LIMIT_1HR || self.stats.searchCount24Hr >= self.SEARCH_LIMIT_24HR {
+            if self.stats.searchCountForEmail(self.currentFut.email, numHours: 1) >= self.SEARCH_LIMIT_1HR ||
+               self.stats.searchCountForEmail(self.currentFut.email, numHours: 24) >= self.SEARCH_LIMIT_24HR {
                 self.stopTrading("Search limit reached")
             }
             
@@ -176,7 +193,7 @@ public class AutoTrader: NSObject {
                 Log.print(error)
                 self.sessionErrorCount++
                 if self.sessionErrorCount < self.SESSION_ERROR_LIMIT {
-                    self.fut16.retrieveSessionId()   // re-login
+                    self.currentFut.retrieveSessionId()   // re-login
                 } else {
                     self.stopTrading("Session error limit reached")
                 }
@@ -191,11 +208,11 @@ public class AutoTrader: NSObject {
                 
                 if $0.buyNowPrice <= self.buyAtBin && $0.isRare {
                     self.purchaseQueue.append($0)
-                    Log.print("Purchase Queued \($0.tradeId)")
+//                    Log.print("Purchase Queued \($0.tradeId)")
                 }
             }
             
-            Log.print("Search: \(self.stats.searchCount) (\(auctions.count)-\(self.itemParams.startRecord)) - Cur Min: \(curMinBin) (Min: \(self.minBin)) - \(self.itemParams.maxPrice)")
+            Log.print("Search: \(self.stats.searchCount) (\(auctions.count)-\(self.itemParams.startRecord)) - Cur Min: \(curMinBin) (Min: \(self.minBin)) [\(self.currentFut.user)]")
             
             // update session min
             if curMinBin < self.minBin {
@@ -239,9 +256,9 @@ public class AutoTrader: NSObject {
         let auction = purchaseQueue.removeFirst()
         
         Log.print("Purchasing \(auction.tradeId) (\(auction.buyNowPrice))...", terminator: "")
-        self.fut16.placeBidOnAuction(auction.tradeId, amount: auction.buyNowPrice) { (error) in
+        self.currentFut.placeBidOnAuction(auction.tradeId, amount: auction.buyNowPrice) { (error) in
             defer {
-                NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: Selector("processPurchaseQueue"), userInfo: nil, repeats: false)
+                //NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: Selector("processPurchaseQueue"), userInfo: nil, repeats: false)
             }
             guard error == .None else {
                 Log.print("Fail: Error - \(error).")
@@ -249,27 +266,28 @@ public class AutoTrader: NSObject {
                 return
             }
             
+            Log.print("Success - (Bal: \(self.currentFut.coinsBalance))")
+            
             // some stat keeping
             self.stats.purchaseCount++
             self.stats.lastPurchaseCost = Int(auction.buyNowPrice)
             self.stats.purchaseTotalCost += self.stats.lastPurchaseCost
-            self.stats.coinsBalance = self.fut16.coinsBalance
+            self.stats.coinsBalance = self.currentFut.coinsBalance
             self.stats.averagePurchaseCost = Int(round(Double(self.stats.purchaseTotalCost) / Double(self.stats.purchaseCount)))
             
             // add to CoreData
-            Purchase.NewPurchase(self.fut16.email, price: Int(auction.buyNowPrice), maxBin: Int(self.itemParams.maxBin), coinBallance: self.fut16.coinsBalance, managedObjectContext: managedObjectContext)
+            Purchase.NewPurchase(self.currentFut.email, price: Int(auction.buyNowPrice), maxBin: Int(self.itemParams.maxBin), coinBallance: self.currentFut.coinsBalance, managedObjectContext: managedObjectContext)
             
-            Log.print("Success!")
             NSSound(named: "Ping")?.play()
             
             // stop trading if not enough coins for next purchase
-            if self.fut16.coinsBalance < Int(self.buyAtBin) {
-                self.stopTrading("Not enough coins.  Balance: \(self.fut16.coinsBalance)")
+            if self.currentFut.coinsBalance < Int(self.buyAtBin) {
+                self.stopTrading("Not enough coins.  Balance: \(self.currentFut.coinsBalance)")
             }
             
             // After 5 purchases, move all to transfer list
             if self.stats.purchaseCount >= 5 {
-                self.fut16.sendItemsToTransferList()
+                self.currentFut.sendItemsToTransferList()
                 self.stats.purchaseCount = 0
             }
             self.notifyOwner()
@@ -282,13 +300,11 @@ public class AutoTrader: NSObject {
     
 // MARK: Stat and CoreData helpers
     func logSearch() {
-        Search.NewSearch(fut16.email, managedObjectContext: managedObjectContext)
+        Search.NewSearch(currentFut.email, managedObjectContext: managedObjectContext)
     }
 }
 
 public class TraderStats: NSObject {
-    var email: String
-    
     var searchCount = 0
     
     var purchaseCount = 0
@@ -299,45 +315,41 @@ public class TraderStats: NSObject {
     var lastPurchaseCost = 0
     var coinsBalance = 0
     
-    init(email: String) {
-        self.email = email
-    }
+//    var searchCount1Hr: Int {
+//        get {
+//            return Search.numSearchesSinceDate(NSDate.hourAgo, forEmail: email, managedObjectContext: managedObjectContext)
+//        }
+//    }
+//    var searchCount90min: Int {
+//        get {
+//            return Search.numSearchesSinceDate(NSDate(timeIntervalSinceNow: -60*90), forEmail: email, managedObjectContext: managedObjectContext)
+//        }
+//    }
+//    var searchCount2Hr: Int {
+//        get {
+//            return Search.numSearchesSinceDate(NSDate(timeIntervalSinceNow: -2*3600), forEmail: email, managedObjectContext: managedObjectContext)
+//        }
+//    }
+//    var searchCount24Hr: Int {
+//        get {
+//            return Search.numSearchesSinceDate(NSDate.dayAgo, forEmail: email, managedObjectContext: managedObjectContext)
+//        }
+//    }
+//    
+//    var searchCountAllTime: Int {
+//        get {
+//            return Search.numSearchesSinceDate(NSDate.allTime, forEmail: email, managedObjectContext: managedObjectContext)
+//        }
+//    }
+//    
+//    var purchaseTotalAllTime: Int {
+//        get {
+//            let purchases = Purchase.getPurchasesSinceDate(NSDate.allTime, forEmail: email, managedObjectContext: managedObjectContext)
+//            return Int(purchases.reduce(0) { $0 + $1.price })
+//        }
+//    }
     
-    var searchCount1Hr: Int {
-        get {
-            return Search.numSearchesSinceDate(NSDate.hourAgo, forEmail: email, managedObjectContext: managedObjectContext)
-        }
-    }
-    var searchCount90min: Int {
-        get {
-            return Search.numSearchesSinceDate(NSDate(timeIntervalSinceNow: -60*90), forEmail: email, managedObjectContext: managedObjectContext)
-        }
-    }
-    var searchCount2Hr: Int {
-        get {
-            return Search.numSearchesSinceDate(NSDate(timeIntervalSinceNow: -2*3600), forEmail: email, managedObjectContext: managedObjectContext)
-        }
-    }
-    var searchCount24Hr: Int {
-        get {
-            return Search.numSearchesSinceDate(NSDate.dayAgo, forEmail: email, managedObjectContext: managedObjectContext)
-        }
-    }
-    
-    var searchCountAllTime: Int {
-        get {
-            return Search.numSearchesSinceDate(NSDate.allTime, forEmail: email, managedObjectContext: managedObjectContext)
-        }
-    }
-    
-    var purchaseTotalAllTime: Int {
-        get {
-            let purchases = Purchase.getPurchasesSinceDate(NSDate.allTime, forEmail: email, managedObjectContext: managedObjectContext)
-            return Int(purchases.reduce(0) { $0 + $1.price })
-        }
-    }
-    
-    func searchCountHours(hours: Double) -> Int {
+    func searchCountForEmail(email: String, numHours hours: Double) -> Int {
         return Search.numSearchesSinceDate(NSDate(timeIntervalSinceNow: -3600*hours), forEmail: email, managedObjectContext: managedObjectContext)
     }
 }
