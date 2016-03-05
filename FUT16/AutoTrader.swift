@@ -127,7 +127,7 @@ public class AutoTrader: NSObject {
         }
         
         Log.print("Searches (hours): ", terminator: "")
-        for i in 1...4 {
+        for i in [1, 2, 12, 24] {
             Log.print(" \(i): \(stats.searchCountForEmail(currentFut.email, numHours: Double(i))),", terminator: "")
         }
         Log.print("")
