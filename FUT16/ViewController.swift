@@ -20,6 +20,11 @@ class ViewController: NSViewController {
     @IBOutlet weak var secretAnswer1TextField: NSTextField!
     @IBOutlet weak var auth1TextField: NSTextField!
     
+    @IBOutlet weak var email2TextField: NSTextField!
+    @IBOutlet weak var password2TextField: NSSecureTextField!
+    @IBOutlet weak var secretAnswer2TextField: NSTextField!
+    @IBOutlet weak var auth2TextField: NSTextField!
+    
     @IBOutlet weak var typeSegment: NSSegmentedControl!
     
     @IBOutlet weak var playerIdTextField: NSTextField!
@@ -52,8 +57,8 @@ class ViewController: NSViewController {
         // add two places for now
         fut16.append(FUT16())
         fut16.append(FUT16())
+        fut16.append(FUT16())
 
-        
         autoTrader = AutoTrader(fut16: fut16, update: {
             self.traderStats = self.autoTrader.stats
         })
@@ -108,6 +113,10 @@ class ViewController: NSViewController {
             email = email1TextField.stringValue
             password = password1TextField.stringValue
             secret = secretAnswer1TextField.stringValue
+        case 2:
+            email = email2TextField.stringValue
+            password = password2TextField.stringValue
+            secret = secretAnswer2TextField.stringValue
         default:
             break
         }
@@ -125,6 +134,8 @@ class ViewController: NSViewController {
             authCode = auth0TextField.stringValue
         case 1:
             authCode = auth1TextField.stringValue
+        case 2:
+            authCode = auth2TextField.stringValue
         default:
             break
         }

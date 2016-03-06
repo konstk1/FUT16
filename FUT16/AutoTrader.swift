@@ -191,10 +191,10 @@ public class AutoTrader: NSObject {
             // check for errors
             guard error == .None else {
                 Log.print(error)
-                self.sessionErrorCount++
-                if self.sessionErrorCount < self.SESSION_ERROR_LIMIT {
+                if error == .ExpiredSession {
                     self.currentFut.retrieveSessionId()   // re-login
                 } else {
+                    self.sessionErrorCount++
                     self.stopTrading("Session error limit reached")
                 }
                 return
