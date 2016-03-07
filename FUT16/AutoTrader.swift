@@ -145,8 +145,10 @@ public class AutoTrader: NSObject {
         }
         
         // get next valid FUT
-        currentFutIdx = (currentFutIdx + 1) % fut16.count
-        currentFut = fut16[currentFutIdx]
+        repeat {
+            currentFutIdx = (currentFutIdx + 1) % fut16.count
+            currentFut = fut16[currentFutIdx]
+        } while currentFut.sessionId.isEmpty
         
         pollTimer = NSTimer.scheduledTimerWithTimeInterval(settings.reqTimingRand, target: self, selector: Selector("pollAuctions"), userInfo: nil, repeats: false)
     }
