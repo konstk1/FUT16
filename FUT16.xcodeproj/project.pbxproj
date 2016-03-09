@@ -16,6 +16,8 @@
 		1C21AA051C20BC5C00B4941E /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1C21AA021C20BC4400B4941E /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		1C6DBA991C52C15000ECE215 /* FUT16+Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C6DBA981C52C15000ECE215 /* FUT16+Item.swift */; };
 		1C7DD6E61C73789100710B19 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C7DD6E51C73789100710B19 /* Settings.swift */; };
+		1C8320C31C90BFED00F61D75 /* TraderStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C8320C21C90BFED00F61D75 /* TraderStats.swift */; };
+		1C8320C51C90D27100F61D75 /* FutUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C8320C41C90D27100F61D75 /* FutUser.swift */; };
 		1C84CF3C1C4D5ED900A4517D /* FUT16+Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C84CF3B1C4D5ED900A4517D /* FUT16+Login.swift */; };
 		1CCB11201C483AD400DB43BA /* FUT16+SearchParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CCB111F1C483AD400DB43BA /* FUT16+SearchParams.swift */; };
 		1CF6A73D1C2365D8009A9181 /* Cartfile in Resources */ = {isa = PBXBuildFile; fileRef = 1CF6A73C1C2365D8009A9181 /* Cartfile */; };
@@ -66,6 +68,8 @@
 		1C5F3D401C7B64C90055B5EE /* FUT 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "FUT 2.xcdatamodel"; sourceTree = "<group>"; };
 		1C6DBA981C52C15000ECE215 /* FUT16+Item.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "FUT16+Item.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		1C7DD6E51C73789100710B19 /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
+		1C8320C21C90BFED00F61D75 /* TraderStats.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TraderStats.swift; sourceTree = "<group>"; };
+		1C8320C41C90D27100F61D75 /* FutUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FutUser.swift; sourceTree = "<group>"; };
 		1C84CF3B1C4D5ED900A4517D /* FUT16+Login.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "FUT16+Login.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		1CCB111F1C483AD400DB43BA /* FUT16+SearchParams.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FUT16+SearchParams.swift"; sourceTree = "<group>"; };
 		1CF6A73C1C2365D8009A9181 /* Cartfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Cartfile; sourceTree = SOURCE_ROOT; };
@@ -134,6 +138,8 @@
 				1CCB111F1C483AD400DB43BA /* FUT16+SearchParams.swift */,
 				1C6DBA981C52C15000ECE215 /* FUT16+Item.swift */,
 				FF50D2251C28AA05003F1D02 /* AutoTrader.swift */,
+				1C8320C21C90BFED00F61D75 /* TraderStats.swift */,
+				1C8320C41C90D27100F61D75 /* FutUser.swift */,
 				1C7DD6E51C73789100710B19 /* Settings.swift */,
 				FF50D2211C277775003F1D02 /* Utilities.swift */,
 				1C21A9EB1C20B2EC00B4941E /* ViewController.swift */,
@@ -248,6 +254,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FF50D2201C274A2D003F1D02 /* FUT16+Bid.swift in Sources */,
+				1C8320C31C90BFED00F61D75 /* TraderStats.swift in Sources */,
 				FF68C8481C38B43B00A6D9E1 /* FUT16.xcdatamodeld in Sources */,
 				FFF6FF8B1C6BE316001DEA87 /* Log.swift in Sources */,
 				FF68C8771C38B98000A6D9E1 /* Transaction.swift in Sources */,
@@ -264,6 +271,7 @@
 				1CF6A8101C237993009A9181 /* FUT16+Transport.swift in Sources */,
 				FF68C8791C38B98000A6D9E1 /* Search+CoreDataProperties.swift in Sources */,
 				1C84CF3C1C4D5ED900A4517D /* FUT16+Login.swift in Sources */,
+				1C8320C51C90D27100F61D75 /* FutUser.swift in Sources */,
 				FF50D2221C277775003F1D02 /* Utilities.swift in Sources */,
 				1C7DD6E61C73789100710B19 /* Settings.swift in Sources */,
 				1C21A9EA1C20B2EC00B4941E /* AppDelegate.swift in Sources */,

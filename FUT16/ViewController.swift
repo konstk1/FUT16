@@ -51,22 +51,27 @@ class ViewController: NSViewController {
     
     @IBOutlet var logTextView: NSTextView!
     
-    private var fut16 = [FUT16]()
     var autoTrader: AutoTrader!
-    dynamic var traderStats = TraderStats()
+    var user0 = FutUser()
+    var user1 = FutUser()
+    var user2 = FutUser()
+    var user3 = FutUser()
+
     var settings = Settings.sharedInstance
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // add two places for now
-        fut16.append(FUT16())
-        fut16.append(FUT16())
-        fut16.append(FUT16())
-        fut16.append(FUT16())
 
-        autoTrader = AutoTrader(fut16: fut16, update: {
-            self.traderStats = self.autoTrader.stats
+        autoTrader = AutoTrader(users: [user0, user1, user2, user3], update: { [unowned self] (user) in
+            if self.user0.email == user.email {
+                self.user0.stats = user.stats
+            } else if self.user1.email == user.email {
+                self.user1.stats = user.stats
+            } else if self.user2.email == user.email {
+                self.user2.stats = user.stats
+            } else if self.user3.email == user.email {
+                self.user3.stats = user.stats
+            }
         })
         
         updateFieldsStateForSearchType(typeSegment.selectedLabel())
@@ -105,6 +110,7 @@ class ViewController: NSViewController {
 // MARK: UI Actions
     @IBAction func loginPressed(sender: NSButton) {
         let accountNum = sender.tag
+        var user: FutUser? = nil
         
         var email = ""
         var password = ""
@@ -115,44 +121,55 @@ class ViewController: NSViewController {
             email = email0TextField.stringValue
             password = password0TextField.stringValue
             secret = secretAnswer0TextField.stringValue
+            user = user0
         case 1:
             email = email1TextField.stringValue
             password = password1TextField.stringValue
             secret = secretAnswer1TextField.stringValue
+            user = user1
         case 2:
             email = email2TextField.stringValue
             password = password2TextField.stringValue
             secret = secretAnswer2TextField.stringValue
+            user = user2
         case 3:
             email = email3TextField.stringValue
             password = password3TextField.stringValue
             secret = secretAnswer3TextField.stringValue
+            user = user3
         default:
             break
         }
         
-        fut16[accountNum].login(email, password: password, secretAnswer: secret)
+        
+        user?.email = email
+        user?.fut16.login(email, password: password, secretAnswer: secret)
         Log.print("Logging in [\(sender.tag)] - [\(email)]")
     }
     
     @IBAction func submitPressed(sender: AnyObject) {
         let accountNum = (sender as! NSControl).tag
         var authCode = ""
+        var user: FutUser? = nil
         
         switch accountNum {
         case 0:
             authCode = auth0TextField.stringValue
+            user = user0
         case 1:
             authCode = auth1TextField.stringValue
+            user = user1
         case 2:
             authCode = auth2TextField.stringValue
+            user = user2
         case 3:
             authCode = auth3TextField.stringValue
+            user = user3
         default:
             break
         }
         
-        fut16[accountNum].sendAuthCode(authCode)
+        user?.fut16.sendAuthCode(authCode)
     }
     
     @IBAction func setSearchParamsPressed(sender: NSButton) {
