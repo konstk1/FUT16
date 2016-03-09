@@ -10,7 +10,7 @@ import Foundation
 import SwiftyJSON
 
 extension FUT16 {
-    func placeBidOnAuction(auctionId: String, amount: UInt, completion: (error: FutError) -> Void) {
+    func placeBidOnAuction(auctionId: String, amount: UInt, completion: (email: String, error: FutError) -> Void) {
         let bidUrl = "trade/\(auctionId)/bid"
         let parameters = ["bid" : amount]
         
@@ -39,7 +39,7 @@ extension FUT16 {
 //                Log.print("Purchased \(tradeId) for \(amount) - \(json["auctionInfo"][0]["tradeState"]) (Bal: \(self.coinsBalance))")
             }
             
-            completion(error: error)
+            completion(email: self.email, error: error)
         }
     }
     

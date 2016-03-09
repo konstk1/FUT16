@@ -10,7 +10,6 @@ import Foundation
 import Cocoa
 
 // TODO: Make timing setting calculate inner timing
-// TODO: Fix purchase stats bug (timing currentUser)
 // TODO: Re-login on expired session
 
 public class AutoTrader: NSObject {
@@ -85,7 +84,7 @@ public class AutoTrader: NSObject {
         }
         
         minBin = 10000000
-        notifyOwner()
+        notifyOwner(self.currentUser)
     }
     
     func stopAllTimers() {
@@ -117,7 +116,7 @@ public class AutoTrader: NSObject {
         
         stopAllTimers()
 
-        self.notifyOwner()
+        self.notifyOwner(self.currentUser)
         
         Log.print("Trading stopped: [\(reason)].")
         
@@ -226,7 +225,7 @@ public class AutoTrader: NSObject {
             self.processPurchaseQueue()
             self.tuneSearchParamsFromAuctions(auctions)
             
-            self.notifyOwner()
+            self.notifyOwner(self.currentUser)
         } // findAuctionsForPlayer
     } // end pollAuctions
     
@@ -260,46 +259,57 @@ public class AutoTrader: NSObject {
         let auction = purchaseQueue.removeFirst()
         
         Log.print("Purchasing \(auction.tradeId) (\(auction.buyNowPrice))...", terminator: "")
-        self.currentFut.placeBidOnAuction(auction.tradeId, amount: auction.buyNowPrice) { (error) in
+        self.currentFut.placeBidOnAuction(auction.tradeId, amount: auction.buyNowPrice) { [unowned self] (email, error) in
             defer {
                 //NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: Selector("processPurchaseQueue"), userInfo: nil, repeats: false)
             }
+            
+            let user = self.findUserWithEmail(email)
+            
             guard error == .None else {
                 Log.print("Fail: Error - \(error).")
-                self.currentStats.purchaseFailCount++
+                user.stats.purchaseFailCount++
                 return
             }
             
             Log.print("Success - (Bal: \(self.currentFut.coinsBalance))")
             
             // some stat keeping
-            self.currentStats.purchaseCount++
-            self.currentStats.lastPurchaseCost = Int(auction.buyNowPrice)
-            self.currentStats.purchaseTotalCost += self.currentStats.lastPurchaseCost
-            self.currentStats.coinsBalance = self.currentFut.coinsBalance
-            self.currentStats.averagePurchaseCost = Int(round(Double(self.currentStats.purchaseTotalCost) / Double(self.currentStats.purchaseCount)))
+            user.stats.purchaseCount++
+            user.stats.lastPurchaseCost = Int(auction.buyNowPrice)
+            user.stats.coinsBalance = user.fut16.coinsBalance
             
             // add to CoreData
-            Purchase.NewPurchase(self.currentFut.email, price: Int(auction.buyNowPrice), maxBin: Int(self.itemParams.maxBin), coinBallance: self.currentFut.coinsBalance, managedObjectContext: self.managedObjectContext)
+            Purchase.NewPurchase(user.email, price: Int(auction.buyNowPrice), maxBin: Int(self.itemParams.maxBin), coinBallance: user.stats.coinsBalance, managedObjectContext: self.managedObjectContext)
             
             NSSound(named: "Ping")?.play()
             
             // stop trading if not enough coins for next purchase
-            if self.currentFut.coinsBalance < Int(self.buyAtBin) {
-                self.stopTrading("Not enough coins.  Balance: \(self.currentFut.coinsBalance)")
+            if user.stats.coinsBalance < Int(self.buyAtBin) {
+                self.stopTrading("Not enough coins.  Balance: \(user.stats.coinsBalance)")
             }
             
             // After 5 purchases, move all to transfer list
-            if self.currentStats.purchaseCount >= 5 {
-                self.currentFut.sendItemsToTransferList()
-                self.currentStats.purchaseCount = 0
+            if user.stats.purchaseCount >= 5 {
+                user.fut16.sendItemsToTransferList()
+                user.stats.purchaseCount = 0
             }
-            self.notifyOwner()
+            self.notifyOwner(user)
         }
     }
     
-    func notifyOwner() {
-        self.updateOwner?(user: currentUser)
+    func findUserWithEmail(email: String) -> FutUser! {
+        for user in users {
+            if user.email == email {
+                return user
+            }
+        }
+        
+        return nil
+    }
+    
+    func notifyOwner(user: FutUser) {
+        self.updateOwner?(user: user)
     }
     
 // MARK: Stat and CoreData helpers

@@ -22,8 +22,14 @@ public class TraderStats: NSObject {
     var purchaseFailCount = 0
     var purchaseTotalCost = 0
     
-    var averagePurchaseCost = 0
-    var lastPurchaseCost = 0
+    var averagePurchaseCost: Int { return purchaseCount == 0 ? 0 : Int(round(Double(purchaseTotalCost) / Double(purchaseCount))) }
+    
+    var lastPurchaseCost = 0 {
+        didSet {
+            purchaseTotalCost += lastPurchaseCost
+        }
+    }
+    
     var coinsBalance = 0
     
     var errorCount = 0
