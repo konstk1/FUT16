@@ -9,9 +9,9 @@
 import Foundation
 import Cocoa
 
-// TODO: Fix stats (multi-user)
 // TODO: Make timing setting calculate inner timing
-// TODO: Empty account fields (skip over)
+// TODO: Fix purchase stats bug (timing currentUser)
+// TODO: Re-login on expired session
 
 public class AutoTrader: NSObject {
     private var users = [FutUser]()
