@@ -12,6 +12,7 @@ public class FutUser: NSObject {
     let fut16 = FUT16()
     
     dynamic lazy var stats: TraderStats = { [unowned self] in return TraderStats(email: self.email) }()
+    dynamic var requestPeriod: NSTimeInterval = 0.0
     
     var email = "" {
         didSet {

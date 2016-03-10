@@ -9,7 +9,6 @@
 import Foundation
 import Cocoa
 
-// TODO: Make timing setting calculate inner timing
 // TODO: Re-login on expired session
 
 public class AutoTrader: NSObject {
@@ -25,7 +24,7 @@ public class AutoTrader: NSObject {
     
     private let SESSION_ERROR_LIMIT = 3      // stop trading after this many session errors
     private let SEARCH_LIMIT_1HR = 950       // stop trading after this many searches within 1 hour
-    private let SEARCH_LIMIT_24HR = 5300     // stop trading after this many searches within 24 hours
+    private let SEARCH_LIMIT_24HR = 5000     // stop trading after this many searches within 24 hours
     
     private var pollTimer: NSTimer!
     private var cycleTimer: NSTimer!
@@ -99,6 +98,12 @@ public class AutoTrader: NSObject {
     
     func startTrading() {
         Log.print("State: \(state)")
+        
+        guard numActiveUsers > 0 else {
+            Log.print("No active users")
+            return
+        }
+        
         if state == .Ready || state == .Stopped {
             cycleStart()
         } else {
@@ -140,9 +145,18 @@ public class AutoTrader: NSObject {
         }
     }
     
+    private var lastRequestTime = NSDate().timeIntervalSinceReferenceDate
+    
     private func scheduleNextPoll() {
         guard state == .Ready || state == .Polling else {
             return
+        }
+        
+        if currentUserIdx == 0 {
+            let curRequestTime = NSDate().timeIntervalSinceReferenceDate
+            users[currentUserIdx].requestPeriod = round((curRequestTime - lastRequestTime)*10)/10
+            Log.print("Account request period: \(users[currentUserIdx].requestPeriod) secs  (Users: \(numActiveUsers))")
+            lastRequestTime = curRequestTime
         }
         
         // get next valid FUT
@@ -151,7 +165,9 @@ public class AutoTrader: NSObject {
             currentUser = users[currentUserIdx]
         } while !currentUser.ready
         
-        pollTimer = NSTimer.scheduledTimerWithTimeInterval(settings.reqTimingRand, target: self, selector: Selector("pollAuctions"), userInfo: nil, repeats: false)
+        let nextPollTiming = settings.reqTimingRand / Double(numActiveUsers)
+        
+        pollTimer = NSTimer.scheduledTimerWithTimeInterval(nextPollTiming, target: self, selector: Selector("pollAuctions"), userInfo: nil, repeats: false)
     }
     
     func cycleStart() {
@@ -310,6 +326,12 @@ public class AutoTrader: NSObject {
     
     func notifyOwner(user: FutUser) {
         self.updateOwner?(user: user)
+    }
+    
+    var numActiveUsers: Int {
+        return users.reduce(0) { (count, user) in
+            return user.ready ? count + 1 : count
+        }
     }
     
 // MARK: Stat and CoreData helpers
