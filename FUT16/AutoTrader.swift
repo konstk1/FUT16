@@ -211,6 +211,7 @@ public class AutoTrader: NSObject {
             guard error == .None else {
                 Log.print(error)
                 if error == .ExpiredSession {
+                    Log.print("Retrieving session id")
                     self.currentFut.retrieveSessionId()   // re-login
                 } else {
                     self.currentStats.errorCount++

@@ -30,6 +30,11 @@ class ViewController: NSViewController {
     @IBOutlet weak var secretAnswer3TextField: NSTextField!
     @IBOutlet weak var auth3TextField: NSTextField!
     
+    @IBOutlet weak var email4TextField: NSTextField!
+    @IBOutlet weak var password4TextField: NSSecureTextField!
+    @IBOutlet weak var secretAnswer4TextField: NSTextField!
+    @IBOutlet weak var auth4TextField: NSTextField!
+    
     @IBOutlet weak var typeSegment: NSSegmentedControl!
     
     @IBOutlet weak var playerIdTextField: NSTextField!
@@ -56,13 +61,14 @@ class ViewController: NSViewController {
     var user1 = FutUser()
     var user2 = FutUser()
     var user3 = FutUser()
+    var user4 = FutUser()
 
     var settings = Settings.sharedInstance
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        autoTrader = AutoTrader(users: [user0, user1, user2, user3], update: { [unowned self] (user) in
+        autoTrader = AutoTrader(users: [user0, user1, user2, user3, user4], update: { [unowned self] (user) in
             if self.user0.email == user.email {
                 self.user0.stats = user.stats
             } else if self.user1.email == user.email {
@@ -71,6 +77,8 @@ class ViewController: NSViewController {
                 self.user2.stats = user.stats
             } else if self.user3.email == user.email {
                 self.user3.stats = user.stats
+            } else if self.user4.email == user.email {
+                self.user4.stats = user.stats
             }
         })
         
@@ -137,6 +145,11 @@ class ViewController: NSViewController {
             password = password3TextField.stringValue
             secret = secretAnswer3TextField.stringValue
             user = user3
+        case 4:
+            email = email4TextField.stringValue
+            password = password4TextField.stringValue
+            secret = secretAnswer4TextField.stringValue
+            user = user4
         default:
             break
         }
@@ -165,6 +178,9 @@ class ViewController: NSViewController {
         case 3:
             authCode = auth3TextField.stringValue
             user = user3
+        case 4:
+            authCode = auth4TextField.stringValue
+            user = user4
         default:
             break
         }
@@ -173,14 +189,6 @@ class ViewController: NSViewController {
     }
     
     @IBAction func setSearchParamsPressed(sender: NSButton) {
-        // Ribery 156616 (43.5k)
-        // Neuer 167495 (105k)
-        // Tévez 143001
-        // Benzema 165153
-        // Ramos 155862
-        // Alves 146530 (13k)
-        // Alaba 197445 (40k)
-        
         let nationality = getIdFromComboBox(nationalityComboBox) ?? ""
         let league = getIdFromComboBox(leagueComboBox) ?? ""
         let team = getIdFromComboBox(teamComboBox) ?? ""
