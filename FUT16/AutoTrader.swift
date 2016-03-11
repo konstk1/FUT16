@@ -10,6 +10,7 @@ import Foundation
 import Cocoa
 
 // TODO: Re-login on expired session
+// TODO: Autoprice?
 
 public class AutoTrader: NSObject {
     private var users = [FutUser]()
@@ -128,7 +129,6 @@ public class AutoTrader: NSObject {
         Transaction.save(managedObjectContext)
         
         users.forEach { (user) -> () in
-            Log.print("Transferring [\(user.fut16.email)]")
             user.fut16.sendItemsToTransferList()
         }
         

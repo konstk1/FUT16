@@ -124,7 +124,7 @@ extension FUT16 {
         
         alamo.request(.POST, authUrl, headers: headers, parameters: parameters, encoding: .JSON).responseJSON { (response) -> Void in
             guard let json = response.result.value else {
-                Log.print("Retrieve failed: \(response.result)")
+                Log.print("Retrieve failed: \(response.response)")
                 return
             }
             self.sessionId = JSON(json)["sid"].stringValue

@@ -23,6 +23,7 @@ extension FUT16 {
             let parameters = ["itemData" : items]
             
             self.requestForPath("item", withParameters: parameters, encoding: .JSON, methodOverride: "PUT", completion: { (json) -> Void in
+                Log.print("Transferred [\(self.email) - \(self.personaName)]")
                 json["itemData"].forEach({ (key, json) -> () in
                     Log.print("\(key) - \(json["id"]) - \(json["pile"]) - \(json["success"])")
                 })
