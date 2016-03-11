@@ -749,17 +749,6 @@
                                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                     </textFieldCell>
                                                 </textField>
-                                                <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IZz-Ga-d0O">
-                                                    <rect key="frame" x="100" y="287" width="195" height="22"/>
-                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="bOr-h3-eos">
-                                                        <font key="font" metaFont="system"/>
-                                                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                    </textFieldCell>
-                                                    <connections>
-                                                        <action selector="submitPressed:" target="XfG-lQ-9wD" id="ATf-o0-Qtj"/>
-                                                    </connections>
-                                                </textField>
                                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="onv-ky-ns1">
                                                     <rect key="frame" x="15" y="290" width="71" height="17"/>
                                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Two Factor" id="SP5-if-tQy">
@@ -860,6 +849,7 @@
                                                     </textFieldCell>
                                                     <connections>
                                                         <action selector="submitPressed:" target="XfG-lQ-9wD" id="fo2-BX-rTh"/>
+                                                        <outlet property="nextKeyView" destination="o85-ip-o3x" id="ZDc-Qh-xHD"/>
                                                     </connections>
                                                 </textField>
                                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aVv-nu-Agw">
@@ -968,6 +958,7 @@
                                                     </textFieldCell>
                                                     <connections>
                                                         <action selector="submitPressed:" target="XfG-lQ-9wD" id="aXj-4f-u62"/>
+                                                        <outlet property="nextKeyView" destination="yTd-yl-aOY" id="fD2-lx-pEr"/>
                                                     </connections>
                                                 </textField>
                                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1nX-9y-AGH">
@@ -1076,6 +1067,7 @@
                                                     </textFieldCell>
                                                     <connections>
                                                         <action selector="submitPressed:" target="XfG-lQ-9wD" id="ctf-i6-iWi"/>
+                                                        <outlet property="nextKeyView" destination="ysT-LN-Ykq" id="nkT-un-UJE"/>
                                                     </connections>
                                                 </textField>
                                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bbK-4L-Rdg">
@@ -1136,12 +1128,6 @@
                                                         <action selector="submitPressed:" target="XfG-lQ-9wD" id="1Km-By-41W"/>
                                                     </connections>
                                                 </button>
-                                                <box horizontalHuggingPriority="750" fixedFrame="YES" title="Box" boxType="separator" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="fmZ-lR-VX2">
-                                                    <rect key="frame" x="419" y="12" width="5" height="388"/>
-                                                    <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
-                                                    <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                                    <font key="titleFont" metaFont="system"/>
-                                                </box>
                                                 <textField verticalHuggingPriority="750" fixedFrame="YES" tag="4" translatesAutoresizingMaskIntoConstraints="NO" id="LIH-VL-Mz2">
                                                     <rect key="frame" x="517" y="235" width="195" height="22"/>
                                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="Nwa-WL-hK0">
@@ -1244,6 +1230,24 @@
                                                         <action selector="submitPressed:" target="XfG-lQ-9wD" id="4N7-ZU-QFh"/>
                                                     </connections>
                                                 </button>
+                                                <box horizontalHuggingPriority="750" fixedFrame="YES" title="Box" boxType="separator" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="fmZ-lR-VX2">
+                                                    <rect key="frame" x="419" y="12" width="5" height="388"/>
+                                                    <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
+                                                    <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                    <font key="titleFont" metaFont="system"/>
+                                                </box>
+                                                <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IZz-Ga-d0O">
+                                                    <rect key="frame" x="100" y="287" width="195" height="22"/>
+                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="bOr-h3-eos">
+                                                        <font key="font" metaFont="system"/>
+                                                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                    </textFieldCell>
+                                                    <connections>
+                                                        <action selector="submitPressed:" target="XfG-lQ-9wD" id="ATf-o0-Qtj"/>
+                                                        <outlet property="nextKeyView" destination="ixp-On-vgE" id="VV0-JC-I9C"/>
+                                                    </connections>
+                                                </textField>
                                             </subviews>
                                         </view>
                                     </tabViewItem>
