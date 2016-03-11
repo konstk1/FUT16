@@ -2579,7 +2579,7 @@
                                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                     </textFieldCell>
                                                     <connections>
-                                                        <binding destination="XfG-lQ-9wD" name="value" keyPath="self.user3.username" id="a6Z-02-1CR"/>
+                                                        <binding destination="XfG-lQ-9wD" name="value" keyPath="self.user4.username" id="e88-Vh-j7y"/>
                                                     </connections>
                                                 </textField>
                                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Mur-De-lSg">
