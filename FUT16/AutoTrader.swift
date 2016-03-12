@@ -9,8 +9,11 @@
 import Foundation
 import Cocoa
 
+// TODO: Keep total search count in aggregate stat
+// TODO: Delete searches older than 24 hrs
 // TODO: Re-login on expired session
 // TODO: Autoprice?
+// TODO: Fix extractEaswIdFromString
 
 public class AutoTrader: NSObject {
     private var users = [FutUser]()
