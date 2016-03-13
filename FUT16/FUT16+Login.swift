@@ -67,8 +67,6 @@ extension FUT16 {
                 Log.print("Login Successfull. Authenticating Session...")
                 self.authenticate()
             } else {
-                Log.print(response!.URL!.URLString)
-                Log.print(webAppUrl)
                 Log.print("Login Failed: Invalid two factor code")
             }
         }
