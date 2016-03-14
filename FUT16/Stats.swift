@@ -14,18 +14,14 @@ class Stats: NSManagedObject {
     static let entityName = "Stats"
     
     class func updateSearchCount(email: String, searchCount: Int32, managedObjectContext: NSManagedObjectContext) {
+        var stats = getStatsForEmail(email, managedObjectContext: managedObjectContext)
         
-        if let stats = getStatsForEmail(email, managedObjectContext: managedObjectContext) {
-            print("Stats for email \(stats.email) - \(stats.numSearches)")
-            stats.email = email
-            stats.numSearches = searchCount
-
-        } else {
-            print("Creating new stat")
-            let stat = NSEntityDescription.insertNewObjectForEntityForName(entityName, inManagedObjectContext: managedObjectContext) as! Stats
-            stat.email = email
-            stat.numSearches = searchCount
+        if stats == nil {
+            stats = NSEntityDescription.insertNewObjectForEntityForName(entityName, inManagedObjectContext: managedObjectContext) as? Stats
         }
+        
+        stats?.email = email
+        stats?.numSearches = searchCount
         
         //save(managedObjectContext)
     }
@@ -47,7 +43,6 @@ class Stats: NSManagedObject {
         
         do {
             let stats = try managedObjectContext.executeFetchRequest(fetchRequest) as! [Stats]
-            print("Stats count: \(stats.count)")
             return stats.first
         } catch {
             fatalError("Failed \(entityName) fetch!")

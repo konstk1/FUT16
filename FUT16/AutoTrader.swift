@@ -9,11 +9,11 @@
 import Foundation
 import Cocoa
 
+// Reset stats per user
 // TODO: Keep total search count in aggregate stat
-// TODO: Delete searches older than 24 hrs
+// TODO: Delete searches older than 48 hrs
 // TODO: Re-login on expired session
 // TODO: Autoprice?
-// TODO: Fix extractEaswIdFromString
 
 public class AutoTrader: NSObject {
     private var users = [FutUser]()
@@ -32,8 +32,6 @@ public class AutoTrader: NSObject {
     
     private var pollTimer: NSTimer!
     private var cycleTimer: NSTimer!
-    
-    private let managedObjectContext = (NSApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
     
     enum State {
         case Ready
@@ -129,11 +127,13 @@ public class AutoTrader: NSObject {
         
         Log.print("Trading stopped: [\(reason)].")
         
-        Transaction.save(managedObjectContext)
-        
         users.forEach { (user) -> () in
+            user.stats.purgeOldSearches()
             user.fut16.sendItemsToTransferList()
         }
+        
+        // saves data for all users (core data context)
+        currentStats.save()
         
         Log.print("Searches (hours): ", terminator: "")
         for i in [1, 2, 12, 24] {
@@ -200,8 +200,7 @@ public class AutoTrader: NSObject {
                 self.scheduleNextPoll()  // set up timer for next request
             }
             
-            self.currentStats.searchCount++
-            self.logSearch()        // save to CoreData
+            self.currentStats.logSearch()        // save to CoreData
             
             self.currentStats.coinsBalance = self.currentFut.coinsBalance   // grab coins ballance
             
@@ -295,12 +294,9 @@ public class AutoTrader: NSObject {
             Log.print("Success - (Bal: \(self.currentFut.coinsBalance))")
             
             // some stat keeping
-            user.stats.purchaseCount++
-            user.stats.lastPurchaseCost = Int(auction.buyNowPrice)
-            user.stats.coinsBalance = user.fut16.coinsBalance
+            user.stats.logPurchase(Int(auction.buyNowPrice), maxBin: Int(self.itemParams.maxBin), coinsBalance: user.fut16.coinsBalance)
             
-            // add to CoreData
-            Purchase.NewPurchase(user.email, price: Int(auction.buyNowPrice), maxBin: Int(self.itemParams.maxBin), coinBallance: user.stats.coinsBalance, managedObjectContext: self.managedObjectContext)
+            
             
             NSSound(named: "Ping")?.play()
             
@@ -336,10 +332,5 @@ public class AutoTrader: NSObject {
         return users.reduce(0) { (count, user) in
             return user.ready ? count + 1 : count
         }
-    }
-    
-// MARK: Stat and CoreData helpers
-    func logSearch() {
-        Search.NewSearch(currentFut.email, managedObjectContext: managedObjectContext)
     }
 }

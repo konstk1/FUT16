@@ -174,14 +174,14 @@
 		FF68C8551C38B88400A6D9E1 /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
-				1C7ADE4D1C965D09001A1167 /* Stats+CoreDataProperties.swift */,
-				1C7ADE451C9658D8001A1167 /* Stats.swift */,
 				FF68C8721C38B98000A6D9E1 /* Transaction+CoreDataProperties.swift */,
 				FF68C8731C38B98000A6D9E1 /* Transaction.swift */,
 				FF68C8561C38B8F000A6D9E1 /* Purchase+CoreDataProperties.swift */,
 				FF68C8571C38B8F000A6D9E1 /* Purchase.swift */,
 				FF68C8751C38B98000A6D9E1 /* Search+CoreDataProperties.swift */,
 				FF68C8591C38B8F000A6D9E1 /* Search.swift */,
+				1C7ADE4D1C965D09001A1167 /* Stats+CoreDataProperties.swift */,
+				1C7ADE451C9658D8001A1167 /* Stats.swift */,
 				FF68C8461C38B43B00A6D9E1 /* FUT16.xcdatamodeld */,
 			);
 			name = CoreData;

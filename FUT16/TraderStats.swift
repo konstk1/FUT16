@@ -9,6 +9,8 @@
 import Foundation
 import Cocoa
 
+private let managedObjectContext = (NSApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
+
 public class TraderStats: NSObject {
     var email: String
     
@@ -59,7 +61,7 @@ public class TraderStats: NSObject {
     
     var searchCountAllTime: Int {
         get {
-            return Search.numSearchesSinceDate(NSDate.allTime, forEmail: email, managedObjectContext: managedObjectContext)
+            return Stats.getSearchCountForEmail(email, managedObjectContext: managedObjectContext)
         }
     }
     
@@ -72,5 +74,29 @@ public class TraderStats: NSObject {
     
     func searchCountHours(hours: Double) -> Int {
         return Search.numSearchesSinceDate(NSDate(timeIntervalSinceNow: -3600*hours), forEmail: email, managedObjectContext: managedObjectContext)
+    }
+    
+    func logSearch() {
+        searchCount++
+        Search.NewSearch(email, managedObjectContext: managedObjectContext)
+        Stats.updateSearchCount(email, searchCount: Int32(searchCount), managedObjectContext: managedObjectContext)
+    }
+    
+    func logPurchase(purchaseCost: Int, maxBin: Int, coinsBalance: Int) {
+        purchaseCount++
+        lastPurchaseCost = purchaseCost
+        self.coinsBalance = coinsBalance
+        
+        // add to CoreData
+        Purchase.NewPurchase(email, price: purchaseCost, maxBin: maxBin, coinBallance: coinsBalance, managedObjectContext: managedObjectContext)
+    }
+    
+    func purgeOldSearches() {
+        Search.purgeSearchesOlderThan(NSDate.twoDaysAgo, forEmail: email, managedObjectContext: managedObjectContext)
+    }
+    
+    func save() {
+        Transaction.save(managedObjectContext)
+        Stats.save(managedObjectContext)
     }
 }

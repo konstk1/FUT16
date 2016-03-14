@@ -169,8 +169,12 @@ extension FUT16 {
         //        garbage
         
         let components1 = string.componentsSeparatedByString("EASW_ID = '")
-        let components2 = components1[1].componentsSeparatedByString("'")
-        return components2[0]
+        if components1.count >= 2 {
+            let components2 = components1[1].componentsSeparatedByString("'")
+            return components2[0]
+        } else {
+            return "0"
+        }
     }
 }
 
