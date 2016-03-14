@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="9525" systemVersion="15D21" minimumToolsVersion="Xcode 7.0">
+    <entity name="Purchase" representedClassName=".Purchase" parentEntity="Transaction" syncable="YES">
+        <attribute name="coinBalance" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="maxBin" attributeType="Integer 32" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="price" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+    </entity>
+    <entity name="Search" representedClassName=".Search" parentEntity="Transaction" syncable="YES"/>
+    <entity name="Stats" representedClassName=".Stats" syncable="YES">
+        <attribute name="email" attributeType="String" syncable="YES"/>
+        <attribute name="numSearches" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+    </entity>
+    <entity name="Transaction" representedClassName=".Transaction" isAbstract="YES" syncable="YES">
+        <attribute name="email" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="time" attributeType="Date" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="Purchase" positionX="-3150" positionY="-637" width="128" height="90"/>
+        <element name="Search" positionX="-3384" positionY="-639" width="128" height="45"/>
+        <element name="Stats" positionX="-3267" positionY="-666" width="128" height="75"/>
+        <element name="Transaction" positionX="-3278" positionY="-738" width="128" height="75"/>
+    </elements>
+</model>

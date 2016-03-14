@@ -261,8 +261,21 @@ class ViewController: NSViewController {
     }
     
     @IBAction func resetStatsPressed(sender: NSButton) {
-        autoTrader?.resetStats()
-        clearLog()
+//        autoTrader?.resetStats()
+//        clearLog()
+        let managedObjectContext = (NSApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
+        
+        var email = "secretfut5@hotmail.com"
+        Stats.updateSearchCount(email, searchCount: Int32(Search.numSearchesSinceDate(NSDate.allTime, forEmail: email, managedObjectContext: managedObjectContext)), managedObjectContext: managedObjectContext)
+        email = "futit@hotmail.com"
+        Stats.updateSearchCount(email, searchCount: Int32(Search.numSearchesSinceDate(NSDate.allTime, forEmail: email, managedObjectContext: managedObjectContext)), managedObjectContext: managedObjectContext)
+        email = "futall5@hotmail.com"
+        Stats.updateSearchCount(email, searchCount: Int32(Search.numSearchesSinceDate(NSDate.allTime, forEmail: email, managedObjectContext: managedObjectContext)), managedObjectContext: managedObjectContext)
+        email = "futb7@hotmail.com"
+        Stats.updateSearchCount(email, searchCount: Int32(Search.numSearchesSinceDate(NSDate.allTime, forEmail: email, managedObjectContext: managedObjectContext)), managedObjectContext: managedObjectContext)
+        email = "fut6t@hotmail.com"
+        Stats.updateSearchCount(email, searchCount: Int32(Search.numSearchesSinceDate(NSDate.allTime, forEmail: email, managedObjectContext: managedObjectContext)), managedObjectContext: managedObjectContext)
+        Stats.save(managedObjectContext)
     }
     
     @IBAction func saveSettingsPressed(sender: NSButton) {
