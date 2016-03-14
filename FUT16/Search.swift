@@ -29,7 +29,22 @@ class Search: Transaction {
         return getTransactions(entityName, forEmail: email, sinceDate: date, managedObjectContext: managedObjectContext) as! [Search]
     }
     
+    class func getSearchesBeforeDate(date: NSDate, forEmail email: String, managedObjectContext: NSManagedObjectContext) -> [Search] {
+        
+        return getTransactions(entityName, forEmail: email, beforeDate: date, managedObjectContext: managedObjectContext) as! [Search]
+    }
+    
     class func numSearchesSinceDate(date: NSDate, forEmail email: String, managedObjectContext: NSManagedObjectContext) -> Int {
         return numTransactions(entityName, forEmail: email, sinceDate: date, managedObjectContext: managedObjectContext)
+    }
+    
+    class func purgeSearchesOlderThan(date: NSDate, forEmail email: String, managedObjectContext: NSManagedObjectContext) {
+        
+        let searches = getSearchesBeforeDate(date, forEmail: email, managedObjectContext: managedObjectContext)
+        
+        print("Deleting \(searches.count) searches")
+        searches.forEach {
+            managedObjectContext.deleteObject($0)
+        }
     }
 }

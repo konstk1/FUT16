@@ -15,30 +15,46 @@ class Stats: NSManagedObject {
     
     class func updateSearchCount(email: String, searchCount: Int32, managedObjectContext: NSManagedObjectContext) {
         
-        let fetchRequest = NSFetchRequest(entityName: entityName)
+        if let stats = getStatsForEmail(email, managedObjectContext: managedObjectContext) {
+            print("Stats for email \(stats.email) - \(stats.numSearches)")
+            stats.email = email
+            stats.numSearches = searchCount
+
+        } else {
+            print("Creating new stat")
+            let stat = NSEntityDescription.insertNewObjectForEntityForName(entityName, inManagedObjectContext: managedObjectContext) as! Stats
+            stat.email = email
+            stat.numSearches = searchCount
+        }
         
+        //save(managedObjectContext)
+    }
+    
+    class func getSearchCountForEmail(email: String, managedObjectContext: NSManagedObjectContext) -> Int {
+        var searchCount = 0
+        
+        if let stats = getStatsForEmail(email, managedObjectContext: managedObjectContext) {
+            searchCount = Int(stats.numSearches)
+        }
+        
+        return searchCount
+    }
+    
+    private class func getStatsForEmail(email: String, managedObjectContext: NSManagedObjectContext) -> Stats? {
+        
+        let fetchRequest = NSFetchRequest(entityName: entityName)
         fetchRequest.predicate = NSPredicate(format: "email = %@", email)
         
         do {
             let stats = try managedObjectContext.executeFetchRequest(fetchRequest) as! [Stats]
             print("Stats count: \(stats.count)")
-            if stats.isEmpty {
-                print("Creating new stat")
-                let stat = NSEntityDescription.insertNewObjectForEntityForName(entityName, inManagedObjectContext: managedObjectContext) as! Stats
-                stat.email = email
-                stat.numSearches = searchCount
-            }
-            if let stat = stats.first {
-                print("Stats for email \(stat.email) - \(stat.numSearches)")
-                stat.email = email
-                stat.numSearches = searchCount
-            }
+            return stats.first
         } catch {
             fatalError("Failed \(entityName) fetch!")
         }
         
-        //save(managedObjectContext)
     }
+
     
     class func save(managedObjectContext: NSManagedObjectContext) {
         do {

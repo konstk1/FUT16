@@ -265,17 +265,21 @@ class ViewController: NSViewController {
 //        clearLog()
         let managedObjectContext = (NSApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
         
+        
+        // 271
+        // 47,054
         var email = "secretfut5@hotmail.com"
-        Stats.updateSearchCount(email, searchCount: Int32(Search.numSearchesSinceDate(NSDate.allTime, forEmail: email, managedObjectContext: managedObjectContext)), managedObjectContext: managedObjectContext)
+        let stats = TraderStats(email: email)
+        
+        Log.print("24 - \(stats.searchCount24Hr), 48 - \(stats.searchCountHours(48)), All \(stats.searchCountAllTime)")
+        Search.purgeSearchesOlderThan(NSDate.twoDaysAgo, forEmail: email, managedObjectContext: managedObjectContext)
+        Log.print("24 - \(stats.searchCount24Hr), 48 - \(stats.searchCountHours(48)), All \(stats.searchCountAllTime)")
+        Log.print("Stats.getSearchCountForEmail(email, managedObjectContext: managedObjectContext))")
+        
         email = "futit@hotmail.com"
-        Stats.updateSearchCount(email, searchCount: Int32(Search.numSearchesSinceDate(NSDate.allTime, forEmail: email, managedObjectContext: managedObjectContext)), managedObjectContext: managedObjectContext)
         email = "futall5@hotmail.com"
-        Stats.updateSearchCount(email, searchCount: Int32(Search.numSearchesSinceDate(NSDate.allTime, forEmail: email, managedObjectContext: managedObjectContext)), managedObjectContext: managedObjectContext)
         email = "futb7@hotmail.com"
-        Stats.updateSearchCount(email, searchCount: Int32(Search.numSearchesSinceDate(NSDate.allTime, forEmail: email, managedObjectContext: managedObjectContext)), managedObjectContext: managedObjectContext)
         email = "fut6t@hotmail.com"
-        Stats.updateSearchCount(email, searchCount: Int32(Search.numSearchesSinceDate(NSDate.allTime, forEmail: email, managedObjectContext: managedObjectContext)), managedObjectContext: managedObjectContext)
-        Stats.save(managedObjectContext)
     }
     
     @IBAction func saveSettingsPressed(sender: NSButton) {

@@ -70,6 +70,12 @@ extension NSDate {
         }
     }
     
+    static var twoDaysAgo: NSDate {
+        get {
+            return NSDate(timeIntervalSinceNow: -48 * 3600)
+        }
+    }
+    
     static var allTime: NSDate {
         get {
             return NSDate(timeIntervalSinceReferenceDate: 0)
