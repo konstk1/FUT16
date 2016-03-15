@@ -79,7 +79,7 @@ public class TraderStats: NSObject {
     func logSearch() {
         searchCount++
         Search.NewSearch(email, managedObjectContext: managedObjectContext)
-        Stats.updateSearchCount(email, searchCount: Int32(searchCount), managedObjectContext: managedObjectContext)
+        Stats.updateSearchCount(email, searchCount: searchCountAllTime+1, managedObjectContext: managedObjectContext)
     }
     
     func logPurchase(purchaseCost: Int, maxBin: Int, coinsBalance: Int) {

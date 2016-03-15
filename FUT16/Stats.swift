@@ -12,7 +12,7 @@ import CoreData
 
 class Stats: NSManagedObject {
     static let entityName = "Stats"
-    
+        
     class func updateSearchCount(email: String, searchCount: Int32, managedObjectContext: NSManagedObjectContext) {
         var stats = getStatsForEmail(email, managedObjectContext: managedObjectContext)
         
