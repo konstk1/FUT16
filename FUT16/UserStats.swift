@@ -1,5 +1,5 @@
 //
-//  TraderStats.swift
+//  UserStats.swift
 //  FUT16
 //
 //  Created by Konstantin Klitenik on 3/9/16.
@@ -11,7 +11,7 @@ import Cocoa
 
 private let managedObjectContext = (NSApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
 
-public class TraderStats: NSObject {
+class UserStats: NSObject {
     var email: String
     
     init(email: String) {
@@ -21,7 +21,11 @@ public class TraderStats: NSObject {
     var searchCount = 0
     
     var purchaseCount = 0
-    var purchaseFailCount = 0
+    var purchaseFailCount = 0 {
+        didSet {
+            AggregateStats.sharedInstance.purchaseFailCount++
+        }
+    }
     var purchaseTotalCost = 0
     
     var averagePurchaseCost: Int { return purchaseCount == 0 ? 0 : Int(round(Double(purchaseTotalCost) / Double(purchaseCount))) }
@@ -89,6 +93,10 @@ public class TraderStats: NSObject {
         
         // add to CoreData
         Purchase.NewPurchase(email, price: purchaseCost, maxBin: maxBin, coinBallance: coinsBalance, managedObjectContext: managedObjectContext)
+        
+        AggregateStats.sharedInstance.purchaseCount++
+        AggregateStats.sharedInstance.lastPurchaseCost = lastPurchaseCost
+        
     }
     
     func purgeOldSearches() {
@@ -98,5 +106,23 @@ public class TraderStats: NSObject {
     func save() {
         Transaction.save(managedObjectContext)
         Stats.save(managedObjectContext)
+    }
+}
+
+class AggregateStats: NSObject {
+    static var sharedInstance = AggregateStats()
+    
+    var purchaseCount = 0
+    var purchaseFailCount = 0
+    var purchaseTotalCost = 0
+    var lastPurchaseCost = 0
+    
+    var averagePurchaseCost: Int { return purchaseCount == 0 ? 0 : Int(round(Double(purchaseTotalCost) / Double(purchaseCount))) }
+    
+    func reset() {
+        purchaseCount = 0
+        purchaseFailCount = 0
+        purchaseTotalCost = 0
+        lastPurchaseCost = 0
     }
 }

@@ -11,13 +11,13 @@ import Foundation
 public class FutUser: NSObject {
     let fut16 = FUT16()
     
-    dynamic lazy var stats: TraderStats = { [unowned self] in return TraderStats(email: self.email) }()
+    dynamic lazy var stats: UserStats = { [unowned self] in return UserStats(email: self.email) }()
     dynamic var requestPeriod: NSTimeInterval = 0.0
     
     var email = "" {
         didSet {
             username = email.componentsSeparatedByString("@")[0]
-            stats = TraderStats(email: self.email)
+            stats = UserStats(email: self.email)
         }
     }
     dynamic var username = ""
@@ -27,6 +27,6 @@ public class FutUser: NSObject {
     }
     
     func resetStats() {
-        stats = TraderStats(email: email)
+        stats = UserStats(email: email)
     }
 }

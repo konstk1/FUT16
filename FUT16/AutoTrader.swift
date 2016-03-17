@@ -9,9 +9,8 @@
 import Foundation
 import Cocoa
 
-// Reset stats per user
-// TODO: Keep total search count in aggregate stat
-// TODO: Delete searches older than 48 hrs
+// TODO: Reset stats per user
+// TODO: Purchase count vs trade pile count
 // TODO: Re-login on expired session
 // TODO: Autoprice?
 
@@ -20,7 +19,7 @@ public class AutoTrader: NSObject {
     private var currentUser: FutUser
     private var currentUserIdx = 0
     
-    private var currentStats: TraderStats { return currentUser.stats }
+    private var currentStats: UserStats { return currentUser.stats }
     private var currentFut: FUT16 { return currentUser.fut16 }
     
     private var itemParams: FUT16.ItemParams!
@@ -83,6 +82,8 @@ public class AutoTrader: NSObject {
         users.forEach { (user) -> () in
             user.resetStats()
         }
+        
+        AggregateStats.sharedInstance.reset()
         
         minBin = 10000000
         notifyOwner(self.currentUser)
