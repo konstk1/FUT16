@@ -21,7 +21,7 @@ extension FUT16 {
         self.email = email
         loginUrl = webAppUrl
         phishingQuestionAnswer = secretAnswer
-        alamo.request(.GET, loginUrl).response { (request, response, data, error) -> Void in
+        alamo.request(.GET, loginUrl).response { [unowned self] (request, response, data, error) -> Void in
             guard response != nil else {
                 Log.print("No response")
                 return
@@ -44,7 +44,7 @@ extension FUT16 {
             "password" : password,
             "_eventId" : "submit"]
         
-        alamo.request(.POST, loginUrl, parameters: parameters).response { (request, response, data, error) -> Void in
+        alamo.request(.POST, loginUrl, parameters: parameters).response { [unowned self] (request, response, data, error) -> Void in
             if let responseString = String(data: data!, encoding: NSUTF8StringEncoding) {
                 if responseString.containsString("Submit Security Code") {
                     Log.print("Enter Security Code!")
@@ -62,7 +62,7 @@ extension FUT16 {
             "_trustThisDevice" : "on",
             "trustThisDevice" : "on",
             "_eventId" : "submit"]
-        alamo.request(.POST, loginUrl, parameters: parameters).response {(request, response, data, error) -> Void in
+        alamo.request(.POST, loginUrl, parameters: parameters).response { [unowned self] (request, response, data, error) -> Void in
             if response!.URL!.URLString.URLString.containsString(webAppUrl) {
                 Log.print("Login Successfull. Authenticating Session...")
                 self.authenticate()
@@ -73,7 +73,7 @@ extension FUT16 {
     }
     
     func authenticate() {
-        alamo.request(.GET, baseShowoffUrl).response {(request, response, data, error) -> Void in
+        alamo.request(.GET, baseShowoffUrl).response { [unowned self] (request, response, data, error) -> Void in
             self.EASW_ID = self.extractEaswIdFromString(data!.string!)
             if self.EASW_ID == "0" {
                 Log.print("Login failure: EASW_ID")
@@ -89,7 +89,7 @@ extension FUT16 {
             "X-UT-Embed-Error" : "true",
             "X-UT-Route" : "https://utas.s3.fut.ea.com:443" ]
         
-        alamo.request(.GET, acctInfoUrl, headers: headers).responseJSON { (response) -> Void in
+        alamo.request(.GET, acctInfoUrl, headers: headers).responseJSON { [unowned self] (response) -> Void in
             guard let json = response.result.value else { return }
             let infoJson = JSON(json)
             

@@ -11,7 +11,7 @@ import SwiftyJSON
 
 extension FUT16 {
     public func sendItemsToTransferList() {
-        getPurchasedItems { (itemsJson) -> () in
+        getPurchasedItems { [unowned self] (itemsJson) -> () in
             guard itemsJson.count > 0 else { return }
             
             var items = [[String : String]]()
