@@ -194,7 +194,7 @@ public class AutoTrader: NSObject {
         // increment max price to avoid cached results
         itemParams.maxPrice = incrementPrice(itemParams.maxPrice)
         
-        currentUser.fut16.findAuctionsForItem(itemParams) { (auctions, error) -> Void in
+        currentUser.fut16.findAuctionsForItem(itemParams) { [unowned self] (auctions, error) -> Void in
             defer {
                 // schedule next request at the end of the callback 
                 // in order to avoid sending out next request while current one is still pending

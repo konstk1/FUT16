@@ -39,7 +39,7 @@ extension FUT16 {
     }
     
     func getUserInfo() {
-        requestForPath("user") { (json) -> Void in
+        requestForPath("user") { [unowned self] (json) -> Void in
             self.coinFunds = json["credits"].stringValue
             Log.print("Coins Ballance: \(self.coinFunds)")
         }

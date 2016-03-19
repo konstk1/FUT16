@@ -120,7 +120,7 @@ extension FUT16 {
         // if fetching new session ID, marked previous as invalid until the fetching is done
         isSessionValid = false
         
-        alamo.request(.POST, authUrl, headers: headers, parameters: parameters, encoding: .JSON).responseJSON { (response) -> Void in
+        alamo.request(.POST, authUrl, headers: headers, parameters: parameters, encoding: .JSON).responseJSON { [unowned self] (response) -> Void in
             guard let json = response.result.value else {
                 Log.print("Retrieve failed: \(response.response)")
                 return
@@ -142,7 +142,7 @@ extension FUT16 {
         
         let parameters = ["answer" : phishingQuestionAnswer.md5()]
         
-        alamo.request(.POST, validateUrl, headers: headers, parameters: parameters).responseJSON { (response) -> Void in
+        alamo.request(.POST, validateUrl, headers: headers, parameters: parameters).responseJSON { [unowned self] (response) -> Void in
             guard let json = response.result.value else { return }
             self.phishingToken = JSON(json)["token"].stringValue
             

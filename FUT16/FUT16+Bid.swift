@@ -14,7 +14,7 @@ extension FUT16 {
         let bidUrl = "trade/\(auctionId)/bid"
         let parameters = ["bid" : amount]
         
-        self.requestForPath(bidUrl, withParameters: parameters, encoding: .JSON, methodOverride: "PUT") { (json) -> Void in
+        self.requestForPath(bidUrl, withParameters: parameters, encoding: .JSON, methodOverride: "PUT") { [unowned self] (json) -> Void in
             let tradeId = json["auctionInfo"][0]["tradeId"].stringValue
             let funds = json["currencies"][0]["finalFunds"].stringValue
             let fundCurrency = json["currencies"][0]["name"].stringValue
