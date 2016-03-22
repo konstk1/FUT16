@@ -23,7 +23,7 @@ class UserStats: NSObject {
     var purchaseCount = 0
     var purchaseFailCount = 0 {
         didSet {
-            AggregateStats.sharedInstance.purchaseFailCount++
+            AggregateStats.sharedInstance.purchaseFailCount += 1
         }
     }
     var purchaseTotalCost = 0
@@ -81,20 +81,20 @@ class UserStats: NSObject {
     }
     
     func logSearch() {
-        searchCount++
+        searchCount += 1
         Search.NewSearch(email, managedObjectContext: managedObjectContext)
         Stats.updateSearchCount(email, searchCount: searchCountAllTime+1, managedObjectContext: managedObjectContext)
     }
     
     func logPurchase(purchaseCost: Int, maxBin: Int, coinsBalance: Int) {
-        purchaseCount++
+        purchaseCount += 1
         lastPurchaseCost = purchaseCost
         self.coinsBalance = coinsBalance
         
         // add to CoreData
         Purchase.NewPurchase(email, price: purchaseCost, maxBin: maxBin, coinBallance: coinsBalance, managedObjectContext: managedObjectContext)
         
-        AggregateStats.sharedInstance.purchaseCount++
+        AggregateStats.sharedInstance.purchaseCount += 1
         AggregateStats.sharedInstance.lastPurchaseCost = lastPurchaseCost
         
     }

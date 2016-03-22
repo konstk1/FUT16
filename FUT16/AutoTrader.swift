@@ -172,20 +172,20 @@ public class AutoTrader: NSObject {
         
         let nextPollTiming = settings.reqTimingRand / Double(numActiveUsers)
         
-        pollTimer = NSTimer.scheduledTimerWithTimeInterval(nextPollTiming, target: self, selector: Selector("pollAuctions"), userInfo: nil, repeats: false)
+        pollTimer = NSTimer.scheduledTimerWithTimeInterval(nextPollTiming, target: self, selector: #selector(AutoTrader.pollAuctions), userInfo: nil, repeats: false)
     }
     
     func cycleStart() {
         Log.print("------------------------------ Start cycle: \(settings.cycleTime) ------------------------------")
         state = .Polling
         pollAuctions()
-        cycleTimer = NSTimer.scheduledTimerWithTimeInterval(settings.cycleTime, target: self, selector: Selector("cycleBreak"), userInfo: nil, repeats: false)
+        cycleTimer = NSTimer.scheduledTimerWithTimeInterval(settings.cycleTime, target: self, selector: #selector(AutoTrader.cycleBreak), userInfo: nil, repeats: false)
     }
     
     func cycleBreak() {
         Log.print("------------------------------ Break cycle: \(settings.cycleBreak) ------------------------------")
         stopTrading("Cycle break", newState: .Break)
-        cycleTimer = NSTimer.scheduledTimerWithTimeInterval(settings.cycleBreak, target: self, selector: Selector("cycleStart"), userInfo: nil, repeats: false)
+        cycleTimer = NSTimer.scheduledTimerWithTimeInterval(settings.cycleBreak, target: self, selector: #selector(AutoTrader.cycleStart), userInfo: nil, repeats: false)
     }
     
     func pollAuctions() {
@@ -218,7 +218,7 @@ public class AutoTrader: NSObject {
                     Log.print("Retrieving session id")
                     self.currentFut.retrieveSessionId()   // re-login
                 } else {
-                    self.currentStats.errorCount++
+                    self.currentStats.errorCount += 1
                     self.stopTrading("Session error limit reached")
                 }
                 return
@@ -289,7 +289,7 @@ public class AutoTrader: NSObject {
             
             guard error == .None else {
                 Log.print("Fail: Error - \(error).")
-                user.stats.purchaseFailCount++
+                user.stats.purchaseFailCount += 1
                 return
             }
             
