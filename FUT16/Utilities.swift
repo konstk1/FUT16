@@ -82,6 +82,10 @@ extension NSDate {
         }
     }
     
+    class func hoursAgo(hours: Double) -> NSDate {
+        return NSDate(timeIntervalSinceNow: -3600 * hours)
+    }
+    
     static var localTime: String {
         let dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "HH:mm:ss"

@@ -11,6 +11,7 @@ import Cocoa
 
 // TODO: Reset stats per user
 // TODO: Purchase count vs trade pile count
+// TODO: Update price on login
 // TODO: Re-login on expired session
 // TODO: Autoprice?
 

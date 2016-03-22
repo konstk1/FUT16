@@ -35,6 +35,11 @@ class ViewController: NSViewController {
     @IBOutlet weak var secretAnswer4TextField: NSTextField!
     @IBOutlet weak var auth4TextField: NSTextField!
     
+    @IBOutlet weak var email5TextField: NSTextField!
+    @IBOutlet weak var password5TextField: NSSecureTextField!
+    @IBOutlet weak var secretAnswer5TextField: NSTextField!
+    @IBOutlet weak var auth5TextField: NSTextField!
+    
     @IBOutlet weak var typeSegment: NSSegmentedControl!
     
     @IBOutlet weak var playerIdTextField: NSTextField!
@@ -62,13 +67,14 @@ class ViewController: NSViewController {
     var user2 = FutUser()
     var user3 = FutUser()
     var user4 = FutUser()
+    var user5 = FutUser()
 
     var settings = Settings.sharedInstance
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        autoTrader = AutoTrader(users: [user0, user1, user2, user3, user4], update: { [unowned self] (user) in
+        autoTrader = AutoTrader(users: [user0, user1, user2, user3, user4, user5], update: { [unowned self] (user) in
             if self.user0.email == user.email {
                 self.user0.stats = user.stats
             } else if self.user1.email == user.email {
@@ -79,6 +85,8 @@ class ViewController: NSViewController {
                 self.user3.stats = user.stats
             } else if self.user4.email == user.email {
                 self.user4.stats = user.stats
+            } else if self.user5.email == user.email {
+                self.user5.stats = user.stats
             }
         })
         
@@ -150,6 +158,11 @@ class ViewController: NSViewController {
             password = password4TextField.stringValue
             secret = secretAnswer4TextField.stringValue
             user = user4
+        case 5:
+            email = email5TextField.stringValue
+            password = password5TextField.stringValue
+            secret = secretAnswer5TextField.stringValue
+            user = user5
         default:
             break
         }
@@ -181,6 +194,9 @@ class ViewController: NSViewController {
         case 4:
             authCode = auth4TextField.stringValue
             user = user4
+        case 5:
+            authCode = auth5TextField.stringValue
+            user = user5
         default:
             break
         }

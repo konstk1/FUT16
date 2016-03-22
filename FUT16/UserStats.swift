@@ -100,7 +100,7 @@ class UserStats: NSObject {
     }
     
     func purgeOldSearches() {
-        Search.purgeSearchesOlderThan(NSDate.twoDaysAgo, forEmail: email, managedObjectContext: managedObjectContext)
+        Search.purgeSearchesOlderThan(NSDate.hoursAgo(26), forEmail: email, managedObjectContext: managedObjectContext)
     }
     
     func save() {
