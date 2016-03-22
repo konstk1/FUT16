@@ -42,7 +42,7 @@ class Search: Transaction {
         
         let searches = getSearchesBeforeDate(date, forEmail: email, managedObjectContext: managedObjectContext)
         
-        print("Deleting \(searches.count) searches - \(email)")
+        Log.print("Deleting \(searches.count) searches - \(email)")
         searches.forEach {
             managedObjectContext.deleteObject($0)
         }

@@ -68,6 +68,7 @@ class ViewController: NSViewController {
     var user3 = FutUser()
     var user4 = FutUser()
     var user5 = FutUser()
+    var aggregateStats = AggregateStats.sharedInstance
 
     var settings = Settings.sharedInstance
     
@@ -277,7 +278,7 @@ class ViewController: NSViewController {
     }
     
     @IBAction func resetStatsPressed(sender: NSButton) {
-        autoTrader?.resetStats()
+        autoTrader?.resetStats(nil)
         clearLog()
     }
     

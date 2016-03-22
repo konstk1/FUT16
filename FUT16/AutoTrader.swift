@@ -79,12 +79,18 @@ public class AutoTrader: NSObject {
         return breakEvenPrice
     }
     
-    func resetStats() {
-        users.forEach { (user) -> () in
-            user.resetStats()
+    func resetStats(user: FutUser?) {
+        // if user is nil, reset all
+        if user == nil {
+            users.forEach { (user) -> () in
+                user.resetStats()
+            }
+        } else {
+            user?.resetStats()
         }
         
-        AggregateStats.sharedInstance.reset()
+        //AggregateStats.sharedInstance.reset()
+        AggregateStats.sharedInstance.purchaseCount += 1
         
         minBin = 10000000
         notifyOwner(self.currentUser)

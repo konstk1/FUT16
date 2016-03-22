@@ -23,7 +23,7 @@ class UserStats: NSObject {
     var purchaseCount = 0
     var purchaseFailCount = 0 {
         didSet {
-            AggregateStats.sharedInstance.purchaseFailCount += 1
+            AggregateStats.sharedInstance.purchaseFailCount += (purchaseFailCount - oldValue)
         }
     }
     var purchaseTotalCost = 0
@@ -112,12 +112,16 @@ class UserStats: NSObject {
 class AggregateStats: NSObject {
     static var sharedInstance = AggregateStats()
     
-    var purchaseCount = 0
-    var purchaseFailCount = 0
-    var purchaseTotalCost = 0
-    var lastPurchaseCost = 0
+    dynamic var purchaseCount = 0
+    dynamic var purchaseFailCount = 0
+    dynamic var purchaseTotalCost = 0
+    dynamic var lastPurchaseCost = 0 {
+        didSet {
+            purchaseTotalCost += lastPurchaseCost
+        }
+    }
     
-    var averagePurchaseCost: Int { return purchaseCount == 0 ? 0 : Int(round(Double(purchaseTotalCost) / Double(purchaseCount))) }
+    dynamic var averagePurchaseCost: Int { return purchaseCount == 0 ? 0 : Int(round(Double(purchaseTotalCost) / Double(purchaseCount))) }
     
     func reset() {
         purchaseCount = 0
