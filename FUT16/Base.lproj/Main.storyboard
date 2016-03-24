@@ -1787,7 +1787,7 @@
                                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                     </textFieldCell>
                                                     <connections>
-                                                        <binding destination="RjE-TD-ifc" name="value" keyPath="values.self.traderStats.searchCount" id="zNf-hX-0Np"/>
+                                                        <binding destination="XfG-lQ-9wD" name="value" keyPath="self.aggregateStats.searchCount" id="GJR-ML-qUY"/>
                                                     </connections>
                                                 </textField>
                                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aZS-qH-g2k">

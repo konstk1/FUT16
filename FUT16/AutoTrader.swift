@@ -89,8 +89,7 @@ public class AutoTrader: NSObject {
             user?.resetStats()
         }
         
-        //AggregateStats.sharedInstance.reset()
-        AggregateStats.sharedInstance.purchaseCount += 1
+        AggregateStats.sharedInstance.reset()
         
         minBin = 10000000
         notifyOwner(self.currentUser)
@@ -208,8 +207,6 @@ public class AutoTrader: NSObject {
                 self.scheduleNextPoll()  // set up timer for next request
             }
             
-            self.currentStats.logSearch()        // save to CoreData
-            
             self.currentStats.coinsBalance = self.currentFut.coinsBalance   // grab coins ballance
             
             if self.currentStats.searchCount1Hr >= self.SEARCH_LIMIT_1HR ||
@@ -242,8 +239,6 @@ public class AutoTrader: NSObject {
                 }
             }
             
-            Log.print("Search: \(self.currentStats.searchCount) (\(auctions.count)-\(self.itemParams.startRecord)) - Cur Min: \(curMinBin) (Min: \(self.minBin)) [\(self.currentFut.user)]")
-            
             // update session min
             if curMinBin < self.minBin {
                 self.minBin = curMinBin
@@ -251,6 +246,10 @@ public class AutoTrader: NSObject {
             
             self.processPurchaseQueue()
             self.tuneSearchParamsFromAuctions(auctions)
+            
+            // log search at the end to minimize time between search and purchase
+            self.currentStats.logSearch()        // save to CoreData
+            Log.print("Search: \(self.currentStats.searchCount) (\(auctions.count)-\(self.itemParams.startRecord)) - Cur Min: \(curMinBin) (Min: \(self.minBin)) [\(self.currentFut.user)]")
             
             self.notifyOwner(self.currentUser)
         } // findAuctionsForPlayer
@@ -304,8 +303,6 @@ public class AutoTrader: NSObject {
             // some stat keeping
             user.stats.logPurchase(Int(auction.buyNowPrice), maxBin: Int(self.itemParams.maxBin), coinsBalance: user.fut16.coinsBalance)
             
-            
-            
             NSSound(named: "Ping")?.play()
             
             // stop trading if not enough coins for next purchase
@@ -314,9 +311,9 @@ public class AutoTrader: NSObject {
             }
             
             // After 5 purchases, move all to transfer list
-            if user.stats.purchaseCount >= 5 {
+            if user.stats.unassignedItems >= 5 {
                 user.fut16.sendItemsToTransferList()
-                user.stats.purchaseCount = 0
+                user.stats.unassignedItems = 0
             }
             self.notifyOwner(user)
         }

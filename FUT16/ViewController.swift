@@ -75,20 +75,7 @@ class ViewController: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        autoTrader = AutoTrader(users: [user0, user1, user2, user3, user4, user5], update: { [unowned self] (user) in
-            if self.user0.email == user.email {
-                self.user0.stats = user.stats
-            } else if self.user1.email == user.email {
-                self.user1.stats = user.stats
-            } else if self.user2.email == user.email {
-                self.user2.stats = user.stats
-            } else if self.user3.email == user.email {
-                self.user3.stats = user.stats
-            } else if self.user4.email == user.email {
-                self.user4.stats = user.stats
-            } else if self.user5.email == user.email {
-                self.user5.stats = user.stats
-            }
+        autoTrader = AutoTrader(users: [user0, user1, user2, user3, user4, user5], update: { (user) in
         })
         
         updateFieldsStateForSearchType(typeSegment.selectedLabel())
@@ -112,6 +99,25 @@ class ViewController: NSViewController {
             // assuming format is "Label: ID"
             let comps = comboBox.stringValue.componentsSeparatedByCharactersInSet(NSCharacterSet(charactersInString: ": "))
             return comps.last
+        }
+    }
+    
+    func getUserNumbered(num: Int) -> FutUser? {
+        switch(num) {
+        case 0:
+            return user0
+        case 1:
+            return user1
+        case 2:
+            return user2
+        case 3:
+            return user3
+        case 4:
+            return user4
+        case 5:
+            return user5
+        default:
+            return nil
         }
     }
     
@@ -278,7 +284,7 @@ class ViewController: NSViewController {
     }
     
     @IBAction func resetStatsPressed(sender: NSButton) {
-        autoTrader?.resetStats(nil)
+        autoTrader?.resetStats(getUserNumbered(sender.tag))
         clearLog()
     }
     
