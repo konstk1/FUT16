@@ -9,11 +9,7 @@
 import Foundation
 import Cocoa
 
-// TODO: Reset stats per user
-// TODO: Purchase count vs trade pile count
-// TODO: Update price on login
-// TODO: Re-login on expired session
-// TODO: Autoprice?
+// TODO: Update coin balance on login
 
 public class AutoTrader: NSObject {
     private var users = [FutUser]()
@@ -28,7 +24,7 @@ public class AutoTrader: NSObject {
     
     private let SESSION_ERROR_LIMIT = 3      // stop trading after this many session errors
     private let SEARCH_LIMIT_1HR = 950       // stop trading after this many searches within 1 hour
-    private let SEARCH_LIMIT_24HR = 5000     // stop trading after this many searches within 24 hours
+    private let SEARCH_LIMIT_24HR = 4000     // stop trading after this many searches within 24 hours
     
     private var pollTimer: NSTimer!
     private var cycleTimer: NSTimer!
