@@ -89,6 +89,7 @@ class UserStats: NSObject {
         purchaseFailCount = 0
         purchaseTotalCost = 0
         lastPurchaseCost = 0
+        averagePurchaseCost = 0
     }
     
     func purgeOldSearches() {
