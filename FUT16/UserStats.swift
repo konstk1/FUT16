@@ -15,12 +15,15 @@ class UserStats: NSObject {
     var email: String {
         didSet {
             reset()
+            fetchAllTimeStats()
         }
     }
     dynamic var coinsBalance = 0
     
     init(email: String) {
         self.email = email
+        super.init()
+        fetchAllTimeStats()
     }
     
     dynamic var searchCount = 0
@@ -52,15 +55,16 @@ class UserStats: NSObject {
     
     func logSearch() {
         Search.NewSearch(email, managedObjectContext: managedObjectContext)
-        Stats.updateSearchCount(email, searchCount: searchCountAllTime+1, managedObjectContext: managedObjectContext)
         // this should be done after search is logged so that didSet updates various counters with new search
         searchCount += 1
+        searchCountAllTime += 1
         AggregateStats.sharedInstance.searchCount += 1
         
         searchCount1Hr = Search.numSearchesSinceDate(NSDate.hourAgo, forEmail: email, managedObjectContext: managedObjectContext)
         //searchCount2Hr = Search.numSearchesSinceDate(NSDate(timeIntervalSinceNow: -2*3600), forEmail: email, managedObjectContext: managedObjectContext)
         searchCount24Hr = Search.numSearchesSinceDate(NSDate.dayAgo, forEmail: email, managedObjectContext: managedObjectContext)
-        searchCountAllTime = Stats.getSearchCountForEmail(email, managedObjectContext: managedObjectContext)
+        
+        Stats.updateSearchCount(email, searchCount: Int32(searchCountAllTime), managedObjectContext: managedObjectContext)
     }
     
     func logPurchase(purchaseCost: Int, maxBin: Int, coinsBalance: Int) {
@@ -75,12 +79,17 @@ class UserStats: NSObject {
         purchaseCount += 1
         purchaseTotalCost += lastPurchaseCost
         averagePurchaseCost = Int(round(Double(purchaseTotalCost) / Double(purchaseCount)))
-        let purchases = Purchase.getPurchasesSinceDate(NSDate.allTime, forEmail: email, managedObjectContext: managedObjectContext)
-        purchaseTotalAllTime = Int(purchases.reduce(0) { $0 + $1.price })
+        purchaseTotalAllTime += lastPurchaseCost
+        
         
         AggregateStats.sharedInstance.purchaseCount += 1
         AggregateStats.sharedInstance.lastPurchaseCost = lastPurchaseCost
         
+    }
+    
+    func fetchAllTimeStats() {
+        searchCountAllTime = Stats.getSearchCountForEmail(email, managedObjectContext: managedObjectContext)
+        purchaseTotalAllTime = Int(Purchase.getPurchasesSinceDate(NSDate.allTime, forEmail: email, managedObjectContext: managedObjectContext).reduce(0) { $0 + $1.price })
     }
     
     func reset() {
