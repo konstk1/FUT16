@@ -17,10 +17,11 @@ private let authUrl: URLStringConvertible = "https://www.easports.com/iframe/fut
 private let validateUrl: URLStringConvertible = "https://www.easports.com/iframe/fut16/p/ut/game/fifa16/phishing/validate"
 
 extension FUT16 {
-    public func login(email: String, password: String, secretAnswer: String) {
+    public func login(email: String, password: String, secretAnswer: String, completion: ()->()) {
         self.email = email
         loginUrl = webAppUrl
         phishingQuestionAnswer = secretAnswer
+        loginCompletion = completion
         alamo.request(.GET, loginUrl).response { [unowned self] (request, response, data, error) -> Void in
             guard response != nil else {
                 Log.print("No response")

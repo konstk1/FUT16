@@ -35,6 +35,8 @@ public class FUT16 {
     
     var isSessionValid = false
     
+    var loginCompletion: (()->())?
+    
     var coinsBalance: Int {
         get {
             return Int(coinFunds) ?? -1

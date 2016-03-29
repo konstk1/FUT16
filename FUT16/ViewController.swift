@@ -176,7 +176,10 @@ class ViewController: NSViewController {
         
         
         user?.email = email
-        user?.fut16.login(email, password: password, secretAnswer: secret)
+        user?.fut16.login(email, password: password, secretAnswer: secret) {
+            user!.stats.coinsBalance = user!.fut16.coinsBalance
+        }
+        
         Log.print("Logging in [\(sender.tag)] - [\(email)]")
     }
     
