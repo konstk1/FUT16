@@ -60,9 +60,7 @@ class UserStats: NSObject {
         searchCountAllTime += 1
         AggregateStats.sharedInstance.searchCount += 1
         
-        searchCount1Hr = Search.numSearchesSinceDate(NSDate.hourAgo, forEmail: email, managedObjectContext: managedObjectContext)
-        //searchCount2Hr = Search.numSearchesSinceDate(NSDate(timeIntervalSinceNow: -2*3600), forEmail: email, managedObjectContext: managedObjectContext)
-        searchCount24Hr = Search.numSearchesSinceDate(NSDate.dayAgo, forEmail: email, managedObjectContext: managedObjectContext)
+        fetchHourlyStats()
         
         Stats.updateSearchCount(email, searchCount: Int32(searchCountAllTime), managedObjectContext: managedObjectContext)
     }
@@ -81,7 +79,6 @@ class UserStats: NSObject {
         averagePurchaseCost = Int(round(Double(purchaseTotalCost) / Double(purchaseCount)))
         purchaseTotalAllTime += lastPurchaseCost
         
-        
         AggregateStats.sharedInstance.purchaseCount += 1
         AggregateStats.sharedInstance.lastPurchaseCost = lastPurchaseCost
         
@@ -90,6 +87,14 @@ class UserStats: NSObject {
     func fetchAllTimeStats() {
         searchCountAllTime = Stats.getSearchCountForEmail(email, managedObjectContext: managedObjectContext)
         purchaseTotalAllTime = Int(Purchase.getPurchasesSinceDate(NSDate.allTime, forEmail: email, managedObjectContext: managedObjectContext).reduce(0) { $0 + $1.price })
+        
+        fetchHourlyStats()
+    }
+    
+    func fetchHourlyStats() {
+        searchCount1Hr = Search.numSearchesSinceDate(NSDate.hourAgo, forEmail: email, managedObjectContext: managedObjectContext)
+        //searchCount2Hr = Search.numSearchesSinceDate(NSDate(timeIntervalSinceNow: -2*3600), forEmail: email, managedObjectContext: managedObjectContext)
+        searchCount24Hr = Search.numSearchesSinceDate(NSDate.dayAgo, forEmail: email, managedObjectContext: managedObjectContext)
     }
     
     func reset() {
@@ -99,6 +104,8 @@ class UserStats: NSObject {
         purchaseTotalCost = 0
         lastPurchaseCost = 0
         averagePurchaseCost = 0
+        
+        fetchHourlyStats()
     }
     
     func purgeOldSearches() {
