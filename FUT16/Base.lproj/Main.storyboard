@@ -664,7 +664,7 @@
                 </windowController>
                 <customObject id="Oky-zY-oP4" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2" y="-29"/>
+            <point key="canvasLocation" x="39" y="-1.5"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="hIz-AP-VOD">
@@ -1170,6 +1170,7 @@
                                                     </textFieldCell>
                                                     <connections>
                                                         <action selector="submitPressed:" target="XfG-lQ-9wD" id="rkd-rh-4sw"/>
+                                                        <outlet property="nextKeyView" destination="8GI-tu-kzm" id="ciz-4X-1ke"/>
                                                     </connections>
                                                 </textField>
                                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Qo1-qV-Uva">
@@ -1290,6 +1291,7 @@
                                                     </textFieldCell>
                                                     <connections>
                                                         <action selector="submitPressed:" target="XfG-lQ-9wD" id="Hmb-8x-ijU"/>
+                                                        <outlet property="nextKeyView" destination="IZz-Ga-d0O" id="yda-qU-QWV"/>
                                                     </connections>
                                                 </textField>
                                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2oJ-vS-jFw">
@@ -1352,6 +1354,9 @@
                                                 </button>
                                             </subviews>
                                         </view>
+                                        <connections>
+                                            <outlet property="initialFirstResponder" destination="IZz-Ga-d0O" id="zRj-xP-mxT"/>
+                                        </connections>
                                     </tabViewItem>
                                     <tabViewItem label="Trade" identifier="1" id="Buj-Af-8by">
                                         <view key="view" id="Hpi-ar-TFD">
