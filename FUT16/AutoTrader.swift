@@ -9,7 +9,8 @@
 import Foundation
 import Cocoa
 
-// TODO: Update coin balance on login
+// TODO: Add cycle end time
+// TODO: Show req per hour (from settings)
 
 public class AutoTrader: NSObject {
     private var users = [FutUser]()
