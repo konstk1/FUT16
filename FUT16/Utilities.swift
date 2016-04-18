@@ -86,9 +86,9 @@ extension NSDate {
         return NSDate(timeIntervalSinceNow: -3600 * hours)
     }
     
-    static var localTime: String {
+    var localTime: String {
         let dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "HH:mm:ss"
-        return dateFormatter.stringFromDate(NSDate())
+        return dateFormatter.stringFromDate(self)
     }
 }

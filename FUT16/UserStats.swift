@@ -106,6 +106,14 @@ class UserStats: NSObject {
         averagePurchaseCost = 0
         
         fetchHourlyStats()
+        
+        // get the last search that happened less than 24 hours ago
+        let searches = Search.getSearchesSinceDate(NSDate.dayAgo, forEmail: email, managedObjectContext: managedObjectContext)
+        
+        if let search = searches.first {
+            AggregateStats.sharedInstance.last24HrSearch = NSDate(timeIntervalSinceReferenceDate:search.time).localTime
+        }
+
     }
     
     func purgeOldSearches() {
@@ -132,6 +140,9 @@ class AggregateStats: NSObject {
         }
     }
     dynamic var averagePurchaseCost = 0
+    
+    dynamic var cycleStart = ""
+    dynamic var last24HrSearch = ""
     
     func reset() {
         searchCount = 0

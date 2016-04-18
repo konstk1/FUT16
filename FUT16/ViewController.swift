@@ -75,8 +75,7 @@ class ViewController: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        autoTrader = AutoTrader(users: [user0, user1, user2, user3, user4, user5], update: { (user) in
-        })
+        autoTrader = AutoTrader(users: [user0, user1, user2, user3, user4, user5], update: nil)
         
         updateFieldsStateForSearchType(typeSegment.selectedLabel())
         updateSettings()

@@ -9,7 +9,6 @@
 import Foundation
 import Cocoa
 
-// TODO: Add cycle end time
 // TODO: Show req per hour (from settings)
 
 public class AutoTrader: NSObject {
@@ -89,6 +88,7 @@ public class AutoTrader: NSObject {
         AggregateStats.sharedInstance.reset()
         
         minBin = 10000000
+        
         notifyOwner(self.currentUser)
     }
     
@@ -182,16 +182,20 @@ public class AutoTrader: NSObject {
         state = .Polling
         pollAuctions()
         cycleTimer = NSTimer.scheduledTimerWithTimeInterval(settings.cycleTime, target: self, selector: #selector(AutoTrader.cycleBreak), userInfo: nil, repeats: false)
+        
+        AggregateStats.sharedInstance.cycleStart = NSDate().localTime
     }
     
     func cycleBreak() {
         Log.print("------------------------------ Break cycle: \(settings.cycleBreak) ------------------------------")
         stopTrading("Cycle break", newState: .Break)
         cycleTimer = NSTimer.scheduledTimerWithTimeInterval(settings.cycleBreak, target: self, selector: #selector(AutoTrader.cycleStart), userInfo: nil, repeats: false)
+        
+        AggregateStats.sharedInstance.cycleStart = NSDate().localTime
     }
     
     func pollAuctions() {
-        Log.print("\(NSDate.localTime):  ", terminator: "")
+        Log.print("\(NSDate().localTime):  ", terminator: "")
         var curMinBin: UInt = 10000000
         
         // increment max price to avoid cached results

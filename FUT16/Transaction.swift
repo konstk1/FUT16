@@ -14,9 +14,10 @@ class Transaction: NSManagedObject {
     
     class func getTransactions(entityName: String, forEmail email: String, sinceDate date: NSDate, managedObjectContext: NSManagedObjectContext) -> [Transaction] {
         
+        let sortByTime = NSSortDescriptor(key: "time", ascending: true)
         let fetchRequest = NSFetchRequest(entityName: entityName)
-        
         fetchRequest.predicate = NSPredicate(format: "email = %@ AND time >= %@", email, date)
+        fetchRequest.sortDescriptors = [sortByTime]
         
         do {
             let transactions = try managedObjectContext.executeFetchRequest(fetchRequest) as! [Transaction]
