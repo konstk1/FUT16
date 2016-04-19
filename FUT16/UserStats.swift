@@ -35,7 +35,11 @@ class UserStats: NSObject {
     dynamic var purchaseCount = 0
     dynamic var purchaseFailCount = 0 {
         didSet {
-            AggregateStats.sharedInstance.purchaseFailCount += (purchaseFailCount - oldValue)
+            // only update if fail count increasing, otherwise it's a reset
+            let diff = purchaseFailCount - oldValue
+            if diff > 0 {
+                AggregateStats.sharedInstance.purchaseFailCount += diff
+            }
         }
     }
     dynamic var purchaseTotalCost = 0
@@ -104,6 +108,8 @@ class UserStats: NSObject {
         purchaseTotalCost = 0
         lastPurchaseCost = 0
         averagePurchaseCost = 0
+        
+        coinsBalance = 0
         
         fetchHourlyStats()
         
