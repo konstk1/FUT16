@@ -241,6 +241,18 @@ class ViewController: NSViewController {
         breakEvenTextField.integerValue = Int(breakEvenPrice!)
     }
     
+    @IBAction func updateMaxBin(sender: NSButton) {
+        let maxSearchBin = UInt(maxBinTextField.integerValue)
+        
+        if sender.tag > 0 {
+            maxBinTextField.integerValue = Int(incrementPrice(maxSearchBin));
+        } else {
+            maxBinTextField.integerValue = Int(decrementPrice(maxSearchBin));
+        }
+        
+        setSearchParamsPressed(sender);
+    }
+    
     @IBAction func typeSegmentChanged(sender: NSSegmentedControl) {
         updateFieldsStateForSearchType(sender.selectedLabel())
     }

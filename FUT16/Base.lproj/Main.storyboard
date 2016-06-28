@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10116"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10117"/>
     </dependencies>
     <scenes>
         <!--Application-->
@@ -1879,6 +1879,26 @@
                                                         <action selector="resetStatsPressed:" target="XfG-lQ-9wD" id="zw1-rs-Rt8"/>
                                                     </connections>
                                                 </button>
+                                                <button verticalHuggingPriority="750" fixedFrame="YES" tag="-1" translatesAutoresizingMaskIntoConstraints="NO" id="I43-C5-F8h">
+                                                    <rect key="frame" x="118" y="85" width="15" height="24"/>
+                                                    <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="NSRemoveTemplate" imagePosition="overlaps" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="quh-VS-OLU">
+                                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                        <font key="font" metaFont="system"/>
+                                                    </buttonCell>
+                                                    <connections>
+                                                        <action selector="updateMaxBin:" target="XfG-lQ-9wD" id="mrZ-jw-ox8"/>
+                                                    </connections>
+                                                </button>
+                                                <button verticalHuggingPriority="750" fixedFrame="YES" tag="1" translatesAutoresizingMaskIntoConstraints="NO" id="Uoa-ja-o0h">
+                                                    <rect key="frame" x="133" y="85" width="15" height="24"/>
+                                                    <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="NSAddTemplate" imagePosition="overlaps" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="efM-kc-YAf">
+                                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                        <font key="font" metaFont="system"/>
+                                                    </buttonCell>
+                                                    <connections>
+                                                        <action selector="updateMaxBin:" target="XfG-lQ-9wD" id="q0A-TX-FQo"/>
+                                                    </connections>
+                                                </button>
                                             </subviews>
                                         </view>
                                     </tabViewItem>
@@ -1948,17 +1968,6 @@
                                                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                     </textFieldCell>
-                                                </textField>
-                                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fs6-Nb-idW">
-                                                    <rect key="frame" x="175" y="193" width="58" height="17"/>
-                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="0" id="q0Y-ZV-8ch">
-                                                        <font key="font" metaFont="system"/>
-                                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                                    </textFieldCell>
-                                                    <connections>
-                                                        <binding destination="XfG-lQ-9wD" name="value" keyPath="self.user0.stats.purchaseFailCount" id="m2w-TX-Rhe"/>
-                                                    </connections>
                                                 </textField>
                                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="X9m-zZ-iwI">
                                                     <rect key="frame" x="67" y="298" width="58" height="17"/>
@@ -2925,6 +2934,17 @@
                                                         <action selector="resetStatsPressed:" target="XfG-lQ-9wD" id="Fxi-J3-cYD"/>
                                                     </connections>
                                                 </button>
+                                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fs6-Nb-idW">
+                                                    <rect key="frame" x="175" y="193" width="58" height="17"/>
+                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="0" id="q0Y-ZV-8ch">
+                                                        <font key="font" metaFont="system"/>
+                                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                    </textFieldCell>
+                                                    <connections>
+                                                        <binding destination="XfG-lQ-9wD" name="value" keyPath="self.user0.stats.purchaseFailCount" id="m2w-TX-Rhe"/>
+                                                    </connections>
+                                                </textField>
                                             </subviews>
                                         </view>
                                     </tabViewItem>
@@ -3045,7 +3065,7 @@
                                                     </connections>
                                                 </textField>
                                                 <box horizontalHuggingPriority="750" fixedFrame="YES" title="Box" boxType="separator" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="Lr2-Pe-5KM">
-                                                    <rect key="frame" x="303" y="112" width="4" height="294"/>
+                                                    <rect key="frame" x="303" y="112" width="5" height="294"/>
                                                     <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
                                                     <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <font key="titleFont" metaFont="system"/>
@@ -3067,7 +3087,7 @@
                                                     <font key="titleFont" metaFont="system"/>
                                                 </box>
                                                 <box verticalHuggingPriority="750" fixedFrame="YES" title="Box" boxType="separator" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="vne-kq-85Y">
-                                                    <rect key="frame" x="314" y="328" width="290" height="5"/>
+                                                    <rect key="frame" x="314" y="328" width="290" height="4"/>
                                                     <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
                                                     <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <font key="titleFont" metaFont="system"/>
@@ -3257,6 +3277,7 @@
                         <outlet property="leagueComboBox" destination="GDI-G0-K09" id="2Tk-F4-NCd"/>
                         <outlet property="levelComboBox" destination="hGq-Vv-N1u" id="cHX-DG-JPh"/>
                         <outlet property="logTextView" destination="lTY-2v-3B0" id="mBx-oe-keM"/>
+                        <outlet property="lowerMaxBinPressed" destination="I43-C5-F8h" id="BLz-YW-ggP"/>
                         <outlet property="maxBinTextField" destination="pMl-At-YRk" id="P8d-Fu-peg"/>
                         <outlet property="minBinTextField" destination="pjb-Gw-UoO" id="9KE-zE-NCM"/>
                         <outlet property="nationalityComboBox" destination="Xhs-i4-1IS" id="eR3-DA-WRt"/>
@@ -3278,10 +3299,15 @@
                         <outlet property="teamComboBox" destination="dGz-5c-zMu" id="iqZ-bN-Jyl"/>
                         <outlet property="typeSegment" destination="lH2-lu-hGj" id="gVl-iu-gIg"/>
                         <outlet property="unlockCodeTextField" destination="4Ve-or-Ssg" id="0Ox-Lq-uXK"/>
+                        <outlet property="updateMaxBinPressed" destination="I43-C5-F8h" id="9EN-Ka-Ifr"/>
                     </connections>
                 </viewController>
             </objects>
             <point key="canvasLocation" x="-163.5" y="477"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="NSAddTemplate" width="11" height="11"/>
+        <image name="NSRemoveTemplate" width="11" height="11"/>
+    </resources>
 </document>
