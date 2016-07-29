@@ -183,7 +183,9 @@ public class AutoTrader: NSObject {
         pollAuctions()
         cycleTimer = NSTimer.scheduledTimerWithTimeInterval(settings.cycleTime, target: self, selector: #selector(AutoTrader.cycleBreak), userInfo: nil, repeats: false)
         
-        AggregateStats.sharedInstance.cycleStart = NSDate().localTime
+        let start = NSDate()
+        let end = start.dateByAddingTimeInterval(settings.cycleTime)
+        AggregateStats.sharedInstance.cycleStart = start.localTime + " - " + end.localTime
     }
     
     func cycleBreak() {
@@ -191,7 +193,9 @@ public class AutoTrader: NSObject {
         stopTrading("Cycle break", newState: .Break)
         cycleTimer = NSTimer.scheduledTimerWithTimeInterval(settings.cycleBreak, target: self, selector: #selector(AutoTrader.cycleStart), userInfo: nil, repeats: false)
         
-        AggregateStats.sharedInstance.cycleStart = NSDate().localTime
+        let start = NSDate()
+        let end = start.dateByAddingTimeInterval(settings.cycleBreak)
+        AggregateStats.sharedInstance.cycleStart = start.localTime + " - " + end.localTime
     }
     
     func pollAuctions() {
