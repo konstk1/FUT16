@@ -242,7 +242,7 @@ class ViewController: NSViewController {
     }
     
     @IBAction func updateMaxBin(sender: NSButton) {
-        let maxSearchBin = UInt(maxBinTextField.integerValue)
+        let maxSearchBin = UInt(maxBinTextField.stringValue.stringByReplacingOccurrencesOfString(",", withString: "")) ?? 0
         
         if sender.tag > 0 {
             maxBinTextField.integerValue = Int(incrementPrice(maxSearchBin));

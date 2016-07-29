@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10117"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
         <!--Application-->
@@ -2970,8 +2971,8 @@
                                                     </textFieldCell>
                                                 </textField>
                                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3sO-Ee-kd3">
-                                                    <rect key="frame" x="158" y="230" width="23" height="17"/>
-                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="0.0" id="c0V-mJ-LNU">
+                                                    <rect key="frame" x="146" y="230" width="35" height="17"/>
+                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="0.0" id="c0V-mJ-LNU">
                                                         <font key="font" metaFont="system"/>
                                                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -3087,7 +3088,7 @@
                                                     <font key="titleFont" metaFont="system"/>
                                                 </box>
                                                 <box verticalHuggingPriority="750" fixedFrame="YES" title="Box" boxType="separator" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="vne-kq-85Y">
-                                                    <rect key="frame" x="314" y="328" width="290" height="4"/>
+                                                    <rect key="frame" x="314" y="328" width="290" height="5"/>
                                                     <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
                                                     <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <font key="titleFont" metaFont="system"/>
@@ -3162,6 +3163,33 @@
                                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                     </textFieldCell>
                                                 </textField>
+                                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IVR-gB-nuz">
+                                                    <rect key="frame" x="146" y="205" width="34" height="17"/>
+                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="0" id="cOg-WP-cwa">
+                                                        <font key="font" metaFont="system"/>
+                                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                    </textFieldCell>
+                                                    <connections>
+                                                        <binding destination="XfG-lQ-9wD" name="value" keyPath="self.user0.requestRate" id="Evm-u6-ov0"/>
+                                                    </connections>
+                                                </textField>
+                                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="91h-0l-Cvd">
+                                                    <rect key="frame" x="27" y="205" width="92" height="17"/>
+                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="User0 req rate" id="bfl-Wd-2or">
+                                                        <font key="font" metaFont="system"/>
+                                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                    </textFieldCell>
+                                                </textField>
+                                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="p7r-zP-Jcg">
+                                                    <rect key="frame" x="189" y="205" width="41" height="17"/>
+                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="req/hr" id="Ukp-Hh-fQi">
+                                                        <font key="font" metaFont="system"/>
+                                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                    </textFieldCell>
+                                                </textField>
                                             </subviews>
                                         </view>
                                     </tabViewItem>
@@ -3206,15 +3234,15 @@
                                 </connections>
                             </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="A4y-qH-eKu">
-                                <rect key="frame" x="378" y="7" width="47" height="17"/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Period:" id="Ndd-yn-zfu">
+                                <rect key="frame" x="347" y="7" width="16" height="17"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="T:" id="Ndd-yn-zfu">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="RJ8-4b-JUF">
-                                <rect key="frame" x="435" y="7" width="23" height="17"/>
+                                <rect key="frame" x="369" y="7" width="23" height="17"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="3.2" id="UGy-si-xvy">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -3225,8 +3253,35 @@
                                 </connections>
                             </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="fV7-ks-T9b">
-                                <rect key="frame" x="462" y="7" width="26" height="17"/>
+                                <rect key="frame" x="396" y="7" width="26" height="17"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="sec" id="ZXO-8s-opD">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="eCj-oV-Byd">
+                                <rect key="frame" x="466" y="7" width="23" height="17"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="3.2" id="xzW-D5-4FI">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                                <connections>
+                                    <binding destination="XfG-lQ-9wD" name="value" keyPath="self.user0.requestRate" id="uRl-pQ-ElT"/>
+                                </connections>
+                            </textField>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Vab-Bf-sOi">
+                                <rect key="frame" x="493" y="7" width="41" height="17"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="req/hr" id="pFW-PD-qOh">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="sPq-cp-an1">
+                                <rect key="frame" x="444" y="7" width="16" height="17"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="F:" id="mQb-tc-Lcu">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -3236,25 +3291,31 @@
                         <constraints>
                             <constraint firstItem="vJO-pT-3nO" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="9" id="1vq-oM-J6i"/>
                             <constraint firstItem="zSz-IC-lvh" firstAttribute="leading" secondItem="TJS-LI-Gev" secondAttribute="trailing" constant="8" id="2vp-i7-sNV"/>
+                            <constraint firstItem="eCj-oV-Byd" firstAttribute="leading" secondItem="sPq-cp-an1" secondAttribute="trailing" constant="10" id="7NY-2B-j5z"/>
                             <constraint firstAttribute="bottom" secondItem="QQy-2a-xxL" secondAttribute="bottom" constant="7" id="7gs-Kh-lK9"/>
                             <constraint firstItem="lpj-2K-SXL" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" constant="12" id="B8N-WS-MuA"/>
+                            <constraint firstItem="sPq-cp-an1" firstAttribute="centerX" secondItem="m2S-Jp-Qdl" secondAttribute="centerX" multiplier="1.05" id="G8o-Sg-aYd"/>
                             <constraint firstAttribute="trailing" secondItem="zSz-IC-lvh" secondAttribute="trailing" constant="9" id="IKg-yy-aT0"/>
                             <constraint firstItem="fV7-ks-T9b" firstAttribute="leading" secondItem="RJ8-4b-JUF" secondAttribute="trailing" constant="8" id="JnK-Fr-GoM"/>
-                            <constraint firstItem="RJ8-4b-JUF" firstAttribute="leading" secondItem="A4y-qH-eKu" secondAttribute="trailing" constant="14" id="LRa-re-GXE"/>
+                            <constraint firstItem="RJ8-4b-JUF" firstAttribute="leading" secondItem="A4y-qH-eKu" secondAttribute="trailing" constant="10" id="LRa-re-GXE"/>
+                            <constraint firstItem="Vab-Bf-sOi" firstAttribute="centerY" secondItem="QQy-2a-xxL" secondAttribute="centerY" id="LsS-RL-hz0"/>
                             <constraint firstItem="QQy-2a-xxL" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="9" id="Om8-5V-YRg"/>
                             <constraint firstItem="vJO-pT-3nO" firstAttribute="top" secondItem="lpj-2K-SXL" secondAttribute="bottom" constant="8" id="Pcm-jI-ZLK"/>
-                            <constraint firstAttribute="bottom" secondItem="fV7-ks-T9b" secondAttribute="bottom" constant="7" id="Qbq-gg-j3H"/>
-                            <constraint firstAttribute="bottom" secondItem="TJS-LI-Gev" secondAttribute="bottom" constant="7" id="SBg-36-ssW"/>
                             <constraint firstAttribute="trailing" secondItem="vJO-pT-3nO" secondAttribute="trailing" constant="9" id="U7J-kh-sFI"/>
-                            <constraint firstAttribute="bottom" secondItem="zSz-IC-lvh" secondAttribute="bottom" constant="7" id="Uox-9n-Bqf"/>
                             <constraint firstItem="lpj-2K-SXL" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="9" id="Vcy-fM-BbK"/>
                             <constraint firstAttribute="trailing" secondItem="lpj-2K-SXL" secondAttribute="trailing" constant="9" id="XhH-78-bnb"/>
+                            <constraint firstItem="fV7-ks-T9b" firstAttribute="centerY" secondItem="QQy-2a-xxL" secondAttribute="centerY" id="Xmk-np-Gd2"/>
+                            <constraint firstItem="RJ8-4b-JUF" firstAttribute="centerY" secondItem="QQy-2a-xxL" secondAttribute="centerY" id="e59-qW-KPG"/>
                             <constraint firstAttribute="bottom" secondItem="vJO-pT-3nO" secondAttribute="bottom" constant="32" id="evV-iW-i70"/>
-                            <constraint firstAttribute="bottom" secondItem="RJ8-4b-JUF" secondAttribute="bottom" constant="7" id="iJB-V4-d8n"/>
+                            <constraint firstItem="sPq-cp-an1" firstAttribute="centerY" secondItem="QQy-2a-xxL" secondAttribute="centerY" id="jNu-Nc-dRI"/>
                             <constraint firstItem="FWg-l4-zqa" firstAttribute="leading" secondItem="QQy-2a-xxL" secondAttribute="trailing" constant="13" id="kwh-NS-8Ro"/>
-                            <constraint firstAttribute="bottom" secondItem="A4y-qH-eKu" secondAttribute="bottom" constant="7" id="ncH-Oh-1Jc"/>
-                            <constraint firstItem="A4y-qH-eKu" firstAttribute="leading" secondItem="FWg-l4-zqa" secondAttribute="trailing" constant="233" id="tiA-Lr-kE0"/>
-                            <constraint firstAttribute="bottom" secondItem="FWg-l4-zqa" secondAttribute="bottom" constant="7" id="upT-Xp-92V"/>
+                            <constraint firstItem="Vab-Bf-sOi" firstAttribute="leading" secondItem="eCj-oV-Byd" secondAttribute="trailing" constant="8" id="kzc-O6-M9a"/>
+                            <constraint firstItem="TJS-LI-Gev" firstAttribute="centerY" secondItem="QQy-2a-xxL" secondAttribute="centerY" id="r1G-W5-QJZ"/>
+                            <constraint firstItem="FWg-l4-zqa" firstAttribute="centerY" secondItem="QQy-2a-xxL" secondAttribute="centerY" id="rUH-Kz-4Cn"/>
+                            <constraint firstItem="zSz-IC-lvh" firstAttribute="centerY" secondItem="QQy-2a-xxL" secondAttribute="centerY" id="s2l-JG-AM2"/>
+                            <constraint firstItem="fV7-ks-T9b" firstAttribute="centerX" secondItem="m2S-Jp-Qdl" secondAttribute="centerX" multiplier="0.95" id="vsJ-gk-dg0"/>
+                            <constraint firstItem="eCj-oV-Byd" firstAttribute="centerY" secondItem="QQy-2a-xxL" secondAttribute="centerY" id="wAJ-CQ-niM"/>
+                            <constraint firstItem="A4y-qH-eKu" firstAttribute="centerY" secondItem="QQy-2a-xxL" secondAttribute="centerY" id="xuG-am-mML"/>
                         </constraints>
                     </view>
                     <connections>
@@ -3277,7 +3338,6 @@
                         <outlet property="leagueComboBox" destination="GDI-G0-K09" id="2Tk-F4-NCd"/>
                         <outlet property="levelComboBox" destination="hGq-Vv-N1u" id="cHX-DG-JPh"/>
                         <outlet property="logTextView" destination="lTY-2v-3B0" id="mBx-oe-keM"/>
-                        <outlet property="lowerMaxBinPressed" destination="I43-C5-F8h" id="BLz-YW-ggP"/>
                         <outlet property="maxBinTextField" destination="pMl-At-YRk" id="P8d-Fu-peg"/>
                         <outlet property="minBinTextField" destination="pjb-Gw-UoO" id="9KE-zE-NCM"/>
                         <outlet property="nationalityComboBox" destination="Xhs-i4-1IS" id="eR3-DA-WRt"/>
@@ -3299,7 +3359,6 @@
                         <outlet property="teamComboBox" destination="dGz-5c-zMu" id="iqZ-bN-Jyl"/>
                         <outlet property="typeSegment" destination="lH2-lu-hGj" id="gVl-iu-gIg"/>
                         <outlet property="unlockCodeTextField" destination="4Ve-or-Ssg" id="0Ox-Lq-uXK"/>
-                        <outlet property="updateMaxBinPressed" destination="I43-C5-F8h" id="9EN-Ka-Ifr"/>
                     </connections>
                 </viewController>
             </objects>
