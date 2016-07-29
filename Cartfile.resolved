@@ -1,2 +1,4 @@
-github "Alamofire/Alamofire" "3.2.1"
+github "Alamofire/Alamofire" "3.4.1"
+github "mattrubin/Base32" "1.0.2+carthage"
 github "SwiftyJSON/SwiftyJSON" "2.3.3"
+github "mattrubin/OneTimePassword" "2.0.0"
