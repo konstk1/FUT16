@@ -680,17 +680,17 @@
                             <scrollView horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vJO-pT-3nO">
                                 <rect key="frame" x="9" y="32" width="843" height="259"/>
                                 <clipView key="contentView" id="O0i-Jh-wsQ">
-                                    <rect key="frame" x="1" y="1" width="826" height="257"/>
+                                    <rect key="frame" x="1" y="1" width="841" height="257"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <textView editable="NO" importsGraphics="NO" findStyle="panel" continuousSpellChecking="YES" allowsUndo="YES" usesRuler="YES" usesFontPanel="YES" verticallyResizable="YES" allowsNonContiguousLayout="YES" quoteSubstitution="YES" dashSubstitution="YES" spellingCorrection="YES" smartInsertDelete="YES" id="lTY-2v-3B0">
-                                            <rect key="frame" x="0.0" y="0.0" width="826" height="257"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="841" height="257"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            <size key="minSize" width="826" height="257"/>
+                                            <size key="minSize" width="841" height="257"/>
                                             <size key="maxSize" width="843" height="10000000"/>
                                             <color key="insertionPointColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                            <size key="minSize" width="826" height="257"/>
+                                            <size key="minSize" width="841" height="257"/>
                                             <size key="maxSize" width="843" height="10000000"/>
                                         </textView>
                                     </subviews>
@@ -701,7 +701,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                                 <scroller key="verticalScroller" verticalHuggingPriority="750" horizontal="NO" id="mB9-Rk-pR4">
-                                    <rect key="frame" x="827" y="1" width="15" height="257"/>
+                                    <rect key="frame" x="826" y="1" width="16" height="257"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                             </scrollView>
@@ -850,6 +850,7 @@
                                                     </textFieldCell>
                                                     <connections>
                                                         <action selector="submitPressed:" target="XfG-lQ-9wD" id="fo2-BX-rTh"/>
+                                                        <binding destination="RjE-TD-ifc" name="value" keyPath="values.twoFactor1" id="e7f-xq-DUT"/>
                                                         <outlet property="nextKeyView" destination="o85-ip-o3x" id="ZDc-Qh-xHD"/>
                                                     </connections>
                                                 </textField>
@@ -959,6 +960,7 @@
                                                     </textFieldCell>
                                                     <connections>
                                                         <action selector="submitPressed:" target="XfG-lQ-9wD" id="aXj-4f-u62"/>
+                                                        <binding destination="RjE-TD-ifc" name="value" keyPath="values.twoFactor2" id="tRR-dy-d5a"/>
                                                         <outlet property="nextKeyView" destination="yTd-yl-aOY" id="fD2-lx-pEr"/>
                                                     </connections>
                                                 </textField>
@@ -1068,6 +1070,7 @@
                                                     </textFieldCell>
                                                     <connections>
                                                         <action selector="submitPressed:" target="XfG-lQ-9wD" id="ctf-i6-iWi"/>
+                                                        <binding destination="RjE-TD-ifc" name="value" keyPath="values.twoFactor3" id="K3C-eL-FDV"/>
                                                         <outlet property="nextKeyView" destination="ysT-LN-Ykq" id="nkT-un-UJE"/>
                                                     </connections>
                                                 </textField>
@@ -1171,6 +1174,7 @@
                                                     </textFieldCell>
                                                     <connections>
                                                         <action selector="submitPressed:" target="XfG-lQ-9wD" id="rkd-rh-4sw"/>
+                                                        <binding destination="RjE-TD-ifc" name="value" keyPath="values.twoFactor4" id="zbk-Ke-yok"/>
                                                         <outlet property="nextKeyView" destination="8GI-tu-kzm" id="ciz-4X-1ke"/>
                                                     </connections>
                                                 </textField>
@@ -1247,6 +1251,7 @@
                                                     </textFieldCell>
                                                     <connections>
                                                         <action selector="submitPressed:" target="XfG-lQ-9wD" id="ATf-o0-Qtj"/>
+                                                        <binding destination="RjE-TD-ifc" name="value" keyPath="values.twoFactor0" id="9eN-W6-2Q8"/>
                                                         <outlet property="nextKeyView" destination="ixp-On-vgE" id="VV0-JC-I9C"/>
                                                     </connections>
                                                 </textField>
@@ -1282,18 +1287,6 @@
                                                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                     </textFieldCell>
-                                                </textField>
-                                                <textField verticalHuggingPriority="750" fixedFrame="YES" tag="5" translatesAutoresizingMaskIntoConstraints="NO" id="8GI-tu-kzm">
-                                                    <rect key="frame" x="517" y="9" width="195" height="22"/>
-                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="LU7-Mg-4KY">
-                                                        <font key="font" metaFont="system"/>
-                                                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                    </textFieldCell>
-                                                    <connections>
-                                                        <action selector="submitPressed:" target="XfG-lQ-9wD" id="Hmb-8x-ijU"/>
-                                                        <outlet property="nextKeyView" destination="IZz-Ga-d0O" id="yda-qU-QWV"/>
-                                                    </connections>
                                                 </textField>
                                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2oJ-vS-jFw">
                                                     <rect key="frame" x="432" y="12" width="71" height="17"/>
@@ -1353,6 +1346,23 @@
                                                         <action selector="submitPressed:" target="XfG-lQ-9wD" id="vbn-g5-fBS"/>
                                                     </connections>
                                                 </button>
+                                                <textField verticalHuggingPriority="750" fixedFrame="YES" tag="5" translatesAutoresizingMaskIntoConstraints="NO" id="8GI-tu-kzm">
+                                                    <rect key="frame" x="517" y="9" width="195" height="22"/>
+                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="LU7-Mg-4KY">
+                                                        <font key="font" metaFont="system"/>
+                                                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                    </textFieldCell>
+                                                    <connections>
+                                                        <action selector="submitPressed:" target="XfG-lQ-9wD" id="Hmb-8x-ijU"/>
+                                                        <binding destination="RjE-TD-ifc" name="value" keyPath="values.twoFactor5" id="Dhf-Ko-bfQ">
+                                                            <dictionary key="options">
+                                                                <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
+                                                            </dictionary>
+                                                        </binding>
+                                                        <outlet property="nextKeyView" destination="IZz-Ga-d0O" id="yda-qU-QWV"/>
+                                                    </connections>
+                                                </textField>
                                             </subviews>
                                         </view>
                                         <connections>

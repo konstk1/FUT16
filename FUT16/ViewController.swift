@@ -211,7 +211,13 @@ class ViewController: NSViewController {
             break
         }
         
-        user?.fut16.sendAuthCode(authCode)
+        let secretData = NSData(base32String: authCode)
+        let generator = Generator(factor: .Timer(period: 30), secret: secretData, algorithm: .SHA1, digits: 6)!
+        let token = Token(generator: generator)
+        
+        if let twoFactorCode = token.currentPassword {
+            user?.fut16.sendAuthCode(twoFactorCode)
+        }
     }
     
     @IBAction func setSearchParamsPressed(sender: NSButton) {
@@ -296,13 +302,6 @@ class ViewController: NSViewController {
     
     @IBAction func stopPressed(sender: NSButton) {
         autoTrader?.stopTrading("UI")
-        
-        let secret = "JAKY2VZOR4PGXXCS"
-        let secretData = NSData(base32String: secret)
-        let generator = Generator(factor: .Timer(period: 30), secret: secretData, algorithm: .SHA1, digits: 6)!
-        
-        let token = Token(generator: generator)
-        print("Code: \(token.currentPassword)")
     }
     
     @IBAction func resetStatsPressed(sender: NSButton) {
