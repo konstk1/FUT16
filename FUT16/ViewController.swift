@@ -11,6 +11,8 @@ import OneTimePassword
 
 class ViewController: NSViewController {
 
+    @IBOutlet weak var collectionView: NSCollectionView!
+    
     @IBOutlet weak var email0TextField: NSTextField!
     @IBOutlet weak var password0TextField: NSSecureTextField!
     @IBOutlet weak var secretAnswer0TextField: NSTextField!
@@ -60,7 +62,11 @@ class ViewController: NSViewController {
     @IBOutlet weak var cycleBreakTextField: NSTextField!
     @IBOutlet weak var unlockCodeTextField: NSTextField!
     
+    @IBOutlet weak var userFileTextField: NSTextField!
+    
     @IBOutlet var logTextView: NSTextView!
+    
+    var openPanel = NSOpenPanel()
     
     var autoTrader: AutoTrader!
     var user0 = FutUser()
@@ -76,10 +82,21 @@ class ViewController: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        collectionView.registerClass(AccountViewItem.self, forItemWithIdentifier: "AccountViewItem")
+        
+        
+        openPanel.canChooseFiles = true
+        openPanel.canChooseDirectories = false
+        openPanel.allowedFileTypes = ["txt"]
+        openPanel.directoryURL = NSURL(fileURLWithPath: NSString(string: "~").stringByExpandingTildeInPath)
+//        [_openPanel setAllowsMultipleSelection:NO];
+        
         autoTrader = AutoTrader(users: [user0, user1, user2, user3, user4, user5], update: nil)
         
         updateFieldsStateForSearchType(typeSegment.selectedLabel())
         updateSettings()
+        
+        UserLoader.getUsers(from: Settings.sharedInstance.userFile)
     }
 
     override var representedObject: AnyObject? {
@@ -226,9 +243,9 @@ class ViewController: NSViewController {
         let team = getIdFromComboBox(teamComboBox) ?? ""
         let level  = getIdFromComboBox(levelComboBox) ?? ""
         
-        let minSearchBin = UInt(minBinTextField.integerValue)
-        let maxSearchBin = UInt(maxBinTextField.integerValue)
-        let buyAtBin = UInt(buyAtTextField.integerValue)
+        let minSearchBin = UInt(minBinTextField.stringValue.stringByReplacingOccurrencesOfString(",", withString: "")) ?? 0
+        let maxSearchBin = UInt(maxBinTextField.stringValue.stringByReplacingOccurrencesOfString(",", withString: "")) ?? 0
+        let buyAtBin = UInt(buyAtTextField.stringValue.stringByReplacingOccurrencesOfString(",", withString: "")) ?? 0
         
         var params: FUT16.ItemParams!
         
@@ -293,6 +310,7 @@ class ViewController: NSViewController {
         settings.cycleTime    = cycleTimeTextField.doubleValue * 60.0       // convert from min to seconds
         settings.cycleBreak   = cycleBreakTextField.doubleValue * 60.0      // convert from min to seconds
         settings.unlockCode   = unlockCodeTextField.stringValue
+        settings.userFile     = userFileTextField.stringValue
     }
     
     @IBAction func doStuffPressed(sender: NSButton) {
@@ -314,6 +332,33 @@ class ViewController: NSViewController {
     @IBAction func saveSettingsPressed(sender: NSButton) {
         updateSettings()
         Log.print("Settings: \(settings)")
+    }
+    
+    @IBAction func browsePressed(sender: AnyObject) {
+        openPanel.beginWithCompletionHandler { (result) in
+            guard result == NSFileHandlingPanelOKButton else { return }
+            
+            self.userFileTextField.stringValue = self.openPanel.URL!.path!
+            NSUserDefaults.standardUserDefaults().setObject(self.userFileTextField.stringValue, forKey: "userFile")
+            self.updateSettings()
+            UserLoader.getUsers(from: Settings.sharedInstance.userFile)
+            
+        }
+    }
+}
+
+extension ViewController: NSCollectionViewDataSource {
+    func collectionView(collectionView: NSCollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 8
+    }
+    
+    func collectionView(collectionView: NSCollectionView, itemForRepresentedObjectAtIndexPath indexPath: NSIndexPath) -> NSCollectionViewItem {
+        let item = collectionView.makeItemWithIdentifier("AccountViewItem", forIndexPath: indexPath)
+        guard let accountItem = item as? AccountViewItem else {
+            print("Not account view")
+            return item
+        }
+        return accountItem
     }
 }
 

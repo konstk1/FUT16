@@ -42,7 +42,10 @@
 		FF68C8761C38B98000A6D9E1 /* Transaction+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF68C8721C38B98000A6D9E1 /* Transaction+CoreDataProperties.swift */; };
 		FF68C8771C38B98000A6D9E1 /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF68C8731C38B98000A6D9E1 /* Transaction.swift */; };
 		FF68C8791C38B98000A6D9E1 /* Search+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF68C8751C38B98000A6D9E1 /* Search+CoreDataProperties.swift */; };
+		FF8E6CB61D4E840E0045E1A5 /* AccountViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF8E6CB51D4E840E0045E1A5 /* AccountViewItem.swift */; };
+		FF8E6CB81D4E8C410045E1A5 /* AccountViewItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = FF8E6CB71D4E8C410045E1A5 /* AccountViewItem.xib */; };
 		FFAC0AEC1C26656E00EE95FA /* md5_ea.c in Sources */ = {isa = PBXBuildFile; fileRef = FFAC0AEA1C26656E00EE95FA /* md5_ea.c */; };
+		FFD9420E1D4E9DC70031E313 /* UserLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFD9420D1D4E9DC70031E313 /* UserLoader.swift */; };
 		FFF6FF8B1C6BE316001DEA87 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFF6FF8A1C6BE316001DEA87 /* Log.swift */; };
 /* End PBXBuildFile section */
 
@@ -100,9 +103,12 @@
 		FF68C8721C38B98000A6D9E1 /* Transaction+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Transaction+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		FF68C8731C38B98000A6D9E1 /* Transaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Transaction.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		FF68C8751C38B98000A6D9E1 /* Search+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Search+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		FF8E6CB51D4E840E0045E1A5 /* AccountViewItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountViewItem.swift; sourceTree = "<group>"; };
+		FF8E6CB71D4E8C410045E1A5 /* AccountViewItem.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AccountViewItem.xib; sourceTree = "<group>"; };
 		FFAC0AE91C26656E00EE95FA /* FUT16-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FUT16-Bridging-Header.h"; sourceTree = "<group>"; };
 		FFAC0AEA1C26656E00EE95FA /* md5_ea.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = md5_ea.c; sourceTree = "<group>"; };
 		FFAC0AEB1C26656E00EE95FA /* md5_ea.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = md5_ea.h; sourceTree = "<group>"; };
+		FFD9420D1D4E9DC70031E313 /* UserLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserLoader.swift; sourceTree = "<group>"; };
 		FFF6FF8A1C6BE316001DEA87 /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Log.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 /* End PBXFileReference section */
 
@@ -158,7 +164,10 @@
 				1C7DD6E51C73789100710B19 /* Settings.swift */,
 				FF50D2211C277775003F1D02 /* Utilities.swift */,
 				1C21A9EB1C20B2EC00B4941E /* ViewController.swift */,
+				FF8E6CB51D4E840E0045E1A5 /* AccountViewItem.swift */,
+				FFD9420D1D4E9DC70031E313 /* UserLoader.swift */,
 				FFF6FF8A1C6BE316001DEA87 /* Log.swift */,
+				FF8E6CB71D4E8C410045E1A5 /* AccountViewItem.xib */,
 				1C21A9EF1C20B2EC00B4941E /* Main.storyboard */,
 				FF68C8551C38B88400A6D9E1 /* CoreData */,
 				FF50D21A1C274194003F1D02 /* Supporting Files */,
@@ -258,6 +267,7 @@
 				1CF6A73D1C2365D8009A9181 /* Cartfile in Resources */,
 				1C21A9EE1C20B2EC00B4941E /* Assets.xcassets in Resources */,
 				1C21A9F11C20B2EC00B4941E /* Main.storyboard in Resources */,
+				FF8E6CB81D4E8C410045E1A5 /* AccountViewItem.xib in Resources */,
 				FF50D2241C2780AE003F1D02 /* players.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -278,6 +288,7 @@
 				FF50D2261C28AA05003F1D02 /* AutoTrader.swift in Sources */,
 				FF68C8761C38B98000A6D9E1 /* Transaction+CoreDataProperties.swift in Sources */,
 				FFAC0AEC1C26656E00EE95FA /* md5_ea.c in Sources */,
+				FF8E6CB61D4E840E0045E1A5 /* AccountViewItem.swift in Sources */,
 				1C21A9FF1C20B79000B4941E /* FUT16.swift in Sources */,
 				1CF6A8121C246071009A9181 /* FUT16+AuctionSearch.swift in Sources */,
 				1C21A9EC1C20B2EC00B4941E /* ViewController.swift in Sources */,
@@ -292,6 +303,7 @@
 				1C7ADE4E1C965D09001A1167 /* Stats+CoreDataProperties.swift in Sources */,
 				1C7ADE471C9658D8001A1167 /* Stats.swift in Sources */,
 				1C7DD6E61C73789100710B19 /* Settings.swift in Sources */,
+				FFD9420E1D4E9DC70031E313 /* UserLoader.swift in Sources */,
 				1C21A9EA1C20B2EC00B4941E /* AppDelegate.swift in Sources */,
 				FF68C85D1C38B8F000A6D9E1 /* Search.swift in Sources */,
 			);

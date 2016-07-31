@@ -28,6 +28,9 @@ public class FutUser: NSObject {
         }
     }
     dynamic var username = ""
+    var password = ""
+    var answer = ""
+    var totpToken = ""
     
     var ready: Bool {
         return !fut16.sessionId.isEmpty

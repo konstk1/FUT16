@@ -23,6 +23,8 @@ class Settings: CustomStringConvertible {
     
     var unlockCode: String = ""
     
+    var userFile: String = ""
+    
     var description: String {
         return "Req timing \(reqTimingMin)-\(reqTimingMax) sec, cycle \(cycleTime/60) / \(cycleBreak/60)"
     }
