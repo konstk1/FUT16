@@ -14,17 +14,17 @@ class AccountViewItem: NSCollectionViewItem {
         didSet {
             guard viewLoaded else { return }
             usernameLabel.stringValue = user?.email ?? ""
-            passwordTextField.stringValue = user?.password ?? ""
-            answerTextField.stringValue = user?.answer ?? ""
-            totpToken.stringValue = user?.totpToken ?? ""
+            totpLabel.stringValue = user?.authCode ?? ""
         }
     }
     
     @IBOutlet weak var usernameLabel: NSTextField!
-    @IBOutlet weak var passwordTextField: NSTextField!
-    @IBOutlet weak var answerTextField: NSTextField!
-    @IBOutlet weak var totpToken: NSTextField!
+    @IBOutlet weak var totpLabel: NSTextField!
     @IBOutlet weak var loginButton: NSButton!
+    
+    @IBOutlet weak var search1HrLabel: NSTextField!
+    @IBOutlet weak var search24HrLabel: NSTextField!
+    @IBOutlet weak var purchaseCountLabel: NSTextField!
     
     @IBOutlet weak var statusLabel: NSTextField!
     
@@ -45,5 +45,13 @@ class AccountViewItem: NSCollectionViewItem {
 //            user!.stats.coinsBalance = user!.fut16.coinsBalance
             Log.print("Done?")
         }
+    }
+    
+    @IBAction func totpPushed(sender: NSButton) {
+        totpLabel.stringValue = user?.authCode ?? ""
+    }
+    
+    @IBAction func onClick(sender: NSTextField) {
+        print("On click")
     }
 }

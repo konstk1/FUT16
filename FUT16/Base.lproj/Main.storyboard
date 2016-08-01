@@ -680,17 +680,17 @@
                             <scrollView horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vJO-pT-3nO">
                                 <rect key="frame" x="9" y="32" width="843" height="259"/>
                                 <clipView key="contentView" id="O0i-Jh-wsQ">
-                                    <rect key="frame" x="1" y="1" width="841" height="257"/>
+                                    <rect key="frame" x="1" y="1" width="826" height="257"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <textView editable="NO" importsGraphics="NO" findStyle="panel" continuousSpellChecking="YES" allowsUndo="YES" usesRuler="YES" usesFontPanel="YES" verticallyResizable="YES" allowsNonContiguousLayout="YES" quoteSubstitution="YES" dashSubstitution="YES" spellingCorrection="YES" smartInsertDelete="YES" id="lTY-2v-3B0">
-                                            <rect key="frame" x="0.0" y="0.0" width="841" height="257"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="826" height="257"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            <size key="minSize" width="841" height="257"/>
+                                            <size key="minSize" width="826" height="257"/>
                                             <size key="maxSize" width="843" height="10000000"/>
                                             <color key="insertionPointColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                            <size key="minSize" width="841" height="257"/>
+                                            <size key="minSize" width="826" height="257"/>
                                             <size key="maxSize" width="843" height="10000000"/>
                                         </textView>
                                     </subviews>
@@ -701,7 +701,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                                 <scroller key="verticalScroller" verticalHuggingPriority="750" horizontal="NO" id="mB9-Rk-pR4">
-                                    <rect key="frame" x="826" y="1" width="16" height="257"/>
+                                    <rect key="frame" x="827" y="1" width="15" height="257"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                             </scrollView>
@@ -726,9 +726,9 @@
                                                             <collectionView selectable="YES" id="JLd-cI-bib">
                                                                 <rect key="frame" x="0.0" y="0.0" width="835" height="405"/>
                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                                                <collectionViewFlowLayout key="collectionViewLayout" minimumInteritemSpacing="5" minimumLineSpacing="10" id="uc9-sO-nVJ">
+                                                                <collectionViewFlowLayout key="collectionViewLayout" minimumInteritemSpacing="4" minimumLineSpacing="10" id="uc9-sO-nVJ">
                                                                     <size key="itemSize" width="200" height="130"/>
-                                                                    <edgeInsets key="sectionInset" left="5" right="5" top="8" bottom="8"/>
+                                                                    <edgeInsets key="sectionInset" left="4" right="4" top="8" bottom="8"/>
                                                                 </collectionViewFlowLayout>
                                                                 <color key="primaryBackgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                 <connections>

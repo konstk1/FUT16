@@ -60,7 +60,12 @@ class ViewController: NSViewController {
         updateSettings()
         
         users = UserLoader.getUsers(from: Settings.sharedInstance.userFile)
-        autoTrader = AutoTrader(users: users, update: nil)
+        
+        if users == nil || users.count == 0 {
+            selectUsersFile()
+        } else {
+            autoTrader = AutoTrader(users: users, update: nil)
+        }
     }
 
     override var representedObject: AnyObject? {
@@ -191,21 +196,25 @@ class ViewController: NSViewController {
     }
     
     @IBAction func browsePressed(sender: AnyObject) {
+        selectUsersFile()
+    }
+    
+    func selectUsersFile() {
         openPanel.beginWithCompletionHandler { (result) in
             guard result == NSFileHandlingPanelOKButton else { return }
             
             self.userFileTextField.stringValue = self.openPanel.URL!.path!
             NSUserDefaults.standardUserDefaults().setObject(self.userFileTextField.stringValue, forKey: "userFile")
             self.updateSettings()
-            UserLoader.getUsers(from: Settings.sharedInstance.userFile)
-            
+            self.users = UserLoader.getUsers(from: Settings.sharedInstance.userFile)
+            self.collectionView.reloadData()
         }
     }
 }
 
 extension ViewController: NSCollectionViewDataSource {
     func collectionView(collectionView: NSCollectionView, numberOfItemsInSection section: Int) -> Int {
-        return users.count
+        return users?.count ?? 0
     }
     
     func collectionView(collectionView: NSCollectionView, itemForRepresentedObjectAtIndexPath indexPath: NSIndexPath) -> NSCollectionViewItem {

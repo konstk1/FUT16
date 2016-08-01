@@ -41,7 +41,7 @@ public class FutUser: NSObject {
         }
     }
     
-    lazy var totp: Token = { [unowned self] in
+    lazy private var totp: Token = { [unowned self] in
         let secretData = NSData(base32String: self.totpToken)
         let generator = Generator(factor: .Timer(period: 30), secret: secretData, algorithm: .SHA1, digits: 6)!
         return Token(generator: generator)

@@ -53,9 +53,6 @@ public class AutoTrader: NSObject {
         currentUser = self.users.first!
         
         self.updateOwner = update
-        
-        //notifyOwner()
-//        Log.print("Autotrader Init")
     }
     
     // return break-even buy
