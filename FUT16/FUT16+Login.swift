@@ -51,6 +51,7 @@ extension FUT16 {
                     Log.print("Enter Security Code!")
                     // update login URL to sequence 2
                     self.loginUrl = response!.URL!
+                    
                 } else {
                     Log.print("Login Failure: Invalid login")
                 }

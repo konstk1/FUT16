@@ -7,41 +7,10 @@
 //
 
 import Cocoa
-import OneTimePassword
 
 class ViewController: NSViewController {
 
     @IBOutlet weak var collectionView: NSCollectionView!
-    
-    @IBOutlet weak var email0TextField: NSTextField!
-    @IBOutlet weak var password0TextField: NSSecureTextField!
-    @IBOutlet weak var secretAnswer0TextField: NSTextField!
-    @IBOutlet weak var auth0TextField: NSTextField!
-    
-    @IBOutlet weak var email1TextField: NSTextField!
-    @IBOutlet weak var password1TextField: NSSecureTextField!
-    @IBOutlet weak var secretAnswer1TextField: NSTextField!
-    @IBOutlet weak var auth1TextField: NSTextField!
-    
-    @IBOutlet weak var email2TextField: NSTextField!
-    @IBOutlet weak var password2TextField: NSSecureTextField!
-    @IBOutlet weak var secretAnswer2TextField: NSTextField!
-    @IBOutlet weak var auth2TextField: NSTextField!
-    
-    @IBOutlet weak var email3TextField: NSTextField!
-    @IBOutlet weak var password3TextField: NSSecureTextField!
-    @IBOutlet weak var secretAnswer3TextField: NSTextField!
-    @IBOutlet weak var auth3TextField: NSTextField!
-    
-    @IBOutlet weak var email4TextField: NSTextField!
-    @IBOutlet weak var password4TextField: NSSecureTextField!
-    @IBOutlet weak var secretAnswer4TextField: NSTextField!
-    @IBOutlet weak var auth4TextField: NSTextField!
-    
-    @IBOutlet weak var email5TextField: NSTextField!
-    @IBOutlet weak var password5TextField: NSSecureTextField!
-    @IBOutlet weak var secretAnswer5TextField: NSTextField!
-    @IBOutlet weak var auth5TextField: NSTextField!
     
     @IBOutlet weak var typeSegment: NSSegmentedControl!
     
@@ -69,12 +38,8 @@ class ViewController: NSViewController {
     var openPanel = NSOpenPanel()
     
     var autoTrader: AutoTrader!
-    var user0 = FutUser()
-    var user1 = FutUser()
-    var user2 = FutUser()
-    var user3 = FutUser()
-    var user4 = FutUser()
-    var user5 = FutUser()
+    var users: [FutUser]!
+
     var aggregateStats = AggregateStats.sharedInstance
 
     var settings = Settings.sharedInstance
@@ -91,12 +56,11 @@ class ViewController: NSViewController {
         openPanel.directoryURL = NSURL(fileURLWithPath: NSString(string: "~").stringByExpandingTildeInPath)
 //        [_openPanel setAllowsMultipleSelection:NO];
         
-        autoTrader = AutoTrader(users: [user0, user1, user2, user3, user4, user5], update: nil)
-        
         updateFieldsStateForSearchType(typeSegment.selectedLabel())
         updateSettings()
         
-        UserLoader.getUsers(from: Settings.sharedInstance.userFile)
+        users = UserLoader.getUsers(from: Settings.sharedInstance.userFile)
+        autoTrader = AutoTrader(users: users, update: nil)
     }
 
     override var representedObject: AnyObject? {
@@ -119,25 +83,6 @@ class ViewController: NSViewController {
         }
     }
     
-    func getUserNumbered(num: Int) -> FutUser? {
-        switch(num) {
-        case 0:
-            return user0
-        case 1:
-            return user1
-        case 2:
-            return user2
-        case 3:
-            return user3
-        case 4:
-            return user4
-        case 5:
-            return user5
-        default:
-            return nil
-        }
-    }
-    
     func log(string: String) {
         logTextView.textStorage?.appendAttributedString(NSAttributedString(string: string, attributes: [NSFontAttributeName : NSFont(name: "Menlo", size: 11)!]))
         logTextView.scrollToEndOfDocument(nil)
@@ -148,95 +93,6 @@ class ViewController: NSViewController {
     }
 
 // MARK: UI Actions
-    @IBAction func loginPressed(sender: NSButton) {
-        let accountNum = sender.tag
-        var user: FutUser? = nil
-        
-        var email = ""
-        var password = ""
-        var secret = ""
-        
-        switch accountNum {
-        case 0:
-            email = email0TextField.stringValue
-            password = password0TextField.stringValue
-            secret = secretAnswer0TextField.stringValue
-            user = user0
-        case 1:
-            email = email1TextField.stringValue
-            password = password1TextField.stringValue
-            secret = secretAnswer1TextField.stringValue
-            user = user1
-        case 2:
-            email = email2TextField.stringValue
-            password = password2TextField.stringValue
-            secret = secretAnswer2TextField.stringValue
-            user = user2
-        case 3:
-            email = email3TextField.stringValue
-            password = password3TextField.stringValue
-            secret = secretAnswer3TextField.stringValue
-            user = user3
-        case 4:
-            email = email4TextField.stringValue
-            password = password4TextField.stringValue
-            secret = secretAnswer4TextField.stringValue
-            user = user4
-        case 5:
-            email = email5TextField.stringValue
-            password = password5TextField.stringValue
-            secret = secretAnswer5TextField.stringValue
-            user = user5
-        default:
-            break
-        }
-        
-        
-        user?.email = email
-        user?.fut16.login(email, password: password, secretAnswer: secret) {
-            user!.stats.coinsBalance = user!.fut16.coinsBalance
-        }
-        
-        Log.print("Logging in [\(sender.tag)] - [\(email)]")
-    }
-    
-    @IBAction func submitPressed(sender: AnyObject) {
-        let accountNum = (sender as! NSControl).tag
-        var authCode = ""
-        var user: FutUser? = nil
-        
-        switch accountNum {
-        case 0:
-            authCode = auth0TextField.stringValue
-            user = user0
-        case 1:
-            authCode = auth1TextField.stringValue
-            user = user1
-        case 2:
-            authCode = auth2TextField.stringValue
-            user = user2
-        case 3:
-            authCode = auth3TextField.stringValue
-            user = user3
-        case 4:
-            authCode = auth4TextField.stringValue
-            user = user4
-        case 5:
-            authCode = auth5TextField.stringValue
-            user = user5
-        default:
-            break
-        }
-        
-        let secretData = NSData(base32String: authCode)
-        let generator = Generator(factor: .Timer(period: 30), secret: secretData, algorithm: .SHA1, digits: 6)!
-        let token = Token(generator: generator)
-        
-        if let twoFactorCode = token.currentPassword {
-            user?.fut16.sendAuthCode(twoFactorCode)
-        }
-    }
-    
     @IBAction func setSearchParamsPressed(sender: NSButton) {
         let nationality = getIdFromComboBox(nationalityComboBox) ?? ""
         let league = getIdFromComboBox(leagueComboBox) ?? ""
@@ -323,7 +179,7 @@ class ViewController: NSViewController {
     }
     
     @IBAction func resetStatsPressed(sender: NSButton) {
-        autoTrader?.resetStats(getUserNumbered(sender.tag))
+        autoTrader?.resetStats(users[sender.tag])
         if sender.tag == 99 {
             clearLog()
         }
@@ -349,7 +205,7 @@ class ViewController: NSViewController {
 
 extension ViewController: NSCollectionViewDataSource {
     func collectionView(collectionView: NSCollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 8
+        return users.count
     }
     
     func collectionView(collectionView: NSCollectionView, itemForRepresentedObjectAtIndexPath indexPath: NSIndexPath) -> NSCollectionViewItem {
@@ -358,6 +214,9 @@ extension ViewController: NSCollectionViewDataSource {
             print("Not account view")
             return item
         }
+        
+        accountItem.user = users[indexPath.item]
+        
         return accountItem
     }
 }

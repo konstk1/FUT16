@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import OneTimePassword
 
 public class FutUser: NSObject {
     let fut16 = FUT16()
@@ -30,7 +31,25 @@ public class FutUser: NSObject {
     dynamic var username = ""
     var password = ""
     var answer = ""
-    var totpToken = ""
+    var totpToken = "" {
+        didSet {
+            
+            //
+            //        if let twoFactorCode = token.currentPassword {
+            //            user?.fut16.sendAuthCode(twoFactorCode)
+            //        }
+        }
+    }
+    
+    lazy var totp: Token = { [unowned self] in
+        let secretData = NSData(base32String: self.totpToken)
+        let generator = Generator(factor: .Timer(period: 30), secret: secretData, algorithm: .SHA1, digits: 6)!
+        return Token(generator: generator)
+    }()
+    
+    var authCode: String {
+        return totp.currentPassword ?? ""
+    }
     
     var ready: Bool {
         return !fut16.sessionId.isEmpty

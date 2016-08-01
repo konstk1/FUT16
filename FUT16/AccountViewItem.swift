@@ -10,7 +10,15 @@ import Cocoa
 
 class AccountViewItem: NSCollectionViewItem {
     
-    var user: FutUser?
+    var user: FutUser? {
+        didSet {
+            guard viewLoaded else { return }
+            usernameLabel.stringValue = user?.email ?? ""
+            passwordTextField.stringValue = user?.password ?? ""
+            answerTextField.stringValue = user?.answer ?? ""
+            totpToken.stringValue = user?.totpToken ?? ""
+        }
+    }
     
     @IBOutlet weak var usernameLabel: NSTextField!
     @IBOutlet weak var passwordTextField: NSTextField!
@@ -23,7 +31,6 @@ class AccountViewItem: NSCollectionViewItem {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.layer?.backgroundColor = NSColor.whiteColor().CGColor
-        
     }
     
     override func awakeFromNib() {
@@ -31,6 +38,12 @@ class AccountViewItem: NSCollectionViewItem {
     }
     
     @IBAction func loginPushed(sender: NSButton) {
-        print("Login: \(usernameLabel.stringValue)")
+        guard let user = user else { return }
+        
+        Log.print("Login: \(user.username)")
+        user.fut16.login(user.email, password: user.password, secretAnswer: user.answer) {
+//            user!.stats.coinsBalance = user!.fut16.coinsBalance
+            Log.print("Done?")
+        }
     }
 }

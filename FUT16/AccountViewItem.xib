@@ -23,7 +23,7 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nR4-p5-AVm">
-                    <rect key="frame" x="9" y="102" width="114" height="17"/>
+                    <rect key="frame" x="9" y="102" width="159" height="17"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="futs@hotmail.com" id="hYY-sp-FOk">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -73,7 +73,7 @@
                     </textFieldCell>
                 </textField>
             </subviews>
-            <point key="canvasLocation" x="395" y="317.5"/>
+            <point key="canvasLocation" x="395" y="317"/>
         </customView>
     </objects>
 </document>
