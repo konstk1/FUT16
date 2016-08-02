@@ -10,11 +10,11 @@ import Cocoa
 
 class AccountViewItem: NSCollectionViewItem {
     
-    var user: FutUser? {
+    dynamic var user: FutUser! {
         didSet {
             guard viewLoaded else { return }
-            usernameLabel.stringValue = user?.email ?? ""
-            totpLabel.stringValue = user?.authCode ?? ""
+            usernameLabel.stringValue = user.email
+            totpLabel.stringValue = user.authCode
         }
     }
     
@@ -38,17 +38,18 @@ class AccountViewItem: NSCollectionViewItem {
     }
     
     @IBAction func loginPushed(sender: NSButton) {
-        guard let user = user else { return }
-        
         Log.print("Login: \(user.username)")
         user.fut16.login(user.email, password: user.password, secretAnswer: user.answer) {
-//            user!.stats.coinsBalance = user!.fut16.coinsBalance
-            Log.print("Done?")
+            self.user.stats.coinsBalance = self.user.fut16.coinsBalance
+//            self.user.coinsBalance = self.user.fut16.coinsBalance
+            
+            Log.print("Done")
         }
     }
     
     @IBAction func totpPushed(sender: NSButton) {
-        totpLabel.stringValue = user?.authCode ?? ""
+        totpLabel.stringValue = user.authCode
+        user.fut16.sendAuthCode(user.authCode)
     }
     
     @IBAction func onClick(sender: NSTextField) {

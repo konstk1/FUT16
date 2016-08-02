@@ -113,7 +113,7 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                     <connections>
-                        <binding destination="-2" name="value" keyPath="self.user.stats.searchCount24Hr" id="PDI-A3-JzH"/>
+                        <binding destination="-2" name="value" keyPath="self.user.stats.searchCount24Hr" id="Z7n-Dq-smB"/>
                     </connections>
                 </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bAs-HR-DYH">
@@ -123,6 +123,9 @@
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
+                    <connections>
+                        <binding destination="-2" name="value" keyPath="self.user.stats.purchaseCount" id="oiB-j5-e7Y"/>
+                    </connections>
                 </textField>
             </subviews>
             <point key="canvasLocation" x="395" y="317"/>

@@ -10,7 +10,7 @@ import Foundation
 
 class UserLoader {
     class func getUsers(from file: String) -> [FutUser]? {
-        let garbageSet = NSCharacterSet(charactersInString: " \\t")
+        let garbageSet = NSCharacterSet(charactersInString: " \t")
         var futUsers = [FutUser]()
         do {
             let contents = try String(contentsOfFile: file)
