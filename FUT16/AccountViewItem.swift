@@ -8,6 +8,11 @@
 
 import Cocoa
 
+let colorLoggingIn = NSColor(red: 1, green: 1, blue: 0, alpha: 0.7)
+let colorLoggedIn = NSColor(red: 0, green: 1, blue: 0, alpha: 0.7)
+let colorPurchase = NSColor(red: 0, green: 1, blue: 1, alpha: 0.7)
+let colorDefault = NSColor.whiteColor()
+
 class AccountViewItem: NSCollectionViewItem {
     
     dynamic var user: FutUser! {
@@ -26,23 +31,25 @@ class AccountViewItem: NSCollectionViewItem {
     @IBOutlet weak var search24HrLabel: NSTextField!
     @IBOutlet weak var purchaseCountLabel: NSTextField!
     
-    @IBOutlet weak var statusLabel: NSTextField!
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.layer?.backgroundColor = NSColor.whiteColor().CGColor
+        setBackground(colorDefault)
     }
     
     override func awakeFromNib() {
         self.view.wantsLayer = true
     }
     
+    func setBackground(color: NSColor) {
+        self.view.layer?.backgroundColor = color.CGColor
+    }
+    
     @IBAction func loginPushed(sender: NSButton) {
         Log.print("Login: \(user.username)")
+        self.setBackground(colorLoggingIn)
         user.fut16.login(user.email, password: user.password, secretAnswer: user.answer) {
             self.user.stats.coinsBalance = self.user.fut16.coinsBalance
-            self.statusLabel.stringValue = "v"
-            Log.print("Done")
+            self.setBackground(colorLoggedIn)
         }
     }
     
@@ -51,11 +58,9 @@ class AccountViewItem: NSCollectionViewItem {
         user.fut16.sendAuthCode(user.authCode)
     }
     
+    var i = 0
+    
     @IBAction func resetPushed(sender: NSButton) {
         user.resetStats()
-    }
-    
-    @IBAction func onClick(sender: NSTextField) {
-        print("On click")
     }
 }
