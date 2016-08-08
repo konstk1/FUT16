@@ -31,15 +31,7 @@ public class FutUser: NSObject {
     dynamic var username = ""
     var password = ""
     var answer = ""
-    var totpToken = "" {
-        didSet {
-            
-            //
-            //        if let twoFactorCode = token.currentPassword {
-            //            user?.fut16.sendAuthCode(twoFactorCode)
-            //        }
-        }
-    }
+    var totpToken = ""
     
     lazy private var totp: Token = { [unowned self] in
         let secretData = NSData(base32String: self.totpToken)

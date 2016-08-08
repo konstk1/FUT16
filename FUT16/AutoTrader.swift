@@ -10,6 +10,7 @@ import Foundation
 import Cocoa
 
 // TODO: Show req per hour (from settings)
+// TODO: Independent requests (NSOps)
 
 public class AutoTrader: NSObject {
     private var users = [FutUser]()

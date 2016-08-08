@@ -64,8 +64,11 @@ extension FUT16 {
             "_trustThisDevice" : "on",
             "trustThisDevice" : "on",
             "_eventId" : "submit"]
-        alamo.request(.POST, loginUrl, parameters: parameters).response { [unowned self] (request, response, data, error) -> Void in
-            if response!.URL!.URLString.URLString.containsString(webAppUrl) {
+        alamo.request(.POST, loginUrl ?? "", parameters: parameters).response { [unowned self] (request, response, data, error) -> Void in
+            if self.loginUrl == nil {
+                Log.print("Generating TOTP: \(authCode)")
+            }
+            else if response!.URL!.URLString.URLString.containsString(webAppUrl) {
                 Log.print("Login Successfull. Authenticating Session...")
                 self.authenticate()
             } else {

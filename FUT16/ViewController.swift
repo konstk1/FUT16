@@ -184,7 +184,7 @@ class ViewController: NSViewController {
     }
     
     @IBAction func resetStatsPressed(sender: NSButton) {
-        autoTrader?.resetStats(users[sender.tag])
+        autoTrader?.resetStats(nil)
         if sender.tag == 99 {
             clearLog()
         }

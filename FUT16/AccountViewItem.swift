@@ -41,8 +41,7 @@ class AccountViewItem: NSCollectionViewItem {
         Log.print("Login: \(user.username)")
         user.fut16.login(user.email, password: user.password, secretAnswer: user.answer) {
             self.user.stats.coinsBalance = self.user.fut16.coinsBalance
-//            self.user.coinsBalance = self.user.fut16.coinsBalance
-            
+            self.statusLabel.stringValue = "v"
             Log.print("Done")
         }
     }
@@ -50,6 +49,10 @@ class AccountViewItem: NSCollectionViewItem {
     @IBAction func totpPushed(sender: NSButton) {
         totpLabel.stringValue = user.authCode
         user.fut16.sendAuthCode(user.authCode)
+    }
+    
+    @IBAction func resetPushed(sender: NSButton) {
+        user.resetStats()
     }
     
     @IBAction func onClick(sender: NSTextField) {

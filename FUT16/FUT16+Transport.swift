@@ -41,7 +41,7 @@ extension FUT16 {
     func getUserInfo() {
         requestForPath("user") { [unowned self] (json) -> Void in
             self.coinFunds = json["credits"].stringValue
-            Log.print("Coins Ballance: \(self.coinFunds)")
+            Log.print("Coins Balance: \(self.coinFunds)")
             self.loginCompletion?()
         }
     }
