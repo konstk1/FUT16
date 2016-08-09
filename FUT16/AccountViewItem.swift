@@ -36,8 +36,6 @@ class AccountViewItem: NSCollectionViewItem {
     override func viewDidLoad() {
         super.viewDidLoad()
         setBackground(colorDefault)
-        
-        user.stats.addObserver(self, forKeyPath: "purchaseCount", options: .New, context: &myContext)
     }
     
     deinit {
@@ -74,6 +72,7 @@ class AccountViewItem: NSCollectionViewItem {
             self.user.stats.coinsBalance = self.user.fut16.coinsBalance
             self.setBackground(colorLoggedIn)
         }
+        user.stats.addObserver(self, forKeyPath: "purchaseCount", options: .New, context: &myContext)
     }
     
     @IBAction func totpPushed(sender: NSButton) {
@@ -85,5 +84,6 @@ class AccountViewItem: NSCollectionViewItem {
     
     @IBAction func resetPushed(sender: NSButton) {
         user.resetStats()
+        setBackground(colorDefault)
     }
 }
