@@ -31,13 +31,36 @@ class AccountViewItem: NSCollectionViewItem {
     @IBOutlet weak var search24HrLabel: NSTextField!
     @IBOutlet weak var purchaseCountLabel: NSTextField!
     
+    private var myContext = 0
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setBackground(colorDefault)
+        
+        user.stats.addObserver(self, forKeyPath: "purchaseCount", options: .New, context: &myContext)
+    }
+    
+    deinit {
+        print("Removing observer")
+        user.stats.removeObserver(self, forKeyPath: "purchaseCount", context: &myContext)
     }
     
     override func awakeFromNib() {
         self.view.wantsLayer = true
+    }
+    
+    override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
+        if context == &myContext {
+            print("Observed new val \(change)")
+            if let purchaseCount = change?[NSKeyValueChangeNewKey] as? Int {
+                print("New purchase count: \(purchaseCount)")
+                if purchaseCount > 0 {
+                    setBackground(colorPurchase)
+                }
+            }
+        } else {
+            super.observeValueForKeyPath(keyPath, ofObject: object, change: change, context: context)
+        }
     }
     
     func setBackground(color: NSColor) {

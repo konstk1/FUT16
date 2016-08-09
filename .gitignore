@@ -30,3 +30,6 @@ DerivedData
 # (ignore source code but include frameworks)
 Carthage/Checkouts/
 !Carthage/Build/
+
+Carthage/Build/Mac/OneTimePassword.framework/Versions/A/OneTimePassword
+Carthage/Build/Mac/OneTimePassword.framework/Versions/A/Modules/OneTimePassword.swiftmodule/x86_64.swiftmodule
