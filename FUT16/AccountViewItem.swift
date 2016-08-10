@@ -85,5 +85,6 @@ class AccountViewItem: NSCollectionViewItem {
     @IBAction func resetPushed(sender: NSButton) {
         user.resetStats()
         setBackground(colorDefault)
+        totpLabel.stringValue = user.authCode
     }
 }
