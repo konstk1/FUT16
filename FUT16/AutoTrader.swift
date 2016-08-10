@@ -17,8 +17,8 @@ public class AutoTrader: NSObject {
     private var currentUser: FutUser
     private var currentUserIdx = 0
     
-    private var currentStats: UserStats { return currentUser.stats }
-    private var currentFut: FUT16 { return currentUser.fut16 }
+//    private var currentStats: UserStats { return currentUser.stats }
+//    private var currentFut: FUT16 { return currentUser.fut16 }
     
     private var itemParams: FUT16.ItemParams!
     private var buyAtBin: UInt = 0
@@ -125,7 +125,7 @@ public class AutoTrader: NSObject {
         
         stopAllTimers()
 
-        self.notifyOwner(self.currentUser)
+        self.notifyOwner(currentUser)
         
         Log.print("Trading stopped: [\(reason)].")
         
@@ -135,7 +135,7 @@ public class AutoTrader: NSObject {
         }
         
         // saves data for all users (core data context)
-        currentStats.save()
+        currentUser.stats.save()
         
         Log.print("Searches (hours): ", terminator: "")
         for i in [1, 2, 12, 24] {
@@ -172,13 +172,13 @@ public class AutoTrader: NSObject {
         
         let nextPollTiming = settings.reqTimingRand / Double(numActiveUsers)
         
-        pollTimer = NSTimer.scheduledTimerWithTimeInterval(nextPollTiming, target: self, selector: #selector(AutoTrader.pollAuctions), userInfo: nil, repeats: false)
+        pollTimer = NSTimer.scheduledTimerWithTimeInterval(nextPollTiming, target: self, selector: #selector(AutoTrader.pollAuctions), userInfo: currentUser, repeats: false)
     }
     
     func cycleStart() {
         Log.print("------------------------------ Start cycle: \(settings.cycleTime) ------------------------------")
         state = .Polling
-        pollAuctions()
+        scheduleNextPoll()
         cycleTimer = NSTimer.scheduledTimerWithTimeInterval(settings.cycleTime, target: self, selector: #selector(AutoTrader.cycleBreak), userInfo: nil, repeats: false)
         
         let start = NSDate()
@@ -197,23 +197,24 @@ public class AutoTrader: NSObject {
     }
     
     func pollAuctions() {
-        Log.print("\(NSDate().localTime):  ", terminator: "")
+        guard let user = pollTimer.userInfo as? FutUser else {
+            Log.print("Invalid user")
+            return
+        }
+
         var curMinBin: UInt = 10000000
         
         // increment max price to avoid cached results
         itemParams.maxPrice = incrementPrice(itemParams.maxPrice)
         
-        currentUser.fut16.findAuctionsForItem(itemParams) { [unowned self] (auctions, error) -> Void in
-            defer {
-                // schedule next request at the end of the callback 
-                // in order to avoid sending out next request while current one is still pending
-                self.scheduleNextPoll()  // set up timer for next request
-            }
+        user.fut16.findAuctionsForItem(itemParams) { [unowned self] (auctions, error) -> Void in
+            let currentStats = user.stats
+            let currentFut = user.fut16
             
-            self.currentStats.coinsBalance = self.currentFut.coinsBalance   // grab coins ballance
+            currentStats.coinsBalance = currentFut.coinsBalance   // grab coins ballance
             
-            if self.currentStats.searchCount1Hr >= self.SEARCH_LIMIT_1HR ||
-               self.currentStats.searchCount24Hr >= self.SEARCH_LIMIT_24HR {
+            if currentStats.searchCount1Hr >= self.SEARCH_LIMIT_1HR ||
+               currentStats.searchCount24Hr >= self.SEARCH_LIMIT_24HR {
                 self.stopTrading("Search limit reached")
             }
             
@@ -222,9 +223,9 @@ public class AutoTrader: NSObject {
                 Log.print(error)
                 if error == .ExpiredSession {
                     Log.print("Retrieving session id")
-                    self.currentFut.retrieveSessionId()   // re-login
+                    currentFut.retrieveSessionId()   // re-login
                 } else {
-                    self.currentStats.errorCount += 1
+                    currentStats.errorCount += 1
                     self.stopTrading("Session error limit reached")
                 }
                 return
@@ -232,6 +233,13 @@ public class AutoTrader: NSObject {
             
             // find current search min bins
             auctions.forEach {
+                if let playerParams = self.itemParams as? FUT16.PlayerParams, let teamId = UInt(playerParams.team) {
+                    if teamId != $0.teamId {
+                        print("Wrong team Id (\(teamId) vs \($0.teamId))")
+                        return
+                    }
+                }
+                
                 if $0.buyNowPrice < curMinBin {
                     curMinBin = $0.buyNowPrice
                 }
@@ -247,15 +255,18 @@ public class AutoTrader: NSObject {
                 self.minBin = curMinBin
             }
             
-            self.processPurchaseQueue()
+            self.processPurchaseQueue(user)
             self.tuneSearchParamsFromAuctions(auctions)
             
             // log search at the end to minimize time between search and purchase
-            self.currentStats.logSearch()        // save to CoreData
-            Log.print("Search: \(self.currentStats.searchCount) (\(auctions.count)-\(self.itemParams.startRecord)) - Cur Min: \(curMinBin) (Min: \(self.minBin)) [\(self.currentFut.user)]")
+            currentStats.logSearch()        // save to CoreData
+            Log.print("\(NSDate().localTime):  Search: \(currentStats.searchCount) (\(auctions.count)-\(self.itemParams.startRecord)) - Cur Min: \(curMinBin) (Min: \(self.minBin)) [\(currentFut.user)]")
             
-            self.notifyOwner(self.currentUser)
+            self.notifyOwner(user)
         } // findAuctionsForPlayer
+        
+        scheduleNextPoll()  // set up timer for next request
+        
     } // end pollAuctions
     
     func tuneSearchParamsFromAuctions(auctions: [FUT16.AuctionInfo]) {
@@ -282,13 +293,15 @@ public class AutoTrader: NSObject {
     
     var currentAuction: FUT16.AuctionInfo!
     
-    func processPurchaseQueue() {
+    func processPurchaseQueue(user: FutUser) {
         guard purchaseQueue.count > 0 else { return }
+        
+        let currentFut = user.fut16
         
         let auction = purchaseQueue.removeFirst()
         
         Log.print("Purchasing \(auction.tradeId) (\(auction.buyNowPrice))...", terminator: "")
-        self.currentFut.placeBidOnAuction(auction.tradeId, amount: auction.buyNowPrice) { [unowned self] (email, error) in
+        currentFut.placeBidOnAuction(auction.tradeId, amount: auction.buyNowPrice) { [unowned self] (email, error) in
             defer {
                 //NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: Selector("processPurchaseQueue"), userInfo: nil, repeats: false)
             }
@@ -301,7 +314,7 @@ public class AutoTrader: NSObject {
                 return
             }
             
-            Log.print("Success - (Bal: \(self.currentFut.coinsBalance))")
+            Log.print("Success - (Bal: \(currentFut.coinsBalance))")
             
             // some stat keeping
             user.stats.logPurchase(Int(auction.buyNowPrice), maxBin: Int(self.itemParams.maxBin), coinsBalance: user.fut16.coinsBalance)

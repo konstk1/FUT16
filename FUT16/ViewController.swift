@@ -166,8 +166,15 @@ class ViewController: NSViewController {
     }
     
     func updateSettings() {
-        settings.reqTimingMin = reqTimingMinTextField.doubleValue
-        settings.reqTimingMax = reqTimingMaxTextField.doubleValue
+        var reqTimingMin = reqTimingMinTextField.doubleValue
+        let reqTimingMax = reqTimingMaxTextField.doubleValue
+        
+        // clip min timing to 1.5 seconds
+        reqTimingMin = reqTimingMin < 1.5 ? 1.5 : reqTimingMin
+        reqTimingMinTextField.doubleValue = reqTimingMin
+        
+        settings.reqTimingMin = reqTimingMin
+        settings.reqTimingMax = reqTimingMax
         settings.cycleTime    = cycleTimeTextField.doubleValue * 60.0       // convert from min to seconds
         settings.cycleBreak   = cycleBreakTextField.doubleValue * 60.0      // convert from min to seconds
         settings.unlockCode   = unlockCodeTextField.stringValue

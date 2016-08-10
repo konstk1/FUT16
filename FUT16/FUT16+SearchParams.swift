@@ -75,7 +75,7 @@ extension FUT16 {
                 url +=    playerId.isEmpty ? "" : "&maskedDefId=\(playerId)"
                 url += nationality.isEmpty ? "" : "&nat=\(nationality)"
                 url +=      league.isEmpty ? "" : "&leag=\(league)"
-                url +=        team.isEmpty ? "" : "&team=\(team)"
+//                url +=        team.isEmpty ? "" : "&team=\(team)"
                 
                 return url
             }

@@ -16,6 +16,7 @@ extension FUT16 {
         var buyNowPrice: UInt = 0
         var isRare = false
         var subTypeId: UInt = 0
+        var teamId: UInt = 0
         
         init(fromJson json: JSON) {
             tradeId = json["tradeId"].stringValue
@@ -23,6 +24,7 @@ extension FUT16 {
             buyNowPrice = json["buyNowPrice"].uInt ?? 0
             isRare = json["itemData"]["rareflag"].boolValue
             subTypeId = json["itemData"]["cardsubtypeid"].uInt ?? 0
+            teamId = json["itemData"]["teamid"].uInt ?? 0
         }
         
         public var description: String {

@@ -1012,8 +1012,10 @@
                                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                         <objectValues>
                                                             <string>Any</string>
+                                                            <string>Bayern: 21</string>
                                                             <string>Chelsea: 5</string>
                                                             <string>Roma: 52</string>
+                                                            <string>Borussia: 22</string>
                                                         </objectValues>
                                                     </comboBoxCell>
                                                     <connections>
