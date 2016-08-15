@@ -9,6 +9,8 @@
 import Foundation
 import Cocoa
 
+// Add unlock feature (web service)
+
 public class AutoTrader: NSObject {
     private var users = [FutUser]()
     private var currentUser: FutUser
