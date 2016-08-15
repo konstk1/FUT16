@@ -9,16 +9,10 @@
 import Foundation
 import Cocoa
 
-// TODO: Show req per hour (from settings)
-// TODO: Independent requests (NSOps)
-
 public class AutoTrader: NSObject {
     private var users = [FutUser]()
     private var currentUser: FutUser
     private var currentUserIdx = 0
-    
-//    private var currentStats: UserStats { return currentUser.stats }
-//    private var currentFut: FUT16 { return currentUser.fut16 }
     
     private var itemParams: FUT16.ItemParams!
     private var buyAtBin: UInt = 0
@@ -29,6 +23,14 @@ public class AutoTrader: NSObject {
     
     private var pollTimer: NSTimer!
     private var cycleTimer: NSTimer!
+    
+    dynamic var requestPeriod: NSTimeInterval = 0.0 {
+        didSet {
+            let settings = Settings.sharedInstance
+            requestRate = Int(3600 * settings.cycleTime/(settings.cycleTime + settings.cycleBreak) / requestPeriod)
+        }
+    }
+    dynamic var requestRate: Int = 0
     
     enum State {
         case Ready
@@ -159,8 +161,8 @@ public class AutoTrader: NSObject {
         
         if currentUserIdx == 0 {
             let curRequestTime = NSDate().timeIntervalSinceReferenceDate
-            users[currentUserIdx].requestPeriod = round((curRequestTime - lastRequestTime)*10)/10
-            Log.print("Account request period: \(users[currentUserIdx].requestPeriod) secs  (Users: \(numActiveUsers))")
+            requestPeriod = round((curRequestTime - lastRequestTime)*10)/10
+            Log.print("Account request period: \(requestPeriod) secs  (Users: \(numActiveUsers))")
             lastRequestTime = curRequestTime
         }
         

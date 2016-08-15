@@ -37,8 +37,10 @@ class ViewController: NSViewController {
     
     var openPanel = NSOpenPanel()
     
-    var autoTrader: AutoTrader!
+    dynamic var autoTrader: AutoTrader!
     var users: [FutUser]!
+    
+    lazy var user0: FutUser = { return self.users[0] }()
 
     var aggregateStats = AggregateStats.sharedInstance
 
