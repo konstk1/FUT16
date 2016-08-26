@@ -7,6 +7,7 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="AccountViewItem" customModule="FUT16" customModuleProvider="target">
             <connections>
+                <outlet property="enabledCheckbox" destination="OBY-vm-QXM" id="Ngi-3f-aSm"/>
                 <outlet property="loginButton" destination="pL5-ej-PT1" id="whc-7d-I5i"/>
                 <outlet property="purchaseCountLabel" destination="bAs-HR-DYH" id="Kv7-1b-Z3T"/>
                 <outlet property="search1HrLabel" destination="E3H-sz-tV9" id="jKS-XK-BTC"/>
@@ -23,7 +24,7 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nR4-p5-AVm">
-                    <rect key="frame" x="9" y="102" width="159" height="17"/>
+                    <rect key="frame" x="23" y="102" width="159" height="17"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="futme5@hotmail.com" id="hYY-sp-FOk">
                         <font key="font" metaFont="systemBold"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -163,6 +164,16 @@
                         <binding destination="-2" name="value" keyPath="self.user.stats.purchaseFailCount" id="JvK-Gy-hWE"/>
                     </connections>
                 </textField>
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OBY-vm-QXM">
+                    <rect key="frame" x="4" y="101" width="22" height="18"/>
+                    <buttonCell key="cell" type="check" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="ZNt-Dh-K7Q">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="enabledPushed:" target="-2" id="GEI-Pz-hXu"/>
+                    </connections>
+                </button>
             </subviews>
             <point key="canvasLocation" x="395" y="317"/>
         </customView>

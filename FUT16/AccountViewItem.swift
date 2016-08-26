@@ -20,9 +20,11 @@ class AccountViewItem: NSCollectionViewItem {
             guard viewLoaded else { return }
             usernameLabel.stringValue = user.email
             totpLabel.stringValue = user.authCode
+            user.enabled = (enabledCheckbox.state == 1)
         }
     }
     
+    @IBOutlet weak var enabledCheckbox: NSButton!
     @IBOutlet weak var usernameLabel: NSTextField!
     @IBOutlet weak var totpLabel: NSTextField!
     @IBOutlet weak var loginButton: NSButton!
@@ -59,6 +61,10 @@ class AccountViewItem: NSCollectionViewItem {
         } else {
             super.observeValueForKeyPath(keyPath, ofObject: object, change: change, context: context)
         }
+    }
+    
+    @IBAction func enabledPushed(sender: NSButton) {
+        user.enabled = (sender.state == 1)
     }
     
     func setBackground(color: NSColor) {

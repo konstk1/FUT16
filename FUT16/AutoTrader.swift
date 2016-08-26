@@ -133,9 +133,11 @@ public class AutoTrader: NSObject {
         
         Log.print("Trading stopped: [\(reason)].")
         
-        users.forEach { (user) -> () in
+        users.forEach { user in
             user.stats.purgeOldSearches()
-            user.fut16.sendItemsToTransferList()
+            if user.stats.purchaseCount > 0 {
+                user.fut16.sendItemsToTransferList()
+            }
         }
         
         // saves data for all users (core data context)
@@ -161,18 +163,21 @@ public class AutoTrader: NSObject {
             return
         }
         
-        if currentUserIdx == 0 {
-            let curRequestTime = NSDate().timeIntervalSinceReferenceDate
-            requestPeriod = round((curRequestTime - lastRequestTime)*10)/10
-            Log.print("Account request period: \(requestPeriod) secs  (Users: \(numActiveUsers))")
-            lastRequestTime = curRequestTime
-        }
+        let prevUserIdx = currentUserIdx
         
         // get next valid FUT
         repeat {
             currentUserIdx = (currentUserIdx + 1) % users.count
             currentUser = users[currentUserIdx]
         } while !currentUser.ready
+        
+        // wrapped arround
+        if prevUserIdx >= currentUserIdx {
+            let curRequestTime = NSDate().timeIntervalSinceReferenceDate
+            requestPeriod = round((curRequestTime - lastRequestTime)*10)/10
+            Log.print("Account request period: \(requestPeriod) secs  (Users: \(numActiveUsers))")
+            lastRequestTime = curRequestTime
+        }
         
         let nextPollTiming = settings.reqTimingRand / Double(numActiveUsers)
         

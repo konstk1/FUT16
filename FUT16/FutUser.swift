@@ -35,8 +35,9 @@ public class FutUser: NSObject {
         return totp.currentPassword ?? ""
     }
     
+    var enabled = true
     var ready: Bool {
-        return !fut16.sessionId.isEmpty
+        return !fut16.sessionId.isEmpty && enabled
     }
     
     func resetStats() {
