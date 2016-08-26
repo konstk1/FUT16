@@ -46,6 +46,7 @@
 		FF8E6CB81D4E8C410045E1A5 /* AccountViewItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = FF8E6CB71D4E8C410045E1A5 /* AccountViewItem.xib */; };
 		FFAC0AEC1C26656E00EE95FA /* md5_ea.c in Sources */ = {isa = PBXBuildFile; fileRef = FFAC0AEA1C26656E00EE95FA /* md5_ea.c */; };
 		FFD9420E1D4E9DC70031E313 /* UserLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFD9420D1D4E9DC70031E313 /* UserLoader.swift */; };
+		FFF2FEE91D70B893004282DB /* TODO.txt in Resources */ = {isa = PBXBuildFile; fileRef = FFF2FEE81D70B893004282DB /* TODO.txt */; };
 		FFF6FF8B1C6BE316001DEA87 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFF6FF8A1C6BE316001DEA87 /* Log.swift */; };
 /* End PBXBuildFile section */
 
@@ -109,6 +110,7 @@
 		FFAC0AEA1C26656E00EE95FA /* md5_ea.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = md5_ea.c; sourceTree = "<group>"; };
 		FFAC0AEB1C26656E00EE95FA /* md5_ea.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = md5_ea.h; sourceTree = "<group>"; };
 		FFD9420D1D4E9DC70031E313 /* UserLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserLoader.swift; sourceTree = "<group>"; };
+		FFF2FEE81D70B893004282DB /* TODO.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TODO.txt; sourceTree = "<group>"; };
 		FFF6FF8A1C6BE316001DEA87 /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Log.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 /* End PBXFileReference section */
 
@@ -169,6 +171,7 @@
 				FFF6FF8A1C6BE316001DEA87 /* Log.swift */,
 				FF8E6CB71D4E8C410045E1A5 /* AccountViewItem.xib */,
 				1C21A9EF1C20B2EC00B4941E /* Main.storyboard */,
+				FFF2FEE81D70B893004282DB /* TODO.txt */,
 				FF68C8551C38B88400A6D9E1 /* CoreData */,
 				FF50D21A1C274194003F1D02 /* Supporting Files */,
 			);
@@ -266,6 +269,7 @@
 			files = (
 				1CF6A73D1C2365D8009A9181 /* Cartfile in Resources */,
 				1C21A9EE1C20B2EC00B4941E /* Assets.xcassets in Resources */,
+				FFF2FEE91D70B893004282DB /* TODO.txt in Resources */,
 				1C21A9F11C20B2EC00B4941E /* Main.storyboard in Resources */,
 				FF8E6CB81D4E8C410045E1A5 /* AccountViewItem.xib in Resources */,
 				FF50D2241C2780AE003F1D02 /* players.json in Resources */,

@@ -1,0 +1,12 @@
+Bugs / Quick fixes:
+
+-
+
+Features:
+
+- Add player info (https://www.easports.com/fifa/ultimate-team/api/fut/item?jsonParamObject=%7B%22baseid%22:%22109416%22%7D)
+
+
+Stretch:
+
+- Add unlock feature (web service)
