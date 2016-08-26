@@ -15,7 +15,7 @@ class UserLoader {
         do {
             let contents = try String(contentsOfFile: file)
             let lines = contents.componentsSeparatedByString("\n")
-            for line in lines {
+            for line in lines where !line.hasPrefix("//") {
                 let tokens = line.componentsSeparatedByString("/")
                 let user = FutUser()
                 user.email = tokens[0].stringByTrimmingCharactersInSet(garbageSet)
