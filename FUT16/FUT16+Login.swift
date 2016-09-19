@@ -17,7 +17,7 @@ private let authUrl: URLStringConvertible = "https://www.easports.com/iframe/fut
 private let validateUrl: URLStringConvertible = "https://www.easports.com/iframe/fut16/p/ut/game/fifa16/phishing/validate"
 
 extension FUT16 {
-    public func login(email: String, password: String, secretAnswer: String, completion: ()->()) {
+    public func login(_ email: String, password: String, secretAnswer: String, completion: @escaping ()->()) {
         self.email = email
         loginUrl = webAppUrl
         phishingQuestionAnswer = secretAnswer
@@ -27,8 +27,8 @@ extension FUT16 {
                 Log.print("No response")
                 return
             }
-            self.loginUrl = response!.URL!
-            if self.loginUrl.URLString.containsString("web-app") {
+            self.loginUrl = response!.url!
+            if self.loginUrl.URLString.contains("web-app") {
                 Log.print("Already Logged In.")
                 self.authenticate()
             } else {
@@ -40,17 +40,17 @@ extension FUT16 {
     // TODO: Add logout
     // https://www.easports.com/fifa/logout?redirectUri=https%3A%2F%2Fwww.easports.com%2Ffifa%2F
     
-    private func sendUsernamePassword(email: String, password: String) {        
+    fileprivate func sendUsernamePassword(_ email: String, password: String) {        
         let parameters = ["email"    : email,
             "password" : password,
             "_eventId" : "submit"]
         
         alamo.request(.POST, loginUrl, parameters: parameters).response { [unowned self] (request, response, data, error) -> Void in
-            if let responseString = String(data: data!, encoding: NSUTF8StringEncoding) {
-                if responseString.containsString("Submit Security Code") {
+            if let responseString = String(data: data!, encoding: String.Encoding.utf8) {
+                if responseString.contains("Submit Security Code") {
                     Log.print("Enter Security Code!")
                     // update login URL to sequence 2
-                    self.loginUrl = response!.URL!
+                    self.loginUrl = response!.url!
                     
                 } else {
                     Log.print("Login Failure: Invalid login")
@@ -59,7 +59,7 @@ extension FUT16 {
         }
     }
     
-    func sendAuthCode(authCode: String) {
+    func sendAuthCode(_ authCode: String) {
         let parameters = ["twofactorCode" : authCode,
             "_trustThisDevice" : "on",
             "trustThisDevice" : "on",
@@ -68,7 +68,7 @@ extension FUT16 {
             if self.loginUrl == nil {
                 Log.print("Generating TOTP: \(authCode)")
             }
-            else if response!.URL!.URLString.URLString.containsString(webAppUrl) {
+            else if response!.url!.URLString.URLString.contains(webAppUrl) {
                 Log.print("Login Successfull. Authenticating Session...")
                 self.authenticate()
             } else {
@@ -89,7 +89,7 @@ extension FUT16 {
         }
     }
     
-    private func getAcctInfo() {
+    fileprivate func getAcctInfo() {
         let headers = ["Easw-Session-Data-Nucleus-Id" : EASW_ID,
             "X-UT-Embed-Error" : "true",
             "X-UT-Route" : "https://utas.s3.fut.ea.com:443" ]
@@ -110,8 +110,8 @@ extension FUT16 {
         let headers = ["X-UT-Embed-Error" : "true",
             "X-UT-Route" : "https://utas.s3.fut.ea.com:443" ]
         
-        let parameters:[String : AnyObject] = ["clientVersion": "1",
-            "gameSku" : "FFA16XBO",
+        let parameters:[String : AnyObject] = ["clientVersion": "1" as AnyObject,
+            "gameSku" : "FFA16XBO" as AnyObject,
             "identification" : ["authCode" : ""],
             "isReadOnly" : "false",
             "locale" : "en-US",
@@ -125,7 +125,7 @@ extension FUT16 {
         // if fetching new session ID, marked previous as invalid until the fetching is done
         isSessionValid = false
         
-        alamo.request(.POST, authUrl, headers: headers, parameters: parameters, encoding: .JSON).responseJSON { [unowned self] (response) -> Void in
+        alamo.request(.POST, authUrl, headers: headers, parameters: parameters, encoding: .json).responseJSON { [unowned self] (response) -> Void in
             guard let json = response.result.value else {
                 Log.print("Retrieve failed: \(response.response)")
                 return
@@ -138,7 +138,7 @@ extension FUT16 {
         }
     }
     
-    private func retrievePhishingToken() {
+    fileprivate func retrievePhishingToken() {
         let headers = ["Content-Type" : "application/x-www-form-urlencoded",
             "Easw-Session-Data-Nucleus-Id" : EASW_ID,
             "X-UT-SID" : sessionId,
@@ -167,15 +167,15 @@ extension FUT16 {
 
 // Helpers
 extension FUT16 {
-    private func extractEaswIdFromString(string: String) -> String {
+    fileprivate func extractEaswIdFromString(_ string: String) -> String {
         // current format:
         //        garbage
         //        var EASW_ID = '2415964099';
         //        garbage
         
-        let components1 = string.componentsSeparatedByString("EASW_ID = '")
+        let components1 = string.components(separatedBy: "EASW_ID = '")
         if components1.count >= 2 {
-            let components2 = components1[1].componentsSeparatedByString("'")
+            let components2 = components1[1].components(separatedBy: "'")
             return components2[0]
         } else {
             return "0"
@@ -187,21 +187,21 @@ extension String {
     func md5() -> String {
         var ctx = MD5_CTX()
         MD5ea_Init(&ctx)
-        let data = self.dataUsingEncoding(NSUTF8StringEncoding)
-        MD5ea_Update(&ctx, data!.bytes, UInt(data!.length))
+        let data = self.data(using: String.Encoding.utf8)
+        MD5ea_Update(&ctx, (data! as NSData).bytes, UInt(data!.count))
         
-        let result = [UInt8](count: 16, repeatedValue: 0)
-        let pointer: UnsafeMutablePointer<UInt8> = UnsafeMutablePointer(result)
+        let result = [UInt8](repeating: 0, count: 16)
+        let pointer: UnsafeMutablePointer<UInt8> = UnsafeMutablePointer(mutating: result)
         MD5ea_Final(pointer, &ctx)
         
         return result.reduce("") { $0 + String(format:"%02x", $1) }
     }
 }
 
-extension NSData {
+extension Data {
     var string: String? {
         get {
-            return String(data: self, encoding: NSUTF8StringEncoding)
+            return String(data: self, encoding: String.Encoding.utf8)
         }
     }
 }

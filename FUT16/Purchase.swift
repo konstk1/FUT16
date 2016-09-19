@@ -20,11 +20,11 @@ class Purchase: Transaction {
         }
     }
     
-    class func NewPurchase(email: String, price: Int, maxBin: Int, coinBallance: Int, managedObjectContext: NSManagedObjectContext) {
-        let purchase = NSEntityDescription.insertNewObjectForEntityForName(entityName, inManagedObjectContext: managedObjectContext) as! Purchase
+    class func NewPurchase(_ email: String, price: Int, maxBin: Int, coinBallance: Int, managedObjectContext: NSManagedObjectContext) {
+        let purchase = NSEntityDescription.insertNewObject(forEntityName: entityName, into: managedObjectContext) as! Purchase
         
         purchase.email = email
-        purchase.time = NSDate().timeIntervalSinceReferenceDate
+        purchase.time = Date().timeIntervalSinceReferenceDate
         purchase.price = Int32(price)
         purchase.maxBin = Int32(maxBin)
         purchase.coinBalance = Int32(coinBallance)
@@ -32,9 +32,9 @@ class Purchase: Transaction {
 //        save(managedObjectContext)
     }
     
-    class func getPurchasesSinceDate(date: NSDate, forEmail email: String, managedObjectContext: NSManagedObjectContext) -> [Purchase] {
+    class func getPurchasesSinceDate(_ date: Date, forEmail email: String, managedObjectContext: NSManagedObjectContext) -> [Purchase] {
         let purchases = getTransactions(entityName, forEmail: email, sinceDate: date, managedObjectContext: managedObjectContext) as! [Purchase]
-        return purchases.sort { $0.time < $1.time }
+        return purchases.sorted { $0.time < $1.time }
     }
     
 }

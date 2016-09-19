@@ -9,14 +9,14 @@
 import Foundation
 import OneTimePassword
 
-public class FutUser: NSObject {
+open class FutUser: NSObject {
     let fut16 = FUT16()
     
     lazy var stats: UserStats = { [unowned self] in return UserStats(email: self.email) }()
     
     var email = "" {
         didSet {
-            username = email.componentsSeparatedByString("@")[0]
+            username = email.components(separatedBy: "@")[0]
             stats.email = self.email
         }
     }
@@ -25,7 +25,7 @@ public class FutUser: NSObject {
     var answer = ""
     var totpToken = ""
     
-    lazy private var totp: Token = { [unowned self] in
+    lazy fileprivate var totp: Token = { [unowned self] in
         let secretData = NSData(base32String: self.totpToken)
         let generator = Generator(factor: .Timer(period: 30), secret: secretData, algorithm: .SHA1, digits: 6)!
         return Token(generator: generator)

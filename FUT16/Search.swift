@@ -13,38 +13,38 @@ import CoreData
 class Search: Transaction {
     static let entityName = "Search"
     
-    override var description: String { get { return "\(NSDate(timeIntervalSinceReferenceDate: time))" } }
+    override var description: String { get { return "\(Date(timeIntervalSinceReferenceDate: time))" } }
     
-    class func NewSearch(email: String, managedObjectContext: NSManagedObjectContext) {
-        let search = NSEntityDescription.insertNewObjectForEntityForName(entityName, inManagedObjectContext: managedObjectContext) as! Search
+    class func NewSearch(_ email: String, managedObjectContext: NSManagedObjectContext) {
+        let search = NSEntityDescription.insertNewObject(forEntityName: entityName, into: managedObjectContext) as! Search
         search.email = email
-        search.time = NSDate().timeIntervalSinceReferenceDate
+        search.time = Date().timeIntervalSinceReferenceDate
         
 //        save(managedObjectContext)
     }
     
     // if hours is nil, fetch all
-    class func getSearchesSinceDate(date: NSDate, forEmail email: String, managedObjectContext: NSManagedObjectContext) -> [Search] {
+    class func getSearchesSinceDate(_ date: Date, forEmail email: String, managedObjectContext: NSManagedObjectContext) -> [Search] {
         
         return getTransactions(entityName, forEmail: email, sinceDate: date, managedObjectContext: managedObjectContext) as! [Search]
     }
     
-    class func getSearchesBeforeDate(date: NSDate, forEmail email: String, managedObjectContext: NSManagedObjectContext) -> [Search] {
+    class func getSearchesBeforeDate(_ date: Date, forEmail email: String, managedObjectContext: NSManagedObjectContext) -> [Search] {
         
         return getTransactions(entityName, forEmail: email, beforeDate: date, managedObjectContext: managedObjectContext) as! [Search]
     }
     
-    class func numSearchesSinceDate(date: NSDate, forEmail email: String, managedObjectContext: NSManagedObjectContext) -> Int {
+    class func numSearchesSinceDate(_ date: Date, forEmail email: String, managedObjectContext: NSManagedObjectContext) -> Int {
         return numTransactions(entityName, forEmail: email, sinceDate: date, managedObjectContext: managedObjectContext)
     }
     
-    class func purgeSearchesOlderThan(date: NSDate, forEmail email: String, managedObjectContext: NSManagedObjectContext) {
+    class func purgeSearchesOlderThan(_ date: Date, forEmail email: String, managedObjectContext: NSManagedObjectContext) {
         
         let searches = getSearchesBeforeDate(date, forEmail: email, managedObjectContext: managedObjectContext)
         
         Log.print("Deleting \(searches.count) searches - \(email)")
         searches.forEach {
-            managedObjectContext.deleteObject($0)
+            managedObjectContext.delete($0)
         }
     }
 }

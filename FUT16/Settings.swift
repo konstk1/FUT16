@@ -11,15 +11,15 @@ import Foundation
 class Settings: CustomStringConvertible {
     static var sharedInstance = Settings()
     
-    var reqTimingMin: NSTimeInterval = 2.0
-    var reqTimingMax: NSTimeInterval = 3.0
+    var reqTimingMin: TimeInterval = 2.0
+    var reqTimingMax: TimeInterval = 3.0
     
-    var reqTimingRand: NSTimeInterval {
+    var reqTimingRand: TimeInterval {
         return (Double(arc4random()) / Double(UINT32_MAX)) * (reqTimingMax - reqTimingMin) + reqTimingMin
     }
     
-    var cycleTime: NSTimeInterval    = 30
-    var cycleBreak: NSTimeInterval   = 15
+    var cycleTime: TimeInterval    = 30
+    var cycleBreak: TimeInterval   = 15
     
     var unlockCode: String = ""
     

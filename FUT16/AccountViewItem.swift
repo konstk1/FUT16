@@ -11,13 +11,13 @@ import Cocoa
 let colorLoggingIn = NSColor(red: 1, green: 1, blue: 0, alpha: 0.7)
 let colorLoggedIn = NSColor(red: 0, green: 1, blue: 0, alpha: 0.7)
 let colorPurchase = NSColor(red: 0, green: 1, blue: 1, alpha: 0.7)
-let colorDefault = NSColor.whiteColor()
+let colorDefault = NSColor.white
 
 class AccountViewItem: NSCollectionViewItem {
     
     dynamic var user: FutUser! {
         didSet {
-            guard viewLoaded else { return }
+            guard isViewLoaded else { return }
             usernameLabel.stringValue = user.email
             totpLabel.stringValue = user.authCode
             user.enabled = (enabledCheckbox.state == 1)
@@ -33,7 +33,7 @@ class AccountViewItem: NSCollectionViewItem {
     @IBOutlet weak var search24HrLabel: NSTextField!
     @IBOutlet weak var purchaseCountLabel: NSTextField!
     
-    private var myContext = 0
+    fileprivate var myContext = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,46 +49,46 @@ class AccountViewItem: NSCollectionViewItem {
         self.view.wantsLayer = true
     }
     
-    override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         if context == &myContext {
             print("Observed new val \(change)")
-            if let purchaseCount = change?[NSKeyValueChangeNewKey] as? Int {
+            if let purchaseCount = change?[NSKeyValueChangeKey.newKey] as? Int {
                 print("New purchase count: \(purchaseCount)")
                 if purchaseCount > 0 {
                     setBackground(colorPurchase)
                 }
             }
         } else {
-            super.observeValueForKeyPath(keyPath, ofObject: object, change: change, context: context)
+            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
         }
     }
     
-    @IBAction func enabledPushed(sender: NSButton) {
+    @IBAction func enabledPushed(_ sender: NSButton) {
         user.enabled = (sender.state == 1)
     }
     
-    func setBackground(color: NSColor) {
-        self.view.layer?.backgroundColor = color.CGColor
+    func setBackground(_ color: NSColor) {
+        self.view.layer?.backgroundColor = color.cgColor
     }
     
-    @IBAction func loginPushed(sender: NSButton) {
+    @IBAction func loginPushed(_ sender: NSButton) {
         Log.print("Login: \(user.username)")
         self.setBackground(colorLoggingIn)
         user.fut16.login(user.email, password: user.password, secretAnswer: user.answer) {
             self.user.stats.coinsBalance = self.user.fut16.coinsBalance
             self.setBackground(colorLoggedIn)
         }
-        user.stats.addObserver(self, forKeyPath: "purchaseCount", options: .New, context: &myContext)
+        user.stats.addObserver(self, forKeyPath: "purchaseCount", options: .new, context: &myContext)
     }
     
-    @IBAction func totpPushed(sender: NSButton) {
+    @IBAction func totpPushed(_ sender: NSButton) {
         totpLabel.stringValue = user.authCode
         user.fut16.sendAuthCode(user.authCode)
     }
     
     var i = 0
     
-    @IBAction func resetPushed(sender: NSButton) {
+    @IBAction func resetPushed(_ sender: NSButton) {
         user.resetStats()
         setBackground(colorDefault)
         totpLabel.stringValue = user.authCode

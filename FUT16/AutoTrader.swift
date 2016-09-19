@@ -8,23 +8,43 @@
 
 import Foundation
 import Cocoa
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
 
-public class AutoTrader: NSObject {
-    private var users = [FutUser]()
-    private var currentUser: FutUser
-    private var currentUserIdx = 0
+fileprivate func >= <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l >= r
+  default:
+    return !(lhs < rhs)
+  }
+}
+
+
+open class AutoTrader: NSObject {
+    fileprivate var users = [FutUser]()
+    fileprivate var currentUser: FutUser
+    fileprivate var currentUserIdx = 0
     
-    private var itemParams: FUT16.ItemParams!
-    private var buyAtBin: UInt = 0
+    fileprivate var itemParams: FUT16.ItemParams!
+    fileprivate var buyAtBin: UInt = 0
     
-    private let SESSION_ERROR_LIMIT = 3      // stop trading after this many session errors
-    private let SEARCH_LIMIT_1HR = 950       // stop trading after this many searches within 1 hour
-    private let SEARCH_LIMIT_24HR = 4000     // stop trading after this many searches within 24 hours
+    fileprivate let SESSION_ERROR_LIMIT = 3      // stop trading after this many session errors
+    fileprivate let SEARCH_LIMIT_1HR = 950       // stop trading after this many searches within 1 hour
+    fileprivate let SEARCH_LIMIT_24HR = 4000     // stop trading after this many searches within 24 hours
     
-    private var pollTimer: NSTimer!
-    private var cycleTimer: NSTimer!
+    fileprivate var pollTimer: Timer!
+    fileprivate var cycleTimer: Timer!
     
-    dynamic var requestPeriod: NSTimeInterval = 0.0 {
+    dynamic var requestPeriod: TimeInterval = 0.0 {
         didSet {
             let settings = Settings.sharedInstance
             requestRate = Int(3600 * settings.cycleTime/(settings.cycleTime + settings.cycleBreak) / requestPeriod)
@@ -33,25 +53,25 @@ public class AutoTrader: NSObject {
     dynamic var requestRate: Int = 0
     
     enum State {
-        case Ready
-        case Polling
-        case Break
-        case Stopped
+        case ready
+        case polling
+        case `break`
+        case stopped
     }
     
-    private var state = State.Ready
+    fileprivate var state = State.ready
     
-    private(set) public var minBin: UInt = 10000000
+    fileprivate(set) open var minBin: UInt = 10000000
     
-    private var purchaseQueue = Array<FUT16.AuctionInfo>()
+    fileprivate var purchaseQueue = Array<FUT16.AuctionInfo>()
     
-    private var settings = Settings.sharedInstance
+    fileprivate var settings = Settings.sharedInstance
     
-    private var updateOwner: ((user: FutUser) -> ())?
+    fileprivate var updateOwner: ((_ user: FutUser) -> ())?
     
-    private var activity: NSObjectProtocol!      // activity to disable app nap
+    fileprivate var activity: NSObjectProtocol!      // activity to disable app nap
     
-    public init(users: [FutUser], update: ((user: FutUser) -> ())?) {
+    public init(users: [FutUser], update: ((_ user: FutUser) -> ())?) {
         self.users = users
         currentUser = self.users.first!
         
@@ -59,7 +79,7 @@ public class AutoTrader: NSObject {
     }
     
     // return break-even buy
-    func setTradeParams(itemParams: FUT16.ItemParams, buyAtBin: UInt) -> UInt {
+    func setTradeParams(_ itemParams: FUT16.ItemParams, buyAtBin: UInt) -> UInt {
         guard buyAtBin <= itemParams.maxBin else {
             stopTrading("Buy BIN is more than search BIN")
             return 0
@@ -75,7 +95,7 @@ public class AutoTrader: NSObject {
         return breakEvenPrice
     }
     
-    func resetStats(user: FutUser?) {
+    func resetStats(_ user: FutUser?) {
         // if user is nil, reset all
         if user == nil {
             users.forEach { (user) -> () in
@@ -93,11 +113,11 @@ public class AutoTrader: NSObject {
     }
     
     func stopAllTimers() {
-        if pollTimer != nil && pollTimer.valid {
+        if pollTimer != nil && pollTimer.isValid {
             pollTimer.invalidate()
         }
         
-        if cycleTimer != nil && cycleTimer.valid {
+        if cycleTimer != nil && cycleTimer.isValid {
             cycleTimer.invalidate()
         }
     }
@@ -110,7 +130,7 @@ public class AutoTrader: NSObject {
             return
         }
         
-        if state == .Ready || state == .Stopped {
+        if state == .ready || state == .stopped {
             cycleStart()
         } else {
             Log.print("Already trading")
@@ -118,11 +138,11 @@ public class AutoTrader: NSObject {
         
         // disable app nap
         if activity == nil {
-            activity = NSProcessInfo().beginActivityWithOptions(.UserInitiated, reason: "FUT Trading")
+            activity = ProcessInfo().beginActivity(options: .userInitiated, reason: "FUT Trading")
         }
     }
     
-    func stopTrading(reason: String, newState: State = .Stopped) {
+    func stopTrading(_ reason: String, newState: State = .stopped) {
         state = newState
         
         stopAllTimers()
@@ -148,16 +168,16 @@ public class AutoTrader: NSObject {
         Log.print("")
         
         // re-enable app nap if trading stopped (as opposed to cycle break)
-        if state == .Stopped && activity != nil {
-            NSProcessInfo().endActivity(activity)
+        if state == .stopped && activity != nil {
+            ProcessInfo().endActivity(activity)
             activity = nil
         }
     }
     
-    private var lastRequestTime = NSDate().timeIntervalSinceReferenceDate
+    fileprivate var lastRequestTime = Date().timeIntervalSinceReferenceDate
     
-    private func scheduleNextPoll() {
-        guard state == .Ready || state == .Polling else {
+    fileprivate func scheduleNextPoll() {
+        guard state == .ready || state == .polling else {
             return
         }
         
@@ -171,7 +191,7 @@ public class AutoTrader: NSObject {
         
         // wrapped arround
         if prevUserIdx >= currentUserIdx {
-            let curRequestTime = NSDate().timeIntervalSinceReferenceDate
+            let curRequestTime = Date().timeIntervalSinceReferenceDate
             requestPeriod = round((curRequestTime - lastRequestTime)*10)/10
             Log.print("Account request period: \(requestPeriod) secs  (Users: \(numActiveUsers))")
             lastRequestTime = curRequestTime
@@ -179,27 +199,27 @@ public class AutoTrader: NSObject {
         
         let nextPollTiming = settings.reqTimingRand / Double(numActiveUsers)
         
-        pollTimer = NSTimer.scheduledTimerWithTimeInterval(nextPollTiming, target: self, selector: #selector(AutoTrader.pollAuctions), userInfo: currentUser, repeats: false)
+        pollTimer = Timer.scheduledTimer(timeInterval: nextPollTiming, target: self, selector: #selector(AutoTrader.pollAuctions), userInfo: currentUser, repeats: false)
     }
     
     func cycleStart() {
         Log.print("------------------------------ Start cycle: \(settings.cycleTime) ------------------------------")
-        state = .Polling
+        state = .polling
         scheduleNextPoll()
-        cycleTimer = NSTimer.scheduledTimerWithTimeInterval(settings.cycleTime, target: self, selector: #selector(AutoTrader.cycleBreak), userInfo: nil, repeats: false)
+        cycleTimer = Timer.scheduledTimer(timeInterval: settings.cycleTime, target: self, selector: #selector(AutoTrader.cycleBreak), userInfo: nil, repeats: false)
         
-        let start = NSDate()
-        let end = start.dateByAddingTimeInterval(settings.cycleTime)
+        let start = Date()
+        let end = start.addingTimeInterval(settings.cycleTime)
         AggregateStats.sharedInstance.cycleStart = start.localTime + " - " + end.localTime
     }
     
     func cycleBreak() {
         Log.print("------------------------------ Break cycle: \(settings.cycleBreak) ------------------------------")
-        stopTrading("Cycle break", newState: .Break)
-        cycleTimer = NSTimer.scheduledTimerWithTimeInterval(settings.cycleBreak, target: self, selector: #selector(AutoTrader.cycleStart), userInfo: nil, repeats: false)
+        stopTrading("Cycle break", newState: .break)
+        cycleTimer = Timer.scheduledTimer(timeInterval: settings.cycleBreak, target: self, selector: #selector(AutoTrader.cycleStart), userInfo: nil, repeats: false)
         
-        let start = NSDate()
-        let end = start.dateByAddingTimeInterval(settings.cycleBreak)
+        let start = Date()
+        let end = start.addingTimeInterval(settings.cycleBreak)
         AggregateStats.sharedInstance.cycleStart = start.localTime + " - " + end.localTime
     }
     
@@ -226,9 +246,9 @@ public class AutoTrader: NSObject {
             }
             
             // check for errors
-            guard error == .None else {
+            guard error == .none else {
                 Log.print(error)
-                if error == .ExpiredSession {
+                if error == .expiredSession {
                     Log.print("Retrieving session id")
                     currentFut.retrieveSessionId()   // re-login
                 } else {
@@ -267,7 +287,7 @@ public class AutoTrader: NSObject {
             
             // log search at the end to minimize time between search and purchase
             currentStats.logSearch()        // save to CoreData
-            Log.print("\(NSDate().localTime):  Search: \(currentStats.searchCount) (\(auctions.count)-\(self.itemParams.startRecord)) - Cur Min: \(curMinBin) (Min: \(self.minBin)) [\(currentFut.user)]")
+            Log.print("\(Date().localTime):  Search: \(currentStats.searchCount) (\(auctions.count)-\(self.itemParams.startRecord)) - Cur Min: \(curMinBin) (Min: \(self.minBin)) [\(currentFut.user)]")
             
             self.notifyOwner(user)
         } // findAuctionsForPlayer
@@ -276,7 +296,7 @@ public class AutoTrader: NSObject {
         
     } // end pollAuctions
     
-    func tuneSearchParamsFromAuctions(auctions: [FUT16.AuctionInfo]) {
+    func tuneSearchParamsFromAuctions(_ auctions: [FUT16.AuctionInfo]) {
         // at the moment, tune start page only
         // find page that has newly listed auctions (as close to but less than 1hr - 3600 seconds)
 //        Log.print("Tune: start \(itemParams.startRecord): \(auctions.first?.expiresIn) - \(auctions.last?.expiresIn)")
@@ -300,7 +320,7 @@ public class AutoTrader: NSObject {
     
     var currentAuction: FUT16.AuctionInfo!
     
-    func processPurchaseQueue(user: FutUser) {
+    func processPurchaseQueue(_ user: FutUser) {
         guard purchaseQueue.count > 0 else { return }
         
         let currentFut = user.fut16
@@ -315,7 +335,7 @@ public class AutoTrader: NSObject {
             
             let user = self.findUserWithEmail(email)
             
-            guard error == .None else {
+            guard error == .none else {
                 Log.print("Fail: Error - \(error).")
                 user.stats.purchaseFailCount += 1
                 return
@@ -342,7 +362,7 @@ public class AutoTrader: NSObject {
         }
     }
     
-    func findUserWithEmail(email: String) -> FutUser! {
+    func findUserWithEmail(_ email: String) -> FutUser! {
         for user in users {
             if user.email == email {
                 return user
@@ -352,8 +372,8 @@ public class AutoTrader: NSObject {
         return nil
     }
     
-    func notifyOwner(user: FutUser) {
-        self.updateOwner?(user: user)
+    func notifyOwner(_ user: FutUser) {
+        self.updateOwner?(user)
     }
     
     var numActiveUsers: Int {

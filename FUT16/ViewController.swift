@@ -49,13 +49,13 @@ class ViewController: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        collectionView.registerClass(AccountViewItem.self, forItemWithIdentifier: "AccountViewItem")
+        collectionView.register(AccountViewItem.self, forItemWithIdentifier: "AccountViewItem")
         
         
         openPanel.canChooseFiles = true
         openPanel.canChooseDirectories = false
         openPanel.allowedFileTypes = ["txt"]
-        openPanel.directoryURL = NSURL(fileURLWithPath: NSString(string: "~").stringByExpandingTildeInPath)
+        openPanel.directoryURL = URL(fileURLWithPath: NSString(string: "~").expandingTildeInPath)
 //        [_openPanel setAllowsMultipleSelection:NO];
         
         updateFieldsStateForSearchType(typeSegment.selectedLabel())
@@ -76,7 +76,7 @@ class ViewController: NSViewController {
         }
     }
     
-    func getIdFromComboBox(comboBox: NSComboBox) -> String? {
+    func getIdFromComboBox(_ comboBox: NSComboBox) -> String? {
         if comboBox.stringValue == "Any" {
             return ""
         }
@@ -85,13 +85,13 @@ class ViewController: NSViewController {
             return comboBox.stringValue
         } else {
             // assuming format is "Label: ID"
-            let comps = comboBox.stringValue.componentsSeparatedByCharactersInSet(NSCharacterSet(charactersInString: ": "))
+            let comps = comboBox.stringValue.components(separatedBy: CharacterSet(charactersIn: ": "))
             return comps.last
         }
     }
     
-    func log(string: String) {
-        logTextView.textStorage?.appendAttributedString(NSAttributedString(string: string, attributes: [NSFontAttributeName : NSFont(name: "Menlo", size: 11)!]))
+    func log(_ string: String) {
+        logTextView.textStorage?.append(NSAttributedString(string: string, attributes: [NSFontAttributeName : NSFont(name: "Menlo", size: 11)!]))
         logTextView.scrollToEndOfDocument(nil)
     }
     
@@ -100,15 +100,15 @@ class ViewController: NSViewController {
     }
 
 // MARK: UI Actions
-    @IBAction func setSearchParamsPressed(sender: NSButton) {
+    @IBAction func setSearchParamsPressed(_ sender: NSButton) {
         let nationality = getIdFromComboBox(nationalityComboBox) ?? ""
         let league = getIdFromComboBox(leagueComboBox) ?? ""
         let team = getIdFromComboBox(teamComboBox) ?? ""
         let level  = getIdFromComboBox(levelComboBox) ?? ""
         
-        let minSearchBin = UInt(minBinTextField.stringValue.stringByReplacingOccurrencesOfString(",", withString: "")) ?? 0
-        let maxSearchBin = UInt(maxBinTextField.stringValue.stringByReplacingOccurrencesOfString(",", withString: "")) ?? 0
-        let buyAtBin = UInt(buyAtTextField.stringValue.stringByReplacingOccurrencesOfString(",", withString: "")) ?? 0
+        let minSearchBin = UInt(minBinTextField.stringValue.replacingOccurrences(of: ",", with: "")) ?? 0
+        let maxSearchBin = UInt(maxBinTextField.stringValue.replacingOccurrences(of: ",", with: "")) ?? 0
+        let buyAtBin = UInt(buyAtTextField.stringValue.replacingOccurrences(of: ",", with: "")) ?? 0
         
         var params: FUT16.ItemParams!
         
@@ -128,8 +128,8 @@ class ViewController: NSViewController {
         breakEvenTextField.integerValue = Int(breakEvenPrice!)
     }
     
-    @IBAction func updateMaxBin(sender: NSButton) {
-        let maxSearchBin = UInt(maxBinTextField.stringValue.stringByReplacingOccurrencesOfString(",", withString: "")) ?? 0
+    @IBAction func updateMaxBin(_ sender: NSButton) {
+        let maxSearchBin = UInt(maxBinTextField.stringValue.replacingOccurrences(of: ",", with: "")) ?? 0
         
         if sender.tag > 0 {
             maxBinTextField.integerValue = Int(incrementPrice(maxSearchBin));
@@ -140,28 +140,28 @@ class ViewController: NSViewController {
         setSearchParamsPressed(sender);
     }
     
-    @IBAction func typeSegmentChanged(sender: NSSegmentedControl) {
+    @IBAction func typeSegmentChanged(_ sender: NSSegmentedControl) {
         updateFieldsStateForSearchType(sender.selectedLabel())
     }
     
-    func updateFieldsStateForSearchType(type: String) {
+    func updateFieldsStateForSearchType(_ type: String) {
         // enable all and then disabled necessary fields based on type
-        playerIdTextField.enabled = true
-        playerIdTextField.enabled = true
-        teamComboBox.enabled = true
-        leagueComboBox.enabled = true
-        nationalityComboBox.enabled = true
+        playerIdTextField.isEnabled = true
+        playerIdTextField.isEnabled = true
+        teamComboBox.isEnabled = true
+        leagueComboBox.isEnabled = true
+        nationalityComboBox.isEnabled = true
         
         switch type {
         case "Player":
             break
         case "Fitness":
-            playerIdTextField.enabled = false
-            teamComboBox.enabled = false
-            leagueComboBox.enabled = false
-            nationalityComboBox.enabled = false
+            playerIdTextField.isEnabled = false
+            teamComboBox.isEnabled = false
+            leagueComboBox.isEnabled = false
+            nationalityComboBox.isEnabled = false
         case "Manager":
-            playerIdTextField.enabled = false
+            playerIdTextField.isEnabled = false
         default:
             break
         }
@@ -183,37 +183,37 @@ class ViewController: NSViewController {
         settings.userFile     = userFileTextField.stringValue
     }
     
-    @IBAction func doStuffPressed(sender: NSButton) {
+    @IBAction func doStuffPressed(_ sender: NSButton) {
         setSearchParamsPressed(sender)
         autoTrader?.startTrading()
     }
     
-    @IBAction func stopPressed(sender: NSButton) {
+    @IBAction func stopPressed(_ sender: NSButton) {
         autoTrader?.stopTrading("UI")
     }
     
-    @IBAction func resetStatsPressed(sender: NSButton) {
+    @IBAction func resetStatsPressed(_ sender: NSButton) {
         autoTrader?.resetStats(nil)
         if sender.tag == 99 {
             clearLog()
         }
     }
     
-    @IBAction func saveSettingsPressed(sender: NSButton) {
+    @IBAction func saveSettingsPressed(_ sender: NSButton) {
         updateSettings()
         Log.print("Settings: \(settings)")
     }
     
-    @IBAction func browsePressed(sender: AnyObject) {
+    @IBAction func browsePressed(_ sender: AnyObject) {
         selectUsersFile()
     }
     
     func selectUsersFile() {
-        openPanel.beginWithCompletionHandler { (result) in
+        openPanel.begin { (result) in
             guard result == NSFileHandlingPanelOKButton else { return }
             
-            self.userFileTextField.stringValue = self.openPanel.URL!.path!
-            NSUserDefaults.standardUserDefaults().setObject(self.userFileTextField.stringValue, forKey: "userFile")
+            self.userFileTextField.stringValue = self.openPanel.url!.path
+            UserDefaults.standard.set(self.userFileTextField.stringValue, forKey: "userFile")
             self.updateSettings()
             self.users = UserLoader.getUsers(from: Settings.sharedInstance.userFile)
             self.collectionView.reloadData()
@@ -222,18 +222,18 @@ class ViewController: NSViewController {
 }
 
 extension ViewController: NSCollectionViewDataSource {
-    func collectionView(collectionView: NSCollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: NSCollectionView, numberOfItemsInSection section: Int) -> Int {
         return users?.count ?? 0
     }
     
-    func collectionView(collectionView: NSCollectionView, itemForRepresentedObjectAtIndexPath indexPath: NSIndexPath) -> NSCollectionViewItem {
-        let item = collectionView.makeItemWithIdentifier("AccountViewItem", forIndexPath: indexPath)
+    func collectionView(_ collectionView: NSCollectionView, itemForRepresentedObjectAt indexPath: IndexPath) -> NSCollectionViewItem {
+        let item = collectionView.makeItem(withIdentifier: "AccountViewItem", for: indexPath)
         guard let accountItem = item as? AccountViewItem else {
             print("Not account view")
             return item
         }
         
-        accountItem.user = users[indexPath.item]
+        accountItem.user = users[(indexPath as NSIndexPath).item]
         
         return accountItem
     }
@@ -241,7 +241,7 @@ extension ViewController: NSCollectionViewDataSource {
 
 extension NSSegmentedControl {
     func selectedLabel() -> String {
-        return self.labelForSegment(self.selectedSegment) ?? ""
+        return self.label(forSegment: self.selectedSegment) ?? ""
     }
 }
 

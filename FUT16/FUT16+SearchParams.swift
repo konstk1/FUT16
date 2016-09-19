@@ -9,7 +9,7 @@
 import Foundation
 
 extension FUT16 {
-    public class ItemParams {
+    open class ItemParams {
         var type: String
         var level: String
         var minPrice: UInt
@@ -19,9 +19,9 @@ extension FUT16 {
         var startRecord: UInt
         var numRecords: UInt
         
-        private static let maxRecords: UInt = 16 //50
+        fileprivate static let maxRecords: UInt = 16 //50
         
-        private init(type: String, level: String = "", minPrice: UInt = 0, maxPrice: UInt = 0, minBin: UInt = 0, maxBin: UInt = 0, startRecord: UInt = 0, numRecords: UInt = PlayerParams.maxRecords) {
+        fileprivate init(type: String, level: String = "", minPrice: UInt = 0, maxPrice: UInt = 0, minBin: UInt = 0, maxBin: UInt = 0, startRecord: UInt = 0, numRecords: UInt = PlayerParams.maxRecords) {
             self.type = type
             self.level = level
             self.minPrice = minPrice
@@ -53,7 +53,7 @@ extension FUT16 {
         }
     }
     
-    public class PlayerParams: ItemParams {
+    open class PlayerParams: ItemParams {
         var playerId: String
         var nationality: String
         var league: String
@@ -82,7 +82,7 @@ extension FUT16 {
         }
     }
     
-    public class ConsumableParams: ItemParams {
+    open class ConsumableParams: ItemParams {
 
         var category: String
         

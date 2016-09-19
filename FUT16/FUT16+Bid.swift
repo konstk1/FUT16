@@ -10,16 +10,16 @@ import Foundation
 import SwiftyJSON
 
 extension FUT16 {
-    func placeBidOnAuction(auctionId: String, amount: UInt, completion: (email: String, error: FutError) -> Void) {
+    func placeBidOnAuction(_ auctionId: String, amount: UInt, completion: @escaping (_ email: String, _ error: FutError) -> Void) {
         let bidUrl = "trade/\(auctionId)/bid"
         let parameters = ["bid" : amount]
         
-        self.requestForPath(bidUrl, withParameters: parameters, encoding: .JSON, methodOverride: "PUT") { [unowned self] (json) -> Void in
+        self.requestForPath(bidUrl, withParameters: parameters, encoding: .json, methodOverride: "PUT") { [unowned self] (json) -> Void in
             let tradeId = json["auctionInfo"][0]["tradeId"].stringValue
             let funds = json["currencies"][0]["finalFunds"].stringValue
             let fundCurrency = json["currencies"][0]["name"].stringValue
             
-            var error = FutError.None
+            var error = FutError.none
             
             if fundCurrency == "COINS" {
                 self.coinFunds = funds
@@ -28,12 +28,12 @@ extension FUT16 {
                 let errorCode = json["code"]
                 switch errorCode {
                 case "461":
-                    error = .BidNotAllowed
+                    error = .bidNotAllowed
                 case "470":
-                    error = .NotEnoughCredit
+                    error = .notEnoughCredit
                 default:
                     Log.print(json)
-                    error = .PurchaseFailed
+                    error = .purchaseFailed
                 }
             } else {
 //                Log.print("Purchased \(tradeId) for \(amount) - \(json["auctionInfo"][0]["tradeState"]) (Bal: \(self.coinsBalance))")
@@ -43,7 +43,7 @@ extension FUT16 {
         }
     }
     
-    func searchForAuction(auctionId: String, completion: (JSON) -> Void) {
+    func searchForAuction(_ auctionId: String, completion: (JSON) -> Void) {
         let tradeSearchUrl = "trade/status?tradeIds=\(auctionId)"
         
         requestForPath(tradeSearchUrl) { (json) -> Void in

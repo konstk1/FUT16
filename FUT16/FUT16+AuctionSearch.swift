@@ -32,11 +32,11 @@ extension FUT16 {
         }
     }
     
-    public func findAuctionsForItem(params: ItemParams, completion: (auctions: [AuctionInfo], error: FutError) -> Void) {
+    public func findAuctionsForItem(_ params: ItemParams, completion: @escaping (_ auctions: [AuctionInfo], _ error: FutError) -> Void) {
 //        Log.print(params.urlPath)
         requestForPath(params.urlPath) { (json) -> Void in
             var auctions = [AuctionInfo]()
-            var error = FutError.None
+            var error = FutError.none
             let errorCode = json["code"].stringValue
 //            Log.print("Error Code: \(errorCode)")
             
@@ -48,9 +48,9 @@ extension FUT16 {
                 }
 //                Log.print(json["auctionInfo"])
             } else if errorCode == "401" {
-                error = .ExpiredSession
+                error = .expiredSession
             } else if errorCode == "500" {
-                error = .InternalServerError
+                error = .internalServerError
             }
             
             completion(auctions: auctions, error: error)

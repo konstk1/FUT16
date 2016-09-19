@@ -12,7 +12,7 @@ import SwiftyJSON
 
 // generic transport functions
 extension FUT16 {
-    func requestForPath(urlPath: String, withParameters parameters: [String : AnyObject]? = nil, encoding: ParameterEncoding = .URL, methodOverride: String = "GET", completion: (json: JSON) -> Void) -> Request! {
+    func requestForPath(_ urlPath: String, withParameters parameters: [String : AnyObject]? = nil, encoding: ParameterEncoding = .url, methodOverride: String = "GET", completion: (_ json: JSON) -> Void) -> Request! {
         
         guard isSessionValid else {
             Log.print("Waiting for valid session...")
@@ -29,9 +29,9 @@ extension FUT16 {
         
         return alamo.request(.POST, url, headers: headers, parameters: parameters, encoding: encoding).responseJSON { (response) -> Void in
             switch response.result {
-            case .Success:
+            case .success:
                 completion(json: JSON(response.result.value!))
-            case .Failure (let error):
+            case .failure (let error):
                 completion(json: "")
                 Log.print("Failed to fetch JSON (error: \(error)")
             }

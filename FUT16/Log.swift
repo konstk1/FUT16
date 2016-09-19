@@ -8,16 +8,16 @@
 
 import Cocoa
 
-public class Log {
-    static public var printToConsole = true
+open class Log {
+    static open var printToConsole = true
     
-    static private let viewController = NSApplication.sharedApplication().mainWindow!.windowController!.contentViewController as! ViewController
+    static fileprivate let viewController = NSApplication.shared().mainWindow!.windowController!.contentViewController as! ViewController
     
-    class func print(items: Any..., separator: String = "", terminator: String = "\n") {
+    class func print(_ items: Any..., separator: String = "", terminator: String = "\n") {
         var str = ""
         
         for item in items {
-            str += String(item) + separator
+            str += String(describing: item) + separator
         }
         str += terminator
         

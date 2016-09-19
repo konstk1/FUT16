@@ -22,7 +22,7 @@ extension FUT16 {
             
             let parameters = ["itemData" : items]
             
-            self.requestForPath("item", withParameters: parameters, encoding: .JSON, methodOverride: "PUT", completion: { [unowned self] (json) -> Void in
+            self.requestForPath("item", withParameters: parameters, encoding: .json, methodOverride: "PUT", completion: { [unowned self] (json) -> Void in
                 Log.print("Transferred [\(self.email) - \(self.personaName)]")
                 json["itemData"].forEach({ (key, json) -> () in
                     Log.print("\(key) - \(json["id"]) - \(json["pile"]) - \(json["success"])")
@@ -31,7 +31,7 @@ extension FUT16 {
         }
     }
     
-    public func getPurchasedItems(completion: (itemsJson: JSON)->()) {
+    public func getPurchasedItems(_ completion: (_ itemsJson: JSON)->()) {
         requestForPath("purchased/items", methodOverride: "GET") { (json) -> Void in
             completion(itemsJson: json["itemData"])
         }

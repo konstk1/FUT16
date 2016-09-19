@@ -13,11 +13,11 @@ import CoreData
 class Stats: NSManagedObject {
     static let entityName = "Stats"
         
-    class func updateSearchCount(email: String, searchCount: Int32, managedObjectContext: NSManagedObjectContext) {
+    class func updateSearchCount(_ email: String, searchCount: Int32, managedObjectContext: NSManagedObjectContext) {
         var stats = getStatsForEmail(email, managedObjectContext: managedObjectContext)
         
         if stats == nil {
-            stats = NSEntityDescription.insertNewObjectForEntityForName(entityName, inManagedObjectContext: managedObjectContext) as? Stats
+            stats = NSEntityDescription.insertNewObject(forEntityName: entityName, into: managedObjectContext) as? Stats
         }
         
         stats?.email = email
@@ -26,7 +26,7 @@ class Stats: NSManagedObject {
         //save(managedObjectContext)
     }
     
-    class func getSearchCountForEmail(email: String, managedObjectContext: NSManagedObjectContext) -> Int {
+    class func getSearchCountForEmail(_ email: String, managedObjectContext: NSManagedObjectContext) -> Int {
         var searchCount = 0
         
         if let stats = getStatsForEmail(email, managedObjectContext: managedObjectContext) {
@@ -36,13 +36,13 @@ class Stats: NSManagedObject {
         return searchCount
     }
     
-    private class func getStatsForEmail(email: String, managedObjectContext: NSManagedObjectContext) -> Stats? {
+    fileprivate class func getStatsForEmail(_ email: String, managedObjectContext: NSManagedObjectContext) -> Stats? {
         
         let fetchRequest = NSFetchRequest(entityName: entityName)
         fetchRequest.predicate = NSPredicate(format: "email = %@", email)
         
         do {
-            let stats = try managedObjectContext.executeFetchRequest(fetchRequest) as! [Stats]
+            let stats = try managedObjectContext.fetch(fetchRequest) as! [Stats]
             return stats.first
         } catch {
             fatalError("Failed \(entityName) fetch!")
@@ -51,7 +51,7 @@ class Stats: NSManagedObject {
     }
 
     
-    class func save(managedObjectContext: NSManagedObjectContext) {
+    class func save(_ managedObjectContext: NSManagedObjectContext) {
         do {
             try managedObjectContext.save()
         } catch {

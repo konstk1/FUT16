@@ -9,7 +9,7 @@
 import Foundation
 import Cocoa
 
-private let managedObjectContext = (NSApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
+private let managedObjectContext = (NSApplication.shared().delegate as! AppDelegate).managedObjectContext
 
 class UserStats: NSObject {
     var email: String {
@@ -51,10 +51,10 @@ class UserStats: NSObject {
     
     var errorCount = 0
     
-    private let managedObjectContext = (NSApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
+    fileprivate let managedObjectContext = (NSApplication.shared().delegate as! AppDelegate).managedObjectContext
     
-    func searchCountHours(hours: Double) -> Int {
-        return Search.numSearchesSinceDate(NSDate(timeIntervalSinceNow: -3600*hours), forEmail: email, managedObjectContext: managedObjectContext)
+    func searchCountHours(_ hours: Double) -> Int {
+        return Search.numSearchesSinceDate(Date(timeIntervalSinceNow: -3600*hours), forEmail: email, managedObjectContext: managedObjectContext)
     }
     
     func logSearch() {
@@ -69,7 +69,7 @@ class UserStats: NSObject {
         Stats.updateSearchCount(email, searchCount: Int32(searchCountAllTime), managedObjectContext: managedObjectContext)
     }
     
-    func logPurchase(purchaseCost: Int, maxBin: Int, coinsBalance: Int) {
+    func logPurchase(_ purchaseCost: Int, maxBin: Int, coinsBalance: Int) {
         // add to CoreData
         Purchase.NewPurchase(email, price: purchaseCost, maxBin: maxBin, coinBallance: coinsBalance, managedObjectContext: managedObjectContext)
         
@@ -90,15 +90,15 @@ class UserStats: NSObject {
     
     func fetchAllTimeStats() {
         searchCountAllTime = Stats.getSearchCountForEmail(email, managedObjectContext: managedObjectContext)
-        purchaseTotalAllTime = Int(Purchase.getPurchasesSinceDate(NSDate.allTime, forEmail: email, managedObjectContext: managedObjectContext).reduce(0) { $0 + $1.price })
+        purchaseTotalAllTime = Int(Purchase.getPurchasesSinceDate(Date.allTime, forEmail: email, managedObjectContext: managedObjectContext).reduce(0) { $0 + $1.price })
         
         fetchHourlyStats()
     }
     
     func fetchHourlyStats() {
-        searchCount1Hr = Search.numSearchesSinceDate(NSDate.hourAgo, forEmail: email, managedObjectContext: managedObjectContext)
+        searchCount1Hr = Search.numSearchesSinceDate(Date.hourAgo, forEmail: email, managedObjectContext: managedObjectContext)
         //searchCount2Hr = Search.numSearchesSinceDate(NSDate(timeIntervalSinceNow: -2*3600), forEmail: email, managedObjectContext: managedObjectContext)
-        searchCount24Hr = Search.numSearchesSinceDate(NSDate.dayAgo, forEmail: email, managedObjectContext: managedObjectContext)
+        searchCount24Hr = Search.numSearchesSinceDate(Date.dayAgo, forEmail: email, managedObjectContext: managedObjectContext)
     }
     
     func reset() {
@@ -114,16 +114,16 @@ class UserStats: NSObject {
         fetchHourlyStats()
         
         // get the last search that happened less than 24 hours ago
-        let searches = Search.getSearchesSinceDate(NSDate.dayAgo, forEmail: email, managedObjectContext: managedObjectContext)
+        let searches = Search.getSearchesSinceDate(Date.dayAgo, forEmail: email, managedObjectContext: managedObjectContext)
         
         if let search = searches.first {
-            AggregateStats.sharedInstance.last24HrSearch = NSDate(timeIntervalSinceReferenceDate:search.time).localTime
+            AggregateStats.sharedInstance.last24HrSearch = Date(timeIntervalSinceReferenceDate:search.time).localTime
         }
 
     }
     
     func purgeOldSearches() {
-        Search.purgeSearchesOlderThan(NSDate.hoursAgo(26), forEmail: email, managedObjectContext: managedObjectContext)
+        Search.purgeSearchesOlderThan(Date.hoursAgo(26), forEmail: email, managedObjectContext: managedObjectContext)
     }
     
     func save() {

@@ -14,7 +14,7 @@ import CoreData
 
 extension Transaction {
 
-    @NSManaged var time: NSTimeInterval
+    @NSManaged var time: TimeInterval
     @NSManaged var email: String?
 
 }

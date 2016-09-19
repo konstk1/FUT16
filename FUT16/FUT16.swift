@@ -9,14 +9,14 @@
 import Foundation
 import Alamofire
 
-public class FUT16 {
+open class FUT16 {
     
-    private let cfg = NSURLSessionConfiguration.ephemeralSessionConfiguration()
+    fileprivate let cfg = URLSessionConfiguration.ephemeral
     
     let alamo: Manager!
     
     var email: String = ""
-    var user: String { return email.componentsSeparatedByString("@")[0] }
+    var user: String { return email.components(separatedBy: "@")[0] }
     
     var loginUrl: URLStringConvertible!
     let futUrl: URLStringConvertible = "https://utas.s3.fut.ea.com/ut/game/fifa16/"
@@ -46,12 +46,12 @@ public class FUT16 {
     public init() {
         cfg.timeoutIntervalForRequest = 20.0
 
-        var defaultHeaders = Alamofire.Manager.sharedInstance.session.configuration.HTTPAdditionalHeaders ?? [:]
+        var defaultHeaders = Alamofire.Manager.sharedInstance.session.configuration.httpAdditionalHeaders ?? [:]
         defaultHeaders["User-Agent"] = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36"
         defaultHeaders["Connection"] = "keep-alive"
         defaultHeaders["Host"] = "www.easports.com"
         
-        cfg.HTTPAdditionalHeaders = defaultHeaders
+        cfg.httpAdditionalHeaders = defaultHeaders
         
         alamo = Alamofire.Manager(configuration: cfg)
     }

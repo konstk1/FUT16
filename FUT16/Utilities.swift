@@ -8,16 +8,16 @@
 
 import Foundation
 
-public enum FutError: ErrorType {
-    case None
-    case ExpiredSession
-    case InternalServerError    // 500
-    case PurchaseFailed
-    case BidNotAllowed
-    case NotEnoughCredit        // 470
+public enum FutError: Error {
+    case none
+    case expiredSession
+    case internalServerError    // 500
+    case purchaseFailed
+    case bidNotAllowed
+    case notEnoughCredit        // 470
 }
 
-func incrementPrice(price: UInt) -> UInt {
+func incrementPrice(_ price: UInt) -> UInt {
     var incr: UInt
     
     if price < 1000 {
@@ -35,7 +35,7 @@ func incrementPrice(price: UInt) -> UInt {
     return price + incr
 }
 
-func decrementPrice(price: UInt) -> UInt {
+func decrementPrice(_ price: UInt) -> UInt {
     var decr: UInt = 0
     
     guard price >= 50 else {
@@ -57,38 +57,38 @@ func decrementPrice(price: UInt) -> UInt {
     return price - decr
 }
 
-extension NSDate {
-    static var hourAgo: NSDate {
+extension Date {
+    static var hourAgo: Date {
         get {
-            return NSDate(timeIntervalSinceNow: -3600)
+            return Date(timeIntervalSinceNow: -3600)
         }
     }
     
-    static var dayAgo: NSDate {
+    static var dayAgo: Date {
         get {
-            return NSDate(timeIntervalSinceNow: -24 * 3600)
+            return Date(timeIntervalSinceNow: -24 * 3600)
         }
     }
     
-    static var twoDaysAgo: NSDate {
+    static var twoDaysAgo: Date {
         get {
-            return NSDate(timeIntervalSinceNow: -48 * 3600)
+            return Date(timeIntervalSinceNow: -48 * 3600)
         }
     }
     
-    static var allTime: NSDate {
+    static var allTime: Date {
         get {
-            return NSDate(timeIntervalSinceReferenceDate: 0)
+            return Date(timeIntervalSinceReferenceDate: 0)
         }
     }
     
-    class func hoursAgo(hours: Double) -> NSDate {
-        return NSDate(timeIntervalSinceNow: -3600 * hours)
+    static func hoursAgo(_ hours: Double) -> Date {
+        return Date(timeIntervalSinceNow: -3600 * hours)
     }
     
     var localTime: String {
-        let dateFormatter = NSDateFormatter()
+        let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "HH:mm:ss"
-        return dateFormatter.stringFromDate(self)
+        return dateFormatter.string(from: self)
     }
 }

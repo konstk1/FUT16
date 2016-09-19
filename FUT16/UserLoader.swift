@@ -10,18 +10,18 @@ import Foundation
 
 class UserLoader {
     class func getUsers(from file: String) -> [FutUser]? {
-        let garbageSet = NSCharacterSet(charactersInString: " \t")
+        let garbageSet = CharacterSet(charactersIn: " \t")
         var futUsers = [FutUser]()
         do {
             let contents = try String(contentsOfFile: file)
-            let lines = contents.componentsSeparatedByString("\n")
+            let lines = contents.components(separatedBy: "\n")
             for line in lines where !line.hasPrefix("//") {
-                let tokens = line.componentsSeparatedByString("/")
+                let tokens = line.components(separatedBy: "/")
                 let user = FutUser()
-                user.email = tokens[0].stringByTrimmingCharactersInSet(garbageSet)
-                user.password = tokens[1].stringByTrimmingCharactersInSet(garbageSet)
-                user.answer = tokens[2].stringByTrimmingCharactersInSet(garbageSet)
-                user.totpToken = tokens[3].stringByTrimmingCharactersInSet(garbageSet)
+                user.email = tokens[0].trimmingCharacters(in: garbageSet)
+                user.password = tokens[1].trimmingCharacters(in: garbageSet)
+                user.answer = tokens[2].trimmingCharacters(in: garbageSet)
+                user.totpToken = tokens[3].trimmingCharacters(in: garbageSet)
                 futUsers.append(user)
             }
         } catch {
