@@ -53,7 +53,7 @@ extension FUT16 {
                 error = .internalServerError
             }
             
-            completion(auctions: auctions, error: error)
+            completion(auctions, error)
         }
     }
 }

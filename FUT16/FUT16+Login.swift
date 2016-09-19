@@ -11,10 +11,10 @@ import Alamofire
 import SwiftyJSON
 
 private let webAppUrl = "https://www.easports.com/fifa/ultimate-team/web-app"
-private let baseShowoffUrl: URLStringConvertible = "https://www.easports.com/iframe/fut16/?baseShowoffUrl=https%3A%2F%2Fwww.easports.com%2Ffifa%2Fultimate-team%2Fweb-app%2Fshow-off&guest_app_uri=http%3A%2F%2Fwww.easports.com%2Ffifa%2Fultimate-team%2Fweb-app&locale=en_US"
-private let acctInfoUrl: URLStringConvertible = "https://www.easports.com/iframe/fut16/p/ut/game/fifa16/user/accountinfo?sku=FUT16WEB&returningUserGameYear=2015"
-private let authUrl: URLStringConvertible = "https://www.easports.com/iframe/fut16/p/ut/auth"
-private let validateUrl: URLStringConvertible = "https://www.easports.com/iframe/fut16/p/ut/game/fifa16/phishing/validate"
+private let baseShowoffUrl = "https://www.easports.com/iframe/fut16/?baseShowoffUrl=https%3A%2F%2Fwww.easports.com%2Ffifa%2Fultimate-team%2Fweb-app%2Fshow-off&guest_app_uri=http%3A%2F%2Fwww.easports.com%2Ffifa%2Fultimate-team%2Fweb-app&locale=en_US"
+private let acctInfoUrl = "https://www.easports.com/iframe/fut16/p/ut/game/fifa16/user/accountinfo?sku=FUT16WEB&returningUserGameYear=2015"
+private let authUrl = "https://www.easports.com/iframe/fut16/p/ut/auth"
+private let validateUrl = "https://www.easports.com/iframe/fut16/p/ut/game/fifa16/phishing/validate"
 
 extension FUT16 {
     public func login(_ email: String, password: String, secretAnswer: String, completion: @escaping ()->()) {
@@ -22,13 +22,13 @@ extension FUT16 {
         loginUrl = webAppUrl
         phishingQuestionAnswer = secretAnswer
         loginCompletion = completion
-        alamo.request(.GET, loginUrl).response { [unowned self] (request, response, data, error) -> Void in
-            guard response != nil else {
+        alamo.request(loginUrl, method: .get).response { [unowned self] (response) -> Void in
+            guard let response = response.response else {
                 Log.print("No response")
                 return
             }
-            self.loginUrl = response!.url!
-            if self.loginUrl.URLString.contains("web-app") {
+            self.loginUrl = response.url!.absoluteString
+            if self.loginUrl.contains("web-app") {
                 Log.print("Already Logged In.")
                 self.authenticate()
             } else {
@@ -45,12 +45,12 @@ extension FUT16 {
             "password" : password,
             "_eventId" : "submit"]
         
-        alamo.request(.POST, loginUrl, parameters: parameters).response { [unowned self] (request, response, data, error) -> Void in
-            if let responseString = String(data: data!, encoding: String.Encoding.utf8) {
+        alamo.request(loginUrl, method: .post, parameters: parameters).response { [unowned self] (response) -> Void in
+            if let responseString = String(data: response.data!, encoding: String.Encoding.utf8) {
                 if responseString.contains("Submit Security Code") {
                     Log.print("Enter Security Code!")
                     // update login URL to sequence 2
-                    self.loginUrl = response!.url!
+                    self.loginUrl = response.response!.url!.absoluteString
                     
                 } else {
                     Log.print("Login Failure: Invalid login")
@@ -64,11 +64,11 @@ extension FUT16 {
             "_trustThisDevice" : "on",
             "trustThisDevice" : "on",
             "_eventId" : "submit"]
-        alamo.request(.POST, loginUrl ?? "", parameters: parameters).response { [unowned self] (request, response, data, error) -> Void in
+        alamo.request(loginUrl ?? "", method: .post, parameters: parameters).response { [unowned self] (response) -> Void in
             if self.loginUrl == nil {
                 Log.print("Generating TOTP: \(authCode)")
             }
-            else if response!.url!.URLString.URLString.contains(webAppUrl) {
+            else if response.response!.url!.absoluteString.contains(webAppUrl) {
                 Log.print("Login Successfull. Authenticating Session...")
                 self.authenticate()
             } else {
@@ -78,8 +78,8 @@ extension FUT16 {
     }
     
     func authenticate() {
-        alamo.request(.GET, baseShowoffUrl).response { [unowned self] (request, response, data, error) -> Void in
-            self.EASW_ID = self.extractEaswIdFromString(data!.string!)
+        alamo.request(baseShowoffUrl).response { [unowned self] (response) -> Void in
+            self.EASW_ID = self.extractEaswIdFromString(response.data!.string!)
             if self.EASW_ID == "0" {
                 Log.print("Login failure: EASW_ID")
                 return
@@ -94,7 +94,7 @@ extension FUT16 {
             "X-UT-Embed-Error" : "true",
             "X-UT-Route" : "https://utas.s3.fut.ea.com:443" ]
         
-        alamo.request(.GET, acctInfoUrl, headers: headers).responseJSON { [unowned self] (response) -> Void in
+        alamo.request(acctInfoUrl, headers: headers).responseJSON { [unowned self] (response) -> Void in
             guard let json = response.result.value else { return }
             let infoJson = JSON(json)
             
@@ -112,20 +112,20 @@ extension FUT16 {
         
         let parameters:[String : AnyObject] = ["clientVersion": "1" as AnyObject,
             "gameSku" : "FFA16XBO" as AnyObject,
-            "identification" : ["authCode" : ""],
-            "isReadOnly" : "false",
-            "locale" : "en-US",
-            "method" : "authcode",
-            "nucleusPersonaDisplayName" : personaName,
-            "nucleusPersonaId" : personaId,
-            "nucleusPersonaPlatform" : "360",
-            "priorityLevel" : "4",
-            "sku" : "FUT16WEB"]
+            "identification" : ["authCode" : ""] as AnyObject,
+            "isReadOnly" : "false" as AnyObject,
+            "locale" : "en-US" as AnyObject,
+            "method" : "authcode" as AnyObject,
+            "nucleusPersonaDisplayName" : personaName as AnyObject,
+            "nucleusPersonaId" : personaId as AnyObject,
+            "nucleusPersonaPlatform" : "360" as AnyObject,
+            "priorityLevel" : "4" as AnyObject,
+            "sku" : "FUT16WEB" as AnyObject]
         
         // if fetching new session ID, marked previous as invalid until the fetching is done
         isSessionValid = false
         
-        alamo.request(.POST, authUrl, headers: headers, parameters: parameters, encoding: .json).responseJSON { [unowned self] (response) -> Void in
+        alamo.request(authUrl, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).responseJSON { [unowned self] (response) -> Void in
             guard let json = response.result.value else {
                 Log.print("Retrieve failed: \(response.response)")
                 return
@@ -147,7 +147,7 @@ extension FUT16 {
         
         let parameters = ["answer" : phishingQuestionAnswer.md5()]
         
-        alamo.request(.POST, validateUrl, headers: headers, parameters: parameters).responseJSON { [unowned self] (response) -> Void in
+        alamo.request(validateUrl, method: .post, parameters: parameters, headers: headers).responseJSON { [unowned self] (response) -> Void in
             guard let json = response.result.value else { return }
             self.phishingToken = JSON(json)["token"].stringValue
             

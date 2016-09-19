@@ -69,12 +69,6 @@ class ViewController: NSViewController {
             autoTrader = AutoTrader(users: users, update: nil)
         }
     }
-
-    override var representedObject: AnyObject? {
-        didSet {
-        // Update the view, if already loaded.
-        }
-    }
     
     func getIdFromComboBox(_ comboBox: NSComboBox) -> String? {
         if comboBox.stringValue == "Any" {

@@ -8,6 +8,7 @@
 
 import Foundation
 import SwiftyJSON
+import Alamofire
 
 extension FUT16 {
     public func sendItemsToTransferList() {
@@ -20,9 +21,9 @@ extension FUT16 {
                               "pile" : "trade"])
             })
             
-            let parameters = ["itemData" : items]
+            let parameters = ["itemData" : items as AnyObject]
             
-            self.requestForPath("item", withParameters: parameters, encoding: .json, methodOverride: "PUT", completion: { [unowned self] (json) -> Void in
+            self.requestForPath("item", withParameters: parameters, encoding: JSONEncoding.default, methodOverride: "PUT", completion: { [unowned self] (json) -> Void in
                 Log.print("Transferred [\(self.email) - \(self.personaName)]")
                 json["itemData"].forEach({ (key, json) -> () in
                     Log.print("\(key) - \(json["id"]) - \(json["pile"]) - \(json["success"])")
@@ -31,9 +32,9 @@ extension FUT16 {
         }
     }
     
-    public func getPurchasedItems(_ completion: (_ itemsJson: JSON)->()) {
+    public func getPurchasedItems(_ completion: @escaping (_ itemsJson: JSON)->()) {
         requestForPath("purchased/items", methodOverride: "GET") { (json) -> Void in
-            completion(itemsJson: json["itemData"])
+            completion(json["itemData"])
         }
     }
 }

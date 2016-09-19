@@ -333,7 +333,7 @@ open class AutoTrader: NSObject {
                 //NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: Selector("processPurchaseQueue"), userInfo: nil, repeats: false)
             }
             
-            let user = self.findUserWithEmail(email)
+            let user = self.findUserWithEmail(email)!
             
             guard error == .none else {
                 Log.print("Fail: Error - \(error).")

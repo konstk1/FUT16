@@ -38,7 +38,7 @@ class Stats: NSManagedObject {
     
     fileprivate class func getStatsForEmail(_ email: String, managedObjectContext: NSManagedObjectContext) -> Stats? {
         
-        let fetchRequest = NSFetchRequest(entityName: entityName)
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: entityName)
         fetchRequest.predicate = NSPredicate(format: "email = %@", email)
         
         do {

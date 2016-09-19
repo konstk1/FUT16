@@ -15,8 +15,8 @@ class Transaction: NSManagedObject {
     class func getTransactions(_ entityName: String, forEmail email: String, sinceDate date: Date, managedObjectContext: NSManagedObjectContext) -> [Transaction] {
         
         let sortByTime = NSSortDescriptor(key: "time", ascending: true)
-        let fetchRequest = NSFetchRequest(entityName: entityName)
-        fetchRequest.predicate = NSPredicate(format: "email = %@ AND time >= %@", email, date)
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: entityName)
+        fetchRequest.predicate = NSPredicate(format: "email = %@ AND time >= %@", email, date as NSDate)
         fetchRequest.sortDescriptors = [sortByTime]
         
         do {
@@ -29,9 +29,9 @@ class Transaction: NSManagedObject {
     
     class func getTransactions(_ entityName: String, forEmail email: String, beforeDate date: Date, managedObjectContext: NSManagedObjectContext) -> [Transaction] {
         
-        let fetchRequest = NSFetchRequest(entityName: entityName)
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: entityName)
         
-        fetchRequest.predicate = NSPredicate(format: "email = %@ AND time < %@", email, date)
+        fetchRequest.predicate = NSPredicate(format: "email = %@ AND time < %@", email, date as NSDate)
         
         do {
             let transactions = try managedObjectContext.fetch(fetchRequest) as! [Transaction]
@@ -42,14 +42,14 @@ class Transaction: NSManagedObject {
     }
     
     class func numTransactions(_ entityName: String, forEmail email: String, sinceDate date: Date, managedObjectContext: NSManagedObjectContext) -> Int {
-        let fetchRequest = NSFetchRequest(entityName: entityName)
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: entityName)
         fetchRequest.includesPropertyValues = false
         fetchRequest.includesSubentities = false
         fetchRequest.resultType = NSFetchRequestResultType.countResultType
         
-        fetchRequest.predicate = NSPredicate(format: "email = %@ AND time >= %@", email, date)
+        fetchRequest.predicate = NSPredicate(format: "email = %@ AND time >= %@", email, date as NSDate)
         
-        return managedObjectContext.count(for: fetchRequest, error: nil)
+        return try! managedObjectContext.count(for: fetchRequest)
     }
 
     class func save(_ managedObjectContext: NSManagedObjectContext) {

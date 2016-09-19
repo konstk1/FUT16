@@ -8,6 +8,7 @@
 
 import Foundation
 import OneTimePassword
+import Base32
 
 open class FutUser: NSObject {
     let fut16 = FUT16()
@@ -26,8 +27,8 @@ open class FutUser: NSObject {
     var totpToken = ""
     
     lazy fileprivate var totp: Token = { [unowned self] in
-        let secretData = NSData(base32String: self.totpToken)
-        let generator = Generator(factor: .Timer(period: 30), secret: secretData, algorithm: .SHA1, digits: 6)!
+        let secretData = NSData(base32String: self.totpToken)!
+        let generator = Generator(factor: .timer(period: 30), secret: secretData as Data, algorithm: .sha1, digits: 6)!
         return Token(generator: generator)
     }()
     

@@ -1,4 +1,4 @@
-github "Alamofire/Alamofire" "3.4.1"
+github "Alamofire/Alamofire" "4.0.0"
 github "mattrubin/Base32" "1.0.2+carthage"
-github "SwiftyJSON/SwiftyJSON" "2.3.3"
-github "mattrubin/OneTimePassword" "2.0.0"
+github "appsailor/SwiftyJSON" "2571377e49e6c653a92d993a2bff7a9ca2d71591"
+github "mattrubin/OneTimePassword" "5b59ab030864f247a4a7f01a84c749292c9a5701"

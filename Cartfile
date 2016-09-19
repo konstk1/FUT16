@@ -1,3 +1,4 @@
 github "Alamofire/Alamofire" ~> 4.0
-github "SwiftyJSON/SwiftyJSON"
-github "mattrubin/OneTimePassword" ~> 2.0
+#github "SwiftyJSON/SwiftyJSON" "swift3" 
+github "https://github.com/appsailor/SwiftyJSON.git" "swift3"
+github "mattrubin/OneTimePassword" "swift-3-api-style"
