@@ -40,7 +40,7 @@ extension FUT16 {
             let errorCode = json["code"].stringValue
 //            Log.print("Error Code: \(errorCode)")
             
-            if json["auctionInfo"].count > 0 {
+            if json["auctionInfo"] != nil {
                 json["auctionInfo"].forEach{ (key, json) in
                     let auction = AuctionInfo(fromJson: json)
                     auctions.append(auction)

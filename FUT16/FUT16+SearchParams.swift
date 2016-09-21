@@ -40,8 +40,8 @@ extension FUT16 {
                 url += "num=\(numRecords)"
                 
                 // other optional parameters
-                url +=     type.isEmpty ? "" : "&type=\(type)"
                 url +=    level.isEmpty ? "" : "&lev=\(level)"
+                url +=     type.isEmpty ? "" : "&type=\(type)"
                 url +=    minPrice == 0 ? "" : "&micr=\(minPrice)"
                 url +=    maxPrice == 0 ? "" : "&macr=\(maxPrice)"
                 url +=      minBin == 0 ? "" : "&minb=\(minBin)"

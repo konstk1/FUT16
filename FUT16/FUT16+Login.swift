@@ -11,10 +11,10 @@ import Alamofire
 import SwiftyJSON
 
 private let webAppUrl = "https://www.easports.com/fifa/ultimate-team/web-app"
-private let baseShowoffUrl = "https://www.easports.com/iframe/fut16/?baseShowoffUrl=https%3A%2F%2Fwww.easports.com%2Ffifa%2Fultimate-team%2Fweb-app%2Fshow-off&guest_app_uri=http%3A%2F%2Fwww.easports.com%2Ffifa%2Fultimate-team%2Fweb-app&locale=en_US"
-private let acctInfoUrl = "https://www.easports.com/iframe/fut16/p/ut/game/fifa16/user/accountinfo?sku=FUT16WEB&returningUserGameYear=2015"
-private let authUrl = "https://www.easports.com/iframe/fut16/p/ut/auth"
-private let validateUrl = "https://www.easports.com/iframe/fut16/p/ut/game/fifa16/phishing/validate"
+private let baseShowoffUrl = "https://www.easports.com/iframe/fut17/?baseShowoffUrl=https%3A%2F%2Fwww.easports.com%2Ffifa%2Fultimate-team%2Fweb-app%2Fshow-off&guest_app_uri=http%3A%2F%2Fwww.easports.com%2Ffifa%2Fultimate-team%2Fweb-app&locale=en_US"
+private let acctInfoUrl = "https://www.easports.com/iframe/fut17/p/ut/game/fifa17/user/accountinfo?filterConsoleLogin=true&sku=FUT17WEB&returningUserGameYear=2016"
+private let authUrl = "https://www.easports.com/iframe/fut17/p/ut/auth"
+private let validateUrl = "https://www.easports.com/iframe/fut17/p/ut/game/fifa17/phishing/validate"
 
 extension FUT16 {
     public func login(_ email: String, password: String, secretAnswer: String, completion: @escaping ()->()) {
@@ -92,7 +92,7 @@ extension FUT16 {
     fileprivate func getAcctInfo() {
         let headers = ["Easw-Session-Data-Nucleus-Id" : EASW_ID,
             "X-UT-Embed-Error" : "true",
-            "X-UT-Route" : "https://utas.s3.fut.ea.com:443" ]
+            "X-UT-Route" : "https://utas.external.s3.fut.ea.com:443" ]
         
         alamo.request(acctInfoUrl, headers: headers).responseJSON { [unowned self] (response) -> Void in
             guard let json = response.result.value else { return }
@@ -108,10 +108,10 @@ extension FUT16 {
     
     func retrieveSessionId() {
         let headers = ["X-UT-Embed-Error" : "true",
-            "X-UT-Route" : "https://utas.s3.fut.ea.com:443" ]
+            "X-UT-Route" : "https://utas.external.s3.fut.ea.com:443" ]
         
         let parameters:[String : AnyObject] = ["clientVersion": "1" as AnyObject,
-            "gameSku" : "FFA16XBO" as AnyObject,
+            "gameSku" : "FFA17XBO" as AnyObject,
             "identification" : ["authCode" : ""] as AnyObject,
             "isReadOnly" : "false" as AnyObject,
             "locale" : "en-US" as AnyObject,
@@ -120,7 +120,7 @@ extension FUT16 {
             "nucleusPersonaId" : personaId as AnyObject,
             "nucleusPersonaPlatform" : "360" as AnyObject,
             "priorityLevel" : "4" as AnyObject,
-            "sku" : "FUT16WEB" as AnyObject]
+            "sku" : "FUT17WEB" as AnyObject]
         
         // if fetching new session ID, marked previous as invalid until the fetching is done
         isSessionValid = false
@@ -143,7 +143,7 @@ extension FUT16 {
             "Easw-Session-Data-Nucleus-Id" : EASW_ID,
             "X-UT-SID" : sessionId,
             "X-UT-Embed-Error" : "true",
-            "X-UT-Route" : "https://utas.s3.fut.ea.com:443" ]
+            "X-UT-Route" : "https://utas.external.s3.fut.ea.com:443" ]
         
         let parameters = ["answer" : phishingQuestionAnswer.md5()]
         

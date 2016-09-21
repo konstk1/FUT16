@@ -19,7 +19,7 @@ open class FUT16 {
     var user: String { return email.components(separatedBy: "@")[0] }
     
     var loginUrl: String!
-    let futUrl: String = "https://utas.s3.fut.ea.com/ut/game/fifa16/"
+    let futUrl: String = "https://utas.external.s3.fut.ea.com/ut/game/fifa17/"
     
     // supplied by user
     var  phishingQuestionAnswer = ""
