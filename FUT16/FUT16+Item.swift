@@ -13,6 +13,7 @@ import Alamofire
 extension FUT16 {
     public func sendItemsToTransferList() {
         getPurchasedItems { [unowned self] (itemsJson) -> () in
+            guard itemsJson != nil else { return }
             guard itemsJson.count > 0 else { return }
             
             var items = [[String : String]]()

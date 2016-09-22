@@ -193,7 +193,7 @@ open class AutoTrader: NSObject {
         if prevUserIdx >= currentUserIdx {
             let curRequestTime = Date().timeIntervalSinceReferenceDate
             requestPeriod = round((curRequestTime - lastRequestTime)*10)/10
-            Log.print("Account request period: \(requestPeriod) secs  (Users: \(numActiveUsers))")
+//            Log.print("Account request period: \(requestPeriod) secs  (Users: \(numActiveUsers))")
             lastRequestTime = curRequestTime
         }
         
@@ -271,7 +271,7 @@ open class AutoTrader: NSObject {
                     curMinBin = $0.buyNowPrice
                 }
                 
-                if $0.buyNowPrice <= self.buyAtBin && $0.isRare {
+                if $0.buyNowPrice <= self.buyAtBin { //&& $0.isRare {
                     self.purchaseQueue.append($0)
 //                    Log.print("Purchase Queued \($0.tradeId)")
                 }

@@ -1,6 +1,7 @@
 Bugs / Quick fixes:
 
--
+- Fix observer for account view
+- Fix enable/disable account checkbox
 
 Features:
 
