@@ -18,9 +18,12 @@ class AccountViewItem: NSCollectionViewItem {
     dynamic var user: FutUser! {
         didSet {
             guard isViewLoaded else { return }
+            print("Setting user \(user.email)")
             usernameLabel.stringValue = user.email
             totpLabel.stringValue = user.authCode
-            user.enabled = (enabledCheckbox.state == 1)
+            enabledCheckbox.state = user.enabled ? 1 : 0
+            observerContext = user.email
+            user.stats.addObserver(self, forKeyPath: "purchaseCount", options: .new, context: &observerContext)
         }
     }
     
@@ -33,16 +36,23 @@ class AccountViewItem: NSCollectionViewItem {
     @IBOutlet weak var search24HrLabel: NSTextField!
     @IBOutlet weak var purchaseCountLabel: NSTextField!
     
-    fileprivate var myContext = 0
+    private var observerContext: String = "context"
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setBackground(colorDefault)
     }
     
-    deinit {
-        print("Removing observer")
-        user.stats.removeObserver(self, forKeyPath: "purchaseCount", context: &myContext)
+    override func viewWillAppear() {
+        print("Appearing view \(user.email)")
+        if user.stats.purchaseCount > 0 {
+            setBackground(colorPurchase)
+        }
+    }
+    
+    override func viewWillDisappear() {
+        print("Removing observer for \(user.email)")
+        user.stats.removeObserver(self, forKeyPath: "purchaseCount", context: &observerContext)
     }
     
     override func awakeFromNib() {
@@ -50,7 +60,7 @@ class AccountViewItem: NSCollectionViewItem {
     }
     
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        if context == &myContext {
+        if context == &observerContext {
             print("Observed new val \(change)")
             if let purchaseCount = change?[NSKeyValueChangeKey.newKey] as? Int {
                 print("New purchase count: \(purchaseCount)")
@@ -78,7 +88,6 @@ class AccountViewItem: NSCollectionViewItem {
             self.user.stats.coinsBalance = self.user.fut16.coinsBalance
             self.setBackground(colorLoggedIn)
         }
-        user.stats.addObserver(self, forKeyPath: "purchaseCount", options: .new, context: &myContext)
     }
     
     @IBAction func totpPushed(_ sender: NSButton) {
