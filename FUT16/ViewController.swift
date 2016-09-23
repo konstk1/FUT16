@@ -110,8 +110,8 @@ class ViewController: NSViewController {
         case "Player":
             let playerId = playerIdTextField.stringValue
             params = FUT16.PlayerParams(playerId: playerId, nationality: nationality, league: league, team: team, level: level, minBin: minSearchBin, maxBin: maxSearchBin)
-        case "Fitness":
-            params = FUT16.ConsumableParams(category: "fitness", level: level, minBin: minSearchBin, maxBin: maxSearchBin)
+        case "Chemistry":
+            params = FUT16.ConsumableParams(category: "playStyle", level: level, minBin: minSearchBin, maxBin: maxSearchBin)
         case "Manager":
             break
         default:
@@ -149,7 +149,7 @@ class ViewController: NSViewController {
         switch type {
         case "Player":
             break
-        case "Fitness":
+        case "Chemistry":
             playerIdTextField.isEnabled = false
             teamComboBox.isEnabled = false
             leagueComboBox.isEnabled = false

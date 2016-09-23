@@ -85,18 +85,20 @@ extension FUT16 {
     open class ConsumableParams: ItemParams {
 
         var category: String
+        var playStyle: UInt
         
         init(category: String, level: String = "", minPrice: UInt = 0, maxPrice: UInt = 0, minBin: UInt = 0, maxBin: UInt = 0, startRecord: UInt = 0, numRecords: UInt = PlayerParams.maxRecords) {
 
             self.category = category
+            self.playStyle = 266
             
-            super.init(type: "development", level: level, minPrice: minPrice, maxPrice: maxPrice, minBin: minBin, maxBin: maxBin, startRecord: startRecord, numRecords: numRecords)
+            super.init(type: "training", level: level, minPrice: minPrice, maxPrice: maxPrice, minBin: minBin, maxBin: maxBin, startRecord: startRecord, numRecords: numRecords)
         }
-        
+        // transfermarket?start=0&maxb=2400&cat=playStyle&num=16&playStyle=266&lev=gold&type=training
         // transfermarket?minb=600&maxb=650&cat=fitness&num=16&lev=gold&start=0&type=development
         override var urlPath: String {
             get {
-                let url = super.urlPath + "&type=development" + "&cat=\(category)"
+                let url = super.urlPath + "&type=training" + "&cat=\(category)" + "&playStyle=\(playStyle)"
                 return url
             }
         }
