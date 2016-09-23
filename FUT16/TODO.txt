@@ -1,5 +1,7 @@
 Bugs / Quick fixes:
 
+- Add search for Chem (Hunter 266)
+- Account item callback bug
 - Save 'account enable' checkbox state
 
 Features:

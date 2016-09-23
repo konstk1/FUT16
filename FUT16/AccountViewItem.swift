@@ -44,14 +44,15 @@ class AccountViewItem: NSCollectionViewItem {
     }
     
     override func viewWillAppear() {
-        print("Appearing view \(user.email)")
+        print("Appearing view \(user.email) - win \(view.window)")
         if user.stats.purchaseCount > 0 {
             setBackground(colorPurchase)
         }
+        
     }
     
     override func viewWillDisappear() {
-        print("Removing observer for \(user.email)")
+        print("Removing observer for \(user.email) - win \(view.window)")
         user.stats.removeObserver(self, forKeyPath: "purchaseCount", context: &observerContext)
     }
     
