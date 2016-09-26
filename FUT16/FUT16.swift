@@ -9,7 +9,7 @@
 import Foundation
 import Alamofire
 
-open class FUT16 {
+class FUT16 {
     
     fileprivate let cfg = URLSessionConfiguration.ephemeral
     

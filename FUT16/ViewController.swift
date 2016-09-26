@@ -92,51 +92,6 @@ class ViewController: NSViewController {
     func clearLog() {
         logTextView.string = ""
     }
-
-// MARK: UI Actions
-    @IBAction func setSearchParamsPressed(_ sender: NSButton) {
-        let nationality = getIdFromComboBox(nationalityComboBox) ?? ""
-        let league = getIdFromComboBox(leagueComboBox) ?? ""
-        let team = getIdFromComboBox(teamComboBox) ?? ""
-        let level  = getIdFromComboBox(levelComboBox) ?? ""
-        
-        let minSearchBin = UInt(minBinTextField.stringValue.replacingOccurrences(of: ",", with: "")) ?? 0
-        let maxSearchBin = UInt(maxBinTextField.stringValue.replacingOccurrences(of: ",", with: "")) ?? 0
-        let buyAtBin = UInt(buyAtTextField.stringValue.replacingOccurrences(of: ",", with: "")) ?? 0
-        
-        var params: FUT16.ItemParams!
-        
-        switch typeSegment.selectedLabel() {
-        case "Player":
-            let playerId = playerIdTextField.stringValue
-            params = FUT16.PlayerParams(playerId: playerId, nationality: nationality, league: league, team: team, level: level, minBin: minSearchBin, maxBin: maxSearchBin)
-        case "Chemistry":
-            params = FUT16.ConsumableParams(category: "playStyle", level: level, minBin: minSearchBin, maxBin: maxSearchBin)
-        case "Manager":
-            break
-        default:
-            break
-        }
-        
-        let breakEvenPrice = autoTrader?.setTradeParams(params, buyAtBin: buyAtBin)
-        breakEvenTextField.integerValue = Int(breakEvenPrice!)
-    }
-    
-    @IBAction func updateMaxBin(_ sender: NSButton) {
-        let maxSearchBin = UInt(maxBinTextField.stringValue.replacingOccurrences(of: ",", with: "")) ?? 0
-        
-        if sender.tag > 0 {
-            maxBinTextField.integerValue = Int(incrementPrice(maxSearchBin));
-        } else {
-            maxBinTextField.integerValue = Int(decrementPrice(maxSearchBin));
-        }
-        
-        setSearchParamsPressed(sender);
-    }
-    
-    @IBAction func typeSegmentChanged(_ sender: NSSegmentedControl) {
-        updateFieldsStateForSearchType(sender.selectedLabel())
-    }
     
     func updateFieldsStateForSearchType(_ type: String) {
         // enable all and then disabled necessary fields based on type
@@ -177,6 +132,74 @@ class ViewController: NSViewController {
         settings.userFile     = userFileTextField.stringValue
     }
     
+    func selectUsersFile() {
+        openPanel.begin { (result) in
+            guard result == NSFileHandlingPanelOKButton else { return }
+            
+            self.userFileTextField.stringValue = self.openPanel.url!.path
+            UserDefaults.standard.set(self.userFileTextField.stringValue, forKey: "userFile")
+            self.updateSettings()
+            self.users = UserLoader.getUsers(from: Settings.sharedInstance.userFile)
+            self.collectionView.reloadData()
+        }
+    }
+    
+    func updatePlayerInfo() {
+        FutDatabase.getPlayerInfo(baseId: playerIdTextField.stringValue) { (json) in
+            print("Done")
+        }
+    }
+}
+
+// MARK: UI Actions
+extension ViewController {
+    @IBAction func setSearchParamsPressed(_ sender: NSButton) {
+        let nationality = getIdFromComboBox(nationalityComboBox) ?? ""
+        let league = getIdFromComboBox(leagueComboBox) ?? ""
+        let team = getIdFromComboBox(teamComboBox) ?? ""
+        let level  = getIdFromComboBox(levelComboBox) ?? ""
+        
+        let minSearchBin = UInt(minBinTextField.stringValue.replacingOccurrences(of: ",", with: "")) ?? 0
+        let maxSearchBin = UInt(maxBinTextField.stringValue.replacingOccurrences(of: ",", with: "")) ?? 0
+        let buyAtBin = UInt(buyAtTextField.stringValue.replacingOccurrences(of: ",", with: "")) ?? 0
+        
+        var params: FUT16.ItemParams!
+        
+        switch typeSegment.selectedLabel() {
+        case "Player":
+            let playerId = playerIdTextField.stringValue
+            params = FUT16.PlayerParams(playerId: playerId, nationality: nationality, league: league, team: team, level: level, minBin: minSearchBin, maxBin: maxSearchBin)
+        case "Chemistry":
+            params = FUT16.ConsumableParams(category: "playStyle", level: level, minBin: minSearchBin, maxBin: maxSearchBin)
+        case "Manager":
+            break
+        default:
+            break
+        }
+        
+        let breakEvenPrice = autoTrader?.setTradeParams(params, buyAtBin: buyAtBin)
+        breakEvenTextField.integerValue = Int(breakEvenPrice!)
+        
+        updatePlayerInfo();
+    }
+    
+    @IBAction func updateMaxBin(_ sender: NSButton) {
+        let maxSearchBin = UInt(maxBinTextField.stringValue.replacingOccurrences(of: ",", with: "")) ?? 0
+        
+        if sender.tag > 0 {
+            maxBinTextField.integerValue = Int(incrementPrice(maxSearchBin));
+        } else {
+            maxBinTextField.integerValue = Int(decrementPrice(maxSearchBin));
+        }
+        
+        setSearchParamsPressed(sender);
+    }
+    
+    @IBAction func typeSegmentChanged(_ sender: NSSegmentedControl) {
+        updateFieldsStateForSearchType(sender.selectedLabel())
+    }
+
+    
     @IBAction func doStuffPressed(_ sender: NSButton) {
         setSearchParamsPressed(sender)
         autoTrader?.startTrading()
@@ -200,18 +223,6 @@ class ViewController: NSViewController {
     
     @IBAction func browsePressed(_ sender: AnyObject) {
         selectUsersFile()
-    }
-    
-    func selectUsersFile() {
-        openPanel.begin { (result) in
-            guard result == NSFileHandlingPanelOKButton else { return }
-            
-            self.userFileTextField.stringValue = self.openPanel.url!.path
-            UserDefaults.standard.set(self.userFileTextField.stringValue, forKey: "userFile")
-            self.updateSettings()
-            self.users = UserLoader.getUsers(from: Settings.sharedInstance.userFile)
-            self.collectionView.reloadData()
-        }
     }
 }
 

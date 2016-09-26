@@ -834,6 +834,7 @@
                                                     </textFieldCell>
                                                     <connections>
                                                         <binding destination="RjE-TD-ifc" name="value" keyPath="values.playerId" id="Wwg-b4-rxu"/>
+                                                        <outlet property="delegate" destination="XfG-lQ-9wD" id="5lG-so-Q4y"/>
                                                     </connections>
                                                 </textField>
                                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eFf-os-8UL">
