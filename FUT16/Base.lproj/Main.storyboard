@@ -1415,6 +1415,20 @@
                                                         <action selector="updateMaxBin:" target="XfG-lQ-9wD" id="q0A-TX-FQo"/>
                                                     </connections>
                                                 </button>
+                                                <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="d4k-ZA-vrB">
+                                                    <rect key="frame" x="13" y="293" width="120" height="120"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="NSInfo" id="ZZX-Ig-Uiy"/>
+                                                </imageView>
+                                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="278-Ua-cgg">
+                                                    <rect key="frame" x="159" y="386" width="229" height="17"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Common - First Last" id="IHE-E9-Qpw">
+                                                        <font key="font" metaFont="system"/>
+                                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                    </textFieldCell>
+                                                </textField>
                                             </subviews>
                                         </view>
                                     </tabViewItem>
@@ -1984,6 +1998,8 @@
                         <outlet property="minBinTextField" destination="pjb-Gw-UoO" id="9KE-zE-NCM"/>
                         <outlet property="nationalityComboBox" destination="Xhs-i4-1IS" id="eR3-DA-WRt"/>
                         <outlet property="playerIdTextField" destination="5cO-1s-mTc" id="6lb-v5-fTd"/>
+                        <outlet property="playerImage" destination="d4k-ZA-vrB" id="UJO-5m-fKI"/>
+                        <outlet property="playerNameTextField" destination="278-Ua-cgg" id="FD1-7C-rcg"/>
                         <outlet property="reqTimingMaxTextField" destination="SUA-uI-WYM" id="gCU-nV-Xrz"/>
                         <outlet property="reqTimingMinTextField" destination="1Lh-tY-Vbs" id="065-CV-aGX"/>
                         <outlet property="teamComboBox" destination="dGz-5c-zMu" id="iqZ-bN-Jyl"/>
@@ -1998,6 +2014,7 @@
     </scenes>
     <resources>
         <image name="NSAddTemplate" width="11" height="11"/>
+        <image name="NSInfo" width="32" height="32"/>
         <image name="NSRemoveTemplate" width="11" height="11"/>
     </resources>
 </document>

@@ -12,6 +12,9 @@ class ViewController: NSViewController {
 
     @IBOutlet weak var collectionView: NSCollectionView!
     
+    @IBOutlet weak var playerNameTextField: NSTextField!
+    @IBOutlet weak var playerImage: NSImageView!
+    
     @IBOutlet weak var typeSegment: NSSegmentedControl!
     
     @IBOutlet weak var playerIdTextField: NSTextField!
@@ -145,8 +148,13 @@ class ViewController: NSViewController {
     }
     
     func updatePlayerInfo() {
-        FutDatabase.getPlayerInfo(baseId: playerIdTextField.stringValue) { (json) in
-            print("Done")
+        FutDatabase.getPlayerInfo(baseId: playerIdTextField.stringValue) { [unowned self] (playerInfo) in
+            guard let playerInfo = playerInfo else {
+                self.playerNameTextField.stringValue = "Not Found"
+                return
+            }
+            
+            self.playerNameTextField.stringValue = "\(playerInfo.commonName) - \(playerInfo.firstName) \(playerInfo.lastName)"
         }
     }
 }
