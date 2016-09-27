@@ -14,6 +14,9 @@ class ViewController: NSViewController {
     
     @IBOutlet weak var playerNameTextField: NSTextField!
     @IBOutlet weak var playerImage: NSImageView!
+    @IBOutlet weak var playerLeagueTextField: NSTextField!
+    @IBOutlet weak var playerTeamTextField: NSTextField!
+    @IBOutlet weak var playerNationTextField: NSTextField!
     
     @IBOutlet weak var typeSegment: NSSegmentedControl!
     
@@ -59,10 +62,10 @@ class ViewController: NSViewController {
         openPanel.canChooseDirectories = false
         openPanel.allowedFileTypes = ["txt"]
         openPanel.directoryURL = URL(fileURLWithPath: NSString(string: "~").expandingTildeInPath)
-//        [_openPanel setAllowsMultipleSelection:NO];
         
         updateFieldsStateForSearchType(typeSegment.selectedLabel())
         updateSettings()
+        updatePlayerInfo()
         
         users = UserLoader.getUsers(from: Settings.sharedInstance.userFile)
         
@@ -151,10 +154,20 @@ class ViewController: NSViewController {
         FutDatabase.getPlayerInfo(baseId: playerIdTextField.stringValue) { [unowned self] (playerInfo) in
             guard let playerInfo = playerInfo else {
                 self.playerNameTextField.stringValue = "Not Found"
+                self.playerLeagueTextField.stringValue = ""
+                self.playerTeamTextField.stringValue = ""
+                self.playerNationTextField.stringValue = ""
+                self.playerImage.image = NSImage(named: "NSInfo")
                 return
             }
             
-            self.playerNameTextField.stringValue = "\(playerInfo.commonName) - \(playerInfo.firstName) \(playerInfo.lastName)"
+            self.playerNameTextField.stringValue = "\(playerInfo.firstName) \(playerInfo.lastName) (\(playerInfo.rating))"
+            self.playerLeagueTextField.stringValue = playerInfo.league
+            self.playerTeamTextField.stringValue = playerInfo.team
+            self.playerNationTextField.stringValue = playerInfo.nation
+            if let imageUrl = URL(string: playerInfo.imageUrl) {
+                self.playerImage.image = NSImage(contentsOf: imageUrl)
+            }
         }
     }
 }
