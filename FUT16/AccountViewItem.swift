@@ -24,6 +24,14 @@ class AccountViewItem: NSCollectionViewItem {
             enabledCheckbox.state = user.enabled ? 1 : 0
             observerContext = user.email
             user.stats.addObserver(self, forKeyPath: "purchaseCount", options: .new, context: &observerContext)
+            
+            if user.stats.purchaseCount > 0 {
+                setBackground(colorPurchase)
+            } else if user.ready {
+                setBackground(colorLoggedIn)
+            } else {
+                setBackground(colorDefault)
+            }
         }
     }
     
@@ -44,15 +52,11 @@ class AccountViewItem: NSCollectionViewItem {
     }
     
     override func viewWillAppear() {
-        print("Appearing view \(user.email) - win \(view.window)")
-        if user.stats.purchaseCount > 0 {
-            setBackground(colorPurchase)
-        }
-        
+        print("Appearing view \(user.email)")
     }
     
     override func viewWillDisappear() {
-        print("Removing observer for \(user.email) - win \(view.window)")
+        print("Removing observer for \(user.email)")
         user.stats.removeObserver(self, forKeyPath: "purchaseCount", context: &observerContext)
     }
     

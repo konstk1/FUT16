@@ -1,13 +1,10 @@
 Bugs / Quick fixes:
 
-- Add search for Chem (Hunter 266)
-- Account item callback bug
 - Save 'account enable' checkbox state
 
 Features:
 
-- Add player info (https://www.easports.com/fifa/ultimate-team/api/fut/item?jsonParamObject=%7B%22baseid%22:%22109416%22%7D)
-
+-
 
 Stretch:
 
