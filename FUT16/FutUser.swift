@@ -37,6 +37,8 @@ open class FutUser: NSObject {
     }
     
     var enabled = true
+    var buyEnabled = true
+    
     var ready: Bool {
         return !fut16.sessionId.isEmpty && enabled
     }

@@ -22,6 +22,7 @@ class AccountViewItem: NSCollectionViewItem {
             usernameLabel.stringValue = user.email
             totpLabel.stringValue = user.authCode
             enabledCheckbox.state = user.enabled ? 1 : 0
+            buyEnabledCheckbox.state = user.buyEnabled ? 1 : 0
             observerContext = user.email
             user.stats.addObserver(self, forKeyPath: "purchaseCount", options: .new, context: &observerContext)
             
@@ -36,6 +37,7 @@ class AccountViewItem: NSCollectionViewItem {
     }
     
     @IBOutlet weak var enabledCheckbox: NSButton!
+    @IBOutlet weak var buyEnabledCheckbox: NSButton!
     @IBOutlet weak var usernameLabel: NSTextField!
     @IBOutlet weak var totpLabel: NSTextField!
     @IBOutlet weak var loginButton: NSButton!
@@ -66,9 +68,9 @@ class AccountViewItem: NSCollectionViewItem {
     
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         if context == &observerContext {
-            print("Observed new val \(change)")
+//            print("Observed new val \(change)")
             if let purchaseCount = change?[NSKeyValueChangeKey.newKey] as? Int {
-                print("New purchase count: \(purchaseCount)")
+//                print("New purchase count: \(purchaseCount)")
                 if purchaseCount > 0 {
                     setBackground(colorPurchase)
                 }
@@ -80,6 +82,10 @@ class AccountViewItem: NSCollectionViewItem {
     
     @IBAction func enabledPushed(_ sender: NSButton) {
         user.enabled = (sender.state == 1)
+    }
+    
+    @IBAction func buyEnabledPushed(_ sender: AnyObject) {
+        user.buyEnabled = (sender.state == 1)
     }
     
     func setBackground(_ color: NSColor) {

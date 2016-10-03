@@ -130,6 +130,11 @@ open class AutoTrader: NSObject {
             return
         }
         
+        guard getBuyingUser() != nil else {
+            Log.print("No buying users")
+            return
+        }
+        
         if state == .ready || state == .stopped {
             cycleStart()
         } else {
@@ -228,11 +233,24 @@ open class AutoTrader: NSObject {
             Log.print("Invalid user")
             return
         }
-
-        var curMinBin: UInt = 10000000
         
         // increment max price to avoid cached results
         itemParams.maxPrice = incrementPrice(itemParams.maxPrice)
+        
+        processAuctionsForUser(user, buy: false);
+        
+        scheduleNextPoll()  // set up timer for next request
+        
+    } // end pollAuctions
+    
+    func processAuctionsForUser(_ user: FutUser, buy: Bool)
+    {
+        var curMinBin: UInt = 10000000
+        
+        guard let buyer = self.getBuyingUser() else {
+            self.stopTrading("No buying user.")
+            return
+        }
         
         user.fut16.findAuctionsForItem(itemParams) { [unowned self] (auctions, error) -> Void in
             let currentStats = user.stats
@@ -241,7 +259,7 @@ open class AutoTrader: NSObject {
             currentStats.coinsBalance = currentFut.coinsBalance   // grab coins ballance
             
             if currentStats.searchCount1Hr >= self.SEARCH_LIMIT_1HR ||
-               currentStats.searchCount24Hr >= self.SEARCH_LIMIT_24HR {
+                currentStats.searchCount24Hr >= self.SEARCH_LIMIT_24HR {
                 self.stopTrading("Search limit reached")
             }
             
@@ -271,10 +289,16 @@ open class AutoTrader: NSObject {
                     curMinBin = $0.buyNowPrice
                 }
                 
-                if $0.buyNowPrice <= self.buyAtBin { //&& $0.isRare {
+                if ($0.buyNowPrice <= self.buyAtBin) && (buy == false) { //&& $0.isRare {
                     self.purchaseQueue.append($0)
-//                    Log.print("Purchase Queued \($0.tradeId)")
+                    print("Adding to buy queue")
+                    // Must perform a search before buying
+                    self.processAuctionsForUser(buyer, buy: true)
                 }
+            }
+            
+            if buy == true {
+                self.processPurchaseQueue(buyer)
             }
             
             // update session min
@@ -282,19 +306,15 @@ open class AutoTrader: NSObject {
                 self.minBin = curMinBin
             }
             
-            self.processPurchaseQueue(user)
             self.tuneSearchParamsFromAuctions(auctions)
             
             // log search at the end to minimize time between search and purchase
             currentStats.logSearch()        // save to CoreData
-            Log.print("\(Date().localTime):  Search: \(currentStats.searchCount) (\(auctions.count)-\(self.itemParams.startRecord)) - Cur Min: \(curMinBin) (Min: \(self.minBin)) [\(currentFut.user)]")
+            Log.print("\(Date().localTime):  Search: \(currentStats.searchCount) (\(auctions.count)-\(self.itemParams.startRecord)) - Cur Min: \(curMinBin) (Min: \(self.minBin)) [\(currentFut.user)(\(buy))]")
             
             self.notifyOwner(user)
         } // findAuctionsForPlayer
-        
-        scheduleNextPoll()  // set up timer for next request
-        
-    } // end pollAuctions
+    }
     
     func tuneSearchParamsFromAuctions(_ auctions: [FUT16.AuctionInfo]) {
         // at the moment, tune start page only
@@ -318,14 +338,15 @@ open class AutoTrader: NSObject {
         }
     }
     
-    var currentAuction: FUT16.AuctionInfo!
-    
     func processPurchaseQueue(_ user: FutUser) {
         guard purchaseQueue.count > 0 else { return }
         
         let currentFut = user.fut16
         
         let auction = purchaseQueue.removeFirst()
+        
+        // only support purchasing of first item
+        purchaseQueue.removeAll();
         
         Log.print("Purchasing \(auction.tradeId) (\(auction.buyNowPrice))...", terminator: "")
         currentFut.placeBidOnAuction(auction.tradeId, amount: auction.buyNowPrice) { [unowned self] (email, error) in
@@ -360,6 +381,14 @@ open class AutoTrader: NSObject {
             }
             self.notifyOwner(user)
         }
+    }
+    
+    func getBuyingUser() -> FutUser? {
+        let buyer =  users.filter {
+            $0.buyEnabled
+        }
+        
+        return buyer.first
     }
     
     func findUserWithEmail(_ email: String) -> FutUser! {

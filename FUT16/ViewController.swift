@@ -166,7 +166,7 @@ class ViewController: NSViewController {
             self.playerTeamTextField.stringValue = playerInfo.team
             self.playerNationTextField.stringValue = playerInfo.nation
             if let imageUrl = URL(string: playerInfo.imageUrl) {
-                self.playerImage.image = NSImage(contentsOf: imageUrl)
+//                self.playerImage.image = NSImage(contentsOf: imageUrl)
             }
         }
     }

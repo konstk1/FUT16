@@ -4,7 +4,7 @@ Bugs / Quick fixes:
 
 Features:
 
--
+- Show number of items in trade pile
 
 Stretch:
 
