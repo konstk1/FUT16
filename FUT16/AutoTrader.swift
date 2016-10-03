@@ -237,13 +237,13 @@ open class AutoTrader: NSObject {
         // increment max price to avoid cached results
         itemParams.maxPrice = incrementPrice(itemParams.maxPrice)
         
-        processAuctionsForUser(user, buy: false);
+        processAuctionsForUser(user);
         
         scheduleNextPoll()  // set up timer for next request
         
     } // end pollAuctions
     
-    func processAuctionsForUser(_ user: FutUser, buy: Bool)
+    func processAuctionsForUser(_ user: FutUser)
     {
         var curMinBin: UInt = 10000000
         
@@ -289,16 +289,18 @@ open class AutoTrader: NSObject {
                     curMinBin = $0.buyNowPrice
                 }
                 
-                if ($0.buyNowPrice <= self.buyAtBin) && (buy == false) { //&& $0.isRare {
+                if $0.buyNowPrice <= self.buyAtBin { //&& $0.isRare {
                     self.purchaseQueue.append($0)
-                    print("Adding to buy queue")
-                    // Must perform a search before buying
-                    self.processAuctionsForUser(buyer, buy: true)
                 }
             }
             
-            if buy == true {
-                self.processPurchaseQueue(buyer)
+            // if purchase queued
+            if !self.purchaseQueue.isEmpty {
+                if user.buyEnabled {
+                    self.processPurchaseQueue(user)
+                } else {
+                    self.processAuctionsForUser(buyer)          // if current user is not "buy enabled", schedule search with buying user
+                }
             }
             
             // update session min
@@ -310,7 +312,7 @@ open class AutoTrader: NSObject {
             
             // log search at the end to minimize time between search and purchase
             currentStats.logSearch()        // save to CoreData
-            Log.print("\(Date().localTime):  Search: \(currentStats.searchCount) (\(auctions.count)-\(self.itemParams.startRecord)) - Cur Min: \(curMinBin) (Min: \(self.minBin)) [\(currentFut.user)(\(buy))]")
+            Log.print("\(Date().localTime):  Search: \(currentStats.searchCount) (\(auctions.count)-\(self.itemParams.startRecord)) - Cur Min: \(curMinBin) (Min: \(self.minBin)) [\(currentFut.user)]")
             
             self.notifyOwner(user)
         } // findAuctionsForPlayer
