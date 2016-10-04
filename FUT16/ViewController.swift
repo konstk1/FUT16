@@ -30,6 +30,8 @@ class ViewController: NSViewController {
     @IBOutlet weak var buyAtTextField: NSTextField!
     @IBOutlet weak var breakEvenTextField: NSTextField!
     
+    @IBOutlet weak var recentPurchasesTextField: NSTextField!
+    
     // Settings outlets
     @IBOutlet weak var reqTimingMinTextField: NSTextField!
     @IBOutlet weak var reqTimingMaxTextField: NSTextField!

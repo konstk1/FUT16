@@ -41,6 +41,8 @@ open class AutoTrader: NSObject {
     fileprivate let SEARCH_LIMIT_1HR = 950       // stop trading after this many searches within 1 hour
     fileprivate let SEARCH_LIMIT_24HR = 4000     // stop trading after this many searches within 24 hours
     
+    fileprivate let RECENT_PURCHASE_LOG_SIZE = 15
+    
     fileprivate var pollTimer: Timer!
     fileprivate var cycleTimer: Timer!
     
@@ -51,6 +53,9 @@ open class AutoTrader: NSObject {
         }
     }
     dynamic var requestRate: Int = 0
+    dynamic var recentPurchaseLog: String = ""
+    
+    fileprivate var recentPurchases = [String]()
     
     enum State {
         case ready
@@ -101,6 +106,8 @@ open class AutoTrader: NSObject {
             users.forEach { (user) -> () in
                 user.resetStats()
             }
+            recentPurchases.removeAll()
+            recentPurchaseLog = ""
         } else {
             user?.resetStats()
         }
@@ -361,6 +368,7 @@ open class AutoTrader: NSObject {
             guard error == .none else {
                 Log.print("Fail: Error - \(error).")
                 user.stats.purchaseFailCount += 1
+                self.updateRecentPurchaseLog(price: -Int(auction.buyNowPrice), username: user.fut16.user)
                 return
             }
             
@@ -368,6 +376,8 @@ open class AutoTrader: NSObject {
             
             // some stat keeping
             user.stats.logPurchase(Int(auction.buyNowPrice), maxBin: Int(self.itemParams.maxBin), coinsBalance: user.fut16.coinsBalance)
+            
+            self.updateRecentPurchaseLog(price: Int(auction.buyNowPrice), username: user.fut16.user)
             
             NSSound(named: "Ping")?.play()
             
@@ -387,10 +397,25 @@ open class AutoTrader: NSObject {
     
     func getBuyingUser() -> FutUser? {
         let buyer =  users.filter {
-            $0.buyEnabled
+            $0.buyEnabled && $0.enabled
         }
         
         return buyer.first
+    }
+    
+    func updateRecentPurchaseLog(price: Int, username: String) {
+        let numFormatter = NumberFormatter()
+        numFormatter.numberStyle = NumberFormatter.Style.decimal
+        numFormatter.formatWidth = 6
+        
+        let price = NSNumber(integerLiteral: price)
+        recentPurchases.append("\(numFormatter.string(from: price)!) - \(username)")
+        
+        if (recentPurchases.count >= RECENT_PURCHASE_LOG_SIZE) {
+            recentPurchases.removeFirst()
+        }
+        
+        recentPurchaseLog = recentPurchases.joined(separator: "\n")
     }
     
     func findUserWithEmail(_ email: String) -> FutUser! {
