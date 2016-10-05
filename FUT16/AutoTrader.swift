@@ -407,6 +407,8 @@ open class AutoTrader: NSObject {
         let numFormatter = NumberFormatter()
         numFormatter.numberStyle = NumberFormatter.Style.decimal
         numFormatter.formatWidth = 6
+        numFormatter.negativePrefix = "("
+        numFormatter.negativeSuffix = ")"
         
         let price = NSNumber(integerLiteral: price)
         recentPurchases.append("\(numFormatter.string(from: price)!) - \(username)")
