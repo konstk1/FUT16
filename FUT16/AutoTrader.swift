@@ -199,7 +199,7 @@ open class AutoTrader: NSObject {
         repeat {
             currentUserIdx = (currentUserIdx + 1) % users.count
             currentUser = users[currentUserIdx]
-        } while !currentUser.ready
+        } while !currentUser.searchReady
         
         // wrapped arround
         if prevUserIdx >= currentUserIdx {
@@ -397,7 +397,7 @@ open class AutoTrader: NSObject {
     
     func getBuyingUser() -> FutUser? {
         let buyer =  users.filter {
-            $0.buyEnabled && $0.enabled
+            $0.buyReady
         }
         
         return buyer.first
@@ -434,7 +434,7 @@ open class AutoTrader: NSObject {
     
     var numActiveUsers: Int {
         return users.reduce(0) { (count, user) in
-            return user.ready ? count + 1 : count
+            return user.searchReady ? count + 1 : count
         }
     }
 }

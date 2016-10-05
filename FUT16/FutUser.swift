@@ -36,11 +36,15 @@ open class FutUser: NSObject {
         return totp.currentPassword ?? ""
     }
     
-    var enabled = true
+    var searchEnabled = true
     var buyEnabled = true
     
-    var ready: Bool {
-        return !fut16.sessionId.isEmpty && enabled
+    var searchReady: Bool {
+        return !fut16.sessionId.isEmpty && searchEnabled
+    }
+    
+    var buyReady: Bool {
+        return !fut16.sessionId.isEmpty && buyEnabled
     }
     
     func resetStats() {

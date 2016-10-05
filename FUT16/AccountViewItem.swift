@@ -21,14 +21,14 @@ class AccountViewItem: NSCollectionViewItem {
             print("Setting user \(user.email)")
             usernameLabel.stringValue = user.email
             totpLabel.stringValue = user.authCode
-            enabledCheckbox.state = user.enabled ? 1 : 0
+            enabledCheckbox.state = user.searchEnabled ? 1 : 0
             buyEnabledCheckbox.state = user.buyEnabled ? 1 : 0
             observerContext = user.email
             user.stats.addObserver(self, forKeyPath: "purchaseCount", options: .new, context: &observerContext)
             
             if user.stats.purchaseCount > 0 {
                 setBackground(colorPurchase)
-            } else if user.ready {
+            } else if user.searchReady || user.buyReady {
                 setBackground(colorLoggedIn)
             } else {
                 setBackground(colorDefault)
@@ -81,7 +81,7 @@ class AccountViewItem: NSCollectionViewItem {
     }
     
     @IBAction func enabledPushed(_ sender: NSButton) {
-        user.enabled = (sender.state == 1)
+        user.searchEnabled = (sender.state == 1)
     }
     
     @IBAction func buyEnabledPushed(_ sender: AnyObject) {
