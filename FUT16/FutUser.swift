@@ -37,7 +37,7 @@ open class FutUser: NSObject {
     }
     
     var searchEnabled = true
-    var buyEnabled = true
+    var buyEnabled = false
     
     var searchReady: Bool {
         return !fut16.sessionId.isEmpty && searchEnabled
